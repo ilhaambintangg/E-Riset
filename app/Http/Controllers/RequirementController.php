@@ -9,54 +9,46 @@ class RequirementController extends Controller
 {
     public function index()
     {
-        return response()->json(Requirement::all());
+        $requirements = Requirement::orderBy('created_at', 'asc')->get();
+        return view('admin.requirements.index', compact('requirements'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'is_required' => ['required', 'boolean'],
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_required' => 'boolean',
         ]);
 
-        $requirement = Requirement::create($validated);
-        return response()->json($requirement, 201);
+        Requirement::create($validated);
+        return back()->with('success', 'Persyaratan dokumen berhasil ditambahkan.');
     }
 
     public function show($id)
     {
-        $requirement = Requirement::find($id);
-        if (!$requirement) {
-            return response()->json(['message' => 'Persyaratan tidak ditemukan'], 404);
-        }
+        $requirement = Requirement::findOrFail($id);
         return response()->json($requirement);
     }
 
     public function update(Request $request, $id)
     {
-        $requirement = Requirement::find($id);
-        if (!$requirement) {
-            return response()->json(['message' => 'Persyaratan tidak ditemukan'], 404);
-        }
+        $requirement = Requirement::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'is_required' => ['required', 'boolean'],
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'is_required' => 'boolean',
         ]);
 
         $requirement->update($validated);
-        return response()->json($requirement);
+        return back()->with('success', 'Persyaratan dokumen berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        $requirement = Requirement::find($id);
-        if (!$requirement) {
-            return response()->json(['message' => 'Persyaratan tidak ditemukan'], 404);
-        }
+        $requirement = Requirement::findOrFail($id);
         $requirement->delete();
-        return response()->json(['message' => 'Persyaratan berhasil dihapus']);
+        return back()->with('success', 'Persyaratan dokumen berhasil dihapus.');
     }
 }

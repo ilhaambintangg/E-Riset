@@ -9,7 +9,8 @@ class PaniteraController extends Controller
 {
     public function index()
     {
-        return response()->json(Panitera::orderBy('created_at', 'desc')->get());
+        $paniteras = Panitera::orderBy('created_at', 'desc')->get();
+        return view('admin.panitera.index', compact('paniteras'));
     }
 
     public function store(Request $request)
@@ -21,13 +22,8 @@ class PaniteraController extends Controller
             'status_aktif' => 'boolean',
         ]);
 
-        $panitera = Panitera::create($validated);
-        return response()->json($panitera, 201);
-    }
-
-    public function show($id)
-    {
-        return response()->json(Panitera::findOrFail($id));
+        Panitera::create($validated);
+        return back()->with('success', 'Data panitera berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -42,13 +38,13 @@ class PaniteraController extends Controller
         ]);
 
         $panitera->update($validated);
-        return response()->json($panitera);
+        return back()->with('success', 'Data panitera berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $panitera = Panitera::findOrFail($id);
         $panitera->delete();
-        return response()->json(['message' => 'Panitera deleted successfully']);
+        return back()->with('success', 'Data panitera berhasil dihapus.');
     }
 }

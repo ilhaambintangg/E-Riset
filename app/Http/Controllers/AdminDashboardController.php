@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Submission;
 use App\Models\SubmissionStatus;
+use App\Models\Panitera;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\Storage;
 class AdminDashboardController extends Controller
 {
     /**
-     * Get statistics for admin dashboard.
+     * Show admin dashboard.
      */
-    public function getStats()
+    public function dashboard()
     {
         $stats = [
             'total' => Submission::count(),
@@ -24,13 +25,15 @@ class AdminDashboardController extends Controller
             'rejected' => Submission::where('current_status', 'Ditolak')->count(),
         ];
 
-        return response()->json($stats);
+        $recentSubmissions = Submission::orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentSubmissions'));
     }
 
     /**
-     * Get list of submissions with filter & search.
+     * Show list of submissions with filter & search.
      */
-    public function getSubmissions(Request $request)
+    public function submissions(Request $request)
     {
         $query = Submission::query();
 
@@ -51,23 +54,27 @@ class AdminDashboardController extends Controller
         }
 
         $submissions = $query->orderBy('created_at', 'desc')->paginate(10);
-        return response()->json($submissions);
+        
+        return view('admin.submissions.index', compact('submissions'));
     }
 
     /**
-     * Get detail of a submission.
+     * Show detail of a submission.
      */
-    public function getSubmissionDetail($id)
+    public function submissionDetail($id)
     {
         $submission = Submission::with(['documents', 'statusLogs' => function($q) {
             $q->with('admin')->orderBy('created_at', 'desc');
-        }])->find($id);
+        }])->findOrFail($id);
 
-        if (!$submission) {
-            return response()->json(['message' => 'Permohonan tidak ditemukan.'], 404);
+        if (!$submission->is_read) {
+            $submission->is_read = true;
+            $submission->save();
         }
 
-        return response()->json($submission);
+        $paniteras = Panitera::where('status_aktif', true)->get();
+
+        return view('admin.submissions.show', compact('submission', 'paniteras'));
     }
 
     /**
@@ -75,11 +82,7 @@ class AdminDashboardController extends Controller
      */
     public function updateStatus(Request $request, $id)
     {
-        $submission = Submission::find($id);
-
-        if (!$submission) {
-            return response()->json(['message' => 'Permohonan tidak ditemukan.'], 404);
-        }
+        $submission = Submission::findOrFail($id);
 
         $validated = $request->validate([
             'status' => ['required', 'string', 'in:Menunggu Verifikasi,Sedang Diproses,Disetujui,Ditolak'],
@@ -89,60 +92,59 @@ class AdminDashboardController extends Controller
         ]);
 
         if ($validated['status'] === 'Sedang Diproses' && empty($validated['panitera_id'])) {
-            return response()->json(['message' => 'Panitera harus dipilih saat memproses permohonan untuk generate surat izin.'], 422);
+            return back()->withErrors(['panitera_id' => 'Panitera harus dipilih saat memproses permohonan untuk generate surat izin.'])->withInput();
         }
 
         if ($validated['status'] === 'Disetujui' && !$request->hasFile('permit_file') && empty($submission->permit_file_path)) {
-            return response()->json(['message' => 'Surat izin (PDF yang sudah ditandatangani) harus diunggah saat menyetujui permohonan.'], 422);
+            return back()->withErrors(['permit_file' => 'Surat izin (PDF yang sudah ditandatangani) harus diunggah saat menyetujui permohonan.'])->withInput();
         }
 
-        return DB::transaction(function () use ($request, $submission, $validated) {
-            $admin = Auth::user();
-            
-            // Generate letter automatically if status is Sedang Diproses
-            if ($validated['status'] === 'Sedang Diproses') {
-                try {
-                    \App\Http\Controllers\GeneratedLetterController::generateLetter($submission, $validated['panitera_id']);
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error('Auto-generate letter failed: ' . $e->getMessage());
-                    throw new \Exception('Gagal membuat surat: ' . $e->getMessage());
+        try {
+            DB::transaction(function () use ($request, $submission, $validated) {
+                $admin = Auth::user();
+                
+                // Generate letter automatically if status is Sedang Diproses
+                if ($validated['status'] === 'Sedang Diproses') {
+                    try {
+                        \App\Http\Controllers\GeneratedLetterController::generateLetter($submission, $validated['panitera_id']);
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Auto-generate letter failed: ' . $e->getMessage());
+                        throw new \Exception('Gagal membuat surat: ' . $e->getMessage());
+                    }
                 }
-            }
 
-            // Save the uploaded permit file if status is Disetujui
-            if ($validated['status'] === 'Disetujui' && $request->hasFile('permit_file')) {
-                $file = $request->file('permit_file');
-                $fileName = "Izin_Penelitian_{$submission->registration_number}." . $file->getClientOriginalExtension();
-                $path = $file->storeAs('permits/' . $submission->registration_number, $fileName, 'public');
-                $submission->permit_file_path = $path;
-            }
+                // Save the uploaded permit file if status is Disetujui
+                if ($validated['status'] === 'Disetujui' && $request->hasFile('permit_file')) {
+                    $file = $request->file('permit_file');
+                    $fileName = "Izin_Penelitian_{$submission->registration_number}." . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('permits/' . $submission->registration_number, $fileName, 'public');
+                    $submission->permit_file_path = $path;
+                }
 
-            // Update main submission record
-            $submission->current_status = $validated['status'];
-            $submission->admin_notes = $validated['notes'] ?? null;
-            $submission->save();
+                // Update main submission record
+                $submission->current_status = $validated['status'];
+                $submission->admin_notes = $validated['notes'] ?? null;
+                $submission->save();
 
-            // Create log entry
-            SubmissionStatus::create([
-                'submission_id' => $submission->id,
-                'status' => $validated['status'],
-                'notes' => $validated['notes'] ?? "Status diubah menjadi {$validated['status']}.",
-                'changed_by_admin_id' => $admin ? $admin->id : null,
-            ]);
+                // Create log entry
+                SubmissionStatus::create([
+                    'submission_id' => $submission->id,
+                    'status' => $validated['status'],
+                    'notes' => $validated['notes'] ?? "Status diubah menjadi {$validated['status']}.",
+                    'changed_by_admin_id' => $admin ? $admin->id : null,
+                ]);
 
-            // Send Email Notification
-            try {
-                \Illuminate\Support\Facades\Mail::to($submission->email)->send(new \App\Mail\SubmissionStatusUpdated($submission));
-            } catch (\Exception $e) {
-                // Log email error
-                \Illuminate\Support\Facades\Log::error('Failed to send SubmissionStatusUpdated email: ' . $e->getMessage());
-            }
+                // Send Email Notification
+                try {
+                    \Illuminate\Support\Facades\Mail::to($submission->email)->send(new \App\Mail\SubmissionStatusUpdated($submission));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Failed to send SubmissionStatusUpdated email: ' . $e->getMessage());
+                }
+            });
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Status permohonan berhasil diperbarui.',
-                'submission' => $submission
-            ]);
-        });
+            return back()->with('success', 'Status permohonan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['_global' => $e->getMessage()])->withInput();
+        }
     }
 }

@@ -24,7 +24,7 @@ class WebSettingController extends Controller
                 ]
             ]);
         }
-        return response()->json($setting);
+        return view('admin.settings.index', compact('setting'));
     }
 
     public function update(Request $request)
@@ -47,10 +47,6 @@ class WebSettingController extends Controller
         $setting->fill($validated);
         $setting->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Pengaturan website berhasil diperbarui.',
-            'data' => $setting
-        ]);
+        return back()->with('success', 'Pengaturan website berhasil diperbarui.');
     }
 }

@@ -9,52 +9,44 @@ class FaqController extends Controller
 {
     public function index()
     {
-        return response()->json(Faq::all());
+        $faqs = Faq::orderBy('created_at', 'asc')->get();
+        return view('admin.faqs.index', compact('faqs'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'question' => ['required', 'string'],
-            'answer' => ['required', 'string'],
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
         ]);
 
-        $faq = Faq::create($validated);
-        return response()->json($faq, 201);
+        Faq::create($validated);
+        return back()->with('success', 'FAQ berhasil ditambahkan.');
     }
 
     public function show($id)
     {
-        $faq = Faq::find($id);
-        if (!$faq) {
-            return response()->json(['message' => 'FAQ tidak ditemukan'], 404);
-        }
+        $faq = Faq::findOrFail($id);
         return response()->json($faq);
     }
 
     public function update(Request $request, $id)
     {
-        $faq = Faq::find($id);
-        if (!$faq) {
-            return response()->json(['message' => 'FAQ tidak ditemukan'], 404);
-        }
+        $faq = Faq::findOrFail($id);
 
         $validated = $request->validate([
-            'question' => ['required', 'string'],
-            'answer' => ['required', 'string'],
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string',
         ]);
 
         $faq->update($validated);
-        return response()->json($faq);
+        return back()->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        $faq = Faq::find($id);
-        if (!$faq) {
-            return response()->json(['message' => 'FAQ tidak ditemukan'], 404);
-        }
+        $faq = Faq::findOrFail($id);
         $faq->delete();
-        return response()->json(['message' => 'FAQ berhasil dihapus']);
+        return back()->with('success', 'FAQ berhasil dihapus.');
     }
 }

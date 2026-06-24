@@ -31,7 +31,8 @@ class Submission extends Model
         'end_date',
         'current_status',
         'admin_notes',
-        'permit_file_path'
+        'permit_file_path',
+        'is_read'
     ];
 
     public function documents(): HasMany

@@ -10,7 +10,8 @@ class TemplateSuratController extends Controller
 {
     public function index()
     {
-        return response()->json(TemplateSurat::orderBy('created_at', 'desc')->get());
+        $templates = TemplateSurat::orderBy('created_at', 'desc')->get();
+        return view('admin.templates.index', compact('templates'));
     }
 
     public function store(Request $request)
@@ -27,15 +28,15 @@ class TemplateSuratController extends Controller
             // Set all other templates to inactive
             TemplateSurat::where('is_active', true)->update(['is_active' => false]);
 
-            $template = TemplateSurat::create([
+            TemplateSurat::create([
                 'file_path' => $path,
                 'is_active' => true,
             ]);
 
-            return response()->json($template, 201);
+            return back()->with('success', 'Template surat berhasil diunggah dan diaktifkan.');
         }
 
-        return response()->json(['message' => 'Failed to upload template'], 400);
+        return back()->withErrors(['template' => 'Gagal mengunggah template.']);
     }
 
     public function destroy($id)
@@ -45,6 +46,16 @@ class TemplateSuratController extends Controller
             Storage::disk('public')->delete($template->file_path);
         }
         $template->delete();
-        return response()->json(['message' => 'Template deleted successfully']);
+        return back()->with('success', 'Template berhasil dihapus.');
+    }
+
+    public function download($id)
+    {
+        $template = TemplateSurat::findOrFail($id);
+        if ($template->file_path && Storage::disk('public')->exists($template->file_path)) {
+            return Storage::disk('public')->download($template->file_path);
+        }
+
+        return back()->withErrors(['error' => 'Template surat tidak ditemukan']);
     }
 }

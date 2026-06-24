@@ -4,10 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    /**
+     * Show admin login form.
+     */
+    public function showLogin()
+    {
+        if (Auth::check()) {
+            return redirect()->route('admin.dashboard');
+        }
+        return view('admin.login');
+    }
+
     /**
      * Handle admin login.
      */
@@ -19,21 +29,13 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $admin = Auth::user();
-            $token = \Illuminate\Support\Str::random(60);
-            $admin->api_token = $token;
-            $admin->save();
-            
-            return response()->json([
-                'message' => 'Login berhasil',
-                'token' => $token,
-                'admin' => $admin
-            ]);
+            $request->session()->regenerate();
+            return redirect()->intended('/admin/dashboard');
         }
 
-        throw ValidationException::withMessages([
-            'username' => ['Username atau password salah.'],
-        ]);
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ])->onlyInput('username');
     }
 
     /**
@@ -41,33 +43,11 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $admin = Auth::user();
-        if ($admin) {
-            $admin->api_token = null;
-            $admin->save();
-        }
-
         Auth::logout();
 
-        return response()->json([
-            'message' => 'Logout berhasil'
-        ]);
-    }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    /**
-     * Check if admin is logged in and return details.
-     */
-    public function check()
-    {
-        if (Auth::check()) {
-            return response()->json([
-                'authenticated' => true,
-                'admin' => Auth::user()
-            ]);
-        }
-
-        return response()->json([
-            'authenticated' => false
-        ], 401);
+        return redirect('/admin/login');
     }
 }

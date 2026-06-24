@@ -9,56 +9,40 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        return response()->json(Announcement::all());
+        $announcements = Announcement::orderBy('created_at', 'desc')->get();
+        return view('admin.announcements.index', compact('announcements'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
-            'is_active' => ['nullable', 'boolean'],
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_active' => 'boolean',
         ]);
-        $validated['is_active'] = $request->boolean('is_active', true);
 
-        $announcement = Announcement::create($validated);
-        return response()->json($announcement, 201);
-    }
-
-    public function show($id)
-    {
-        $announcement = Announcement::find($id);
-        if (!$announcement) {
-            return response()->json(['message' => 'Pengumuman tidak ditemukan'], 404);
-        }
-        return response()->json($announcement);
+        Announcement::create($validated);
+        return back()->with('success', 'Pengumuman berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
     {
-        $announcement = Announcement::find($id);
-        if (!$announcement) {
-            return response()->json(['message' => 'Pengumuman tidak ditemukan'], 404);
-        }
+        $announcement = Announcement::findOrFail($id);
 
         $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
-            'is_active' => ['nullable', 'boolean'],
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'is_active' => 'boolean',
         ]);
-        $validated['is_active'] = $request->boolean('is_active', true);
 
         $announcement->update($validated);
-        return response()->json($announcement->fresh());
+        return back()->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        $announcement = Announcement::find($id);
-        if (!$announcement) {
-            return response()->json(['message' => 'Pengumuman tidak ditemukan'], 404);
-        }
+        $announcement = Announcement::findOrFail($id);
         $announcement->delete();
-        return response()->json(['message' => 'Pengumuman berhasil dihapus']);
+        return back()->with('success', 'Pengumuman berhasil dihapus.');
     }
 }
