@@ -88,11 +88,17 @@ class AdminDashboardController extends Controller
             'status' => ['required', 'string', 'in:Menunggu Verifikasi,Sedang Diproses,Disetujui,Ditolak'],
             'notes' => ['nullable', 'string'],
             'panitera_id' => ['nullable', 'exists:panitera,id'], // Required if status is Sedang Diproses
+            'letter_date' => ['nullable', 'date'], // Required if status is Sedang Diproses
             'permit_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // Required if status is Disetujui
         ]);
 
-        if ($validated['status'] === 'Sedang Diproses' && empty($validated['panitera_id'])) {
-            return back()->withErrors(['panitera_id' => 'Panitera harus dipilih saat memproses permohonan untuk generate surat izin.'])->withInput();
+        if ($validated['status'] === 'Sedang Diproses') {
+            if (empty($validated['panitera_id'])) {
+                return back()->withErrors(['panitera_id' => 'Panitera harus dipilih saat memproses permohonan untuk generate surat izin.'])->withInput();
+            }
+            if (empty($validated['letter_date'])) {
+                return back()->withErrors(['letter_date' => 'Tanggal surat harus diisi saat memproses permohonan untuk generate surat izin.'])->withInput();
+            }
         }
 
         if ($validated['status'] === 'Disetujui' && !$request->hasFile('permit_file') && empty($submission->permit_file_path)) {
@@ -106,7 +112,7 @@ class AdminDashboardController extends Controller
                 // Generate letter automatically if status is Sedang Diproses
                 if ($validated['status'] === 'Sedang Diproses') {
                     try {
-                        \App\Http\Controllers\GeneratedLetterController::generateLetter($submission, $validated['panitera_id']);
+                        \App\Http\Controllers\GeneratedLetterController::generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
                     } catch (\Exception $e) {
                         \Illuminate\Support\Facades\Log::error('Auto-generate letter failed: ' . $e->getMessage());
                         throw new \Exception('Gagal membuat surat: ' . $e->getMessage());

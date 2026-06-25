@@ -9,6 +9,11 @@
     <div class="flex items-center justify-center flex-1 py-20 px-4 relative z-10">
         <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white p-10 max-w-lg w-full text-center animate-fade-in-up">
             
+            <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl flex items-center gap-2 justify-center text-sm font-bold shadow-sm">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+                Permohonan berhasil diajukan.
+            </div>
+
             <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-green-500/30">
                 <i data-lucide="check-circle-2" class="w-12 h-12 text-white"></i>
             </div>

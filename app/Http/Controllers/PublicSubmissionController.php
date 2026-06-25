@@ -51,29 +51,41 @@ class PublicSubmissionController extends Controller
         $validatedData = $request->validate([
             // Pemohon
             'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', 'string', 'max:20'],
-            'nim' => ['nullable', 'string', 'max:50'],
+            'nim' => ['required', 'string', 'max:50'],
             'university' => ['required', 'string', 'max:255'],
             'faculty' => ['required', 'string', 'max:255'],
             'study_program' => ['required', 'string', 'max:255'],
-            'semester' => ['nullable', 'string', 'max:20'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'address' => ['required', 'string'],
-            // Penelitian
-            'title' => ['required', 'string', 'max:500'],
-            'location' => ['required', 'string', 'max:255'],
+            
+            // New fields for letter generation
+            'recipient_position' => ['required', 'string', 'max:255'],
+            'destination_city' => ['required', 'string', 'max:255'],
+            'reference_letter_number' => ['required', 'string', 'max:255'],
+            'reference_letter_date' => ['required', 'date'],
+            'research_title' => ['required', 'string'],
+            'research_location' => ['required', 'string', 'max:255'],
+            'research_type' => ['required', 'string', 'max:255'],
+            
+            // Other fields
             'purpose' => ['required', 'string'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
-            // Documents
+            
+            // Members
+            'is_group' => ['required', 'string', 'in:individu,kelompok'],
+            'members' => ['nullable', 'array'],
+            'members.*.name' => ['required_if:is_group,kelompok', 'string', 'max:255'],
+            'members.*.npm' => ['required_if:is_group,kelompok', 'string', 'max:50'],
+            
+            // Documents (2 MB limit)
             'proposal_penelitian' => ['required', 'file', 'mimes:pdf', 'max:2048'],
             'surat_pengantar_kampus' => ['required', 'file', 'mimes:pdf', 'max:2048'],
         ], [
-            'proposal_penelitian.mimes' => 'Format Proposal Penelitian harus PDF.',
-            'proposal_penelitian.max' => 'Ukuran Proposal Penelitian maksimal 2 MB.',
-            'surat_pengantar_kampus.mimes' => 'Format Surat Pengantar Kampus harus PDF.',
-            'surat_pengantar_kampus.max' => 'Ukuran Surat Pengantar Kampus maksimal 2 MB.',
+            'proposal_penelitian.mimes' => 'File harus berformat PDF.',
+            'proposal_penelitian.max' => 'Ukuran file maksimal 2 MB.',
+            'surat_pengantar_kampus.mimes' => 'File harus berformat PDF.',
+            'surat_pengantar_kampus.max' => 'Ukuran file maksimal 2 MB.',
         ]);
 
         return DB::transaction(function () use ($request, $validatedData) {
@@ -89,22 +101,43 @@ class PublicSubmissionController extends Controller
             $submission = Submission::create([
                 'registration_number' => $registrationNumber,
                 'name' => $validatedData['name'],
-                'gender' => $validatedData['gender'],
-                'nim' => $validatedData['nim'] ?? null,
+                'nim' => $validatedData['nim'],
                 'university' => $validatedData['university'],
                 'faculty' => $validatedData['faculty'],
                 'study_program' => $validatedData['study_program'],
-                'semester' => $validatedData['semester'] ?? null,
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
-                'address' => $validatedData['address'],
-                'title' => $validatedData['title'],
-                'location' => $validatedData['location'],
+                
+                // Fields for letter generation
+                'recipient_position' => $validatedData['recipient_position'],
+                'destination_city' => $validatedData['destination_city'],
+                'reference_letter_number' => $validatedData['reference_letter_number'],
+                'reference_letter_date' => $validatedData['reference_letter_date'],
+                'research_title' => $validatedData['research_title'],
+                'research_location' => $validatedData['research_location'],
+                'research_type' => $validatedData['research_type'],
+                
+                // Compatibility mapping
+                'title' => $validatedData['research_title'],
+                'location' => $validatedData['research_location'],
+                
                 'purpose' => $validatedData['purpose'],
                 'start_date' => $validatedData['start_date'],
                 'end_date' => $validatedData['end_date'],
                 'current_status' => 'Menunggu Verifikasi',
             ]);
+
+            // Save members if it's a group submission
+            if ($validatedData['is_group'] === 'kelompok' && !empty($validatedData['members'])) {
+                foreach ($validatedData['members'] as $member) {
+                    if (!empty($member['name']) && !empty($member['npm'])) {
+                        $submission->members()->create([
+                            'member_name' => $member['name'],
+                            'member_npm' => $member['npm'],
+                        ]);
+                    }
+                }
+            }
 
             // 4. Handle File Uploads
             $documentTypes = [

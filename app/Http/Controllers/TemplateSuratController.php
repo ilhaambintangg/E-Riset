@@ -18,6 +18,7 @@ class TemplateSuratController extends Controller
     {
         $request->validate([
             'template' => 'required|file|mimes:docx|max:5120',
+            'type' => 'required|string|in:individu,kelompok',
         ]);
 
         if ($request->hasFile('template')) {
@@ -25,15 +26,18 @@ class TemplateSuratController extends Controller
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = $file->storeAs('templates', $fileName, 'public');
 
-            // Set all other templates to inactive
-            TemplateSurat::where('is_active', true)->update(['is_active' => false]);
+            // Set all other templates of the same type to inactive
+            TemplateSurat::where('type', $request->type)
+                ->where('is_active', true)
+                ->update(['is_active' => false]);
 
             TemplateSurat::create([
                 'file_path' => $path,
+                'type' => $request->type,
                 'is_active' => true,
             ]);
 
-            return back()->with('success', 'Template surat berhasil diunggah dan diaktifkan.');
+            return back()->with('success', 'Template surat ' . $request->type . ' berhasil diunggah dan diaktifkan.');
         }
 
         return back()->withErrors(['template' => 'Gagal mengunggah template.']);
@@ -42,10 +46,24 @@ class TemplateSuratController extends Controller
     public function destroy($id)
     {
         $template = TemplateSurat::findOrFail($id);
+        $wasActive = $template->is_active;
+        $type = $template->type;
+
         if (Storage::disk('public')->exists($template->file_path)) {
             Storage::disk('public')->delete($template->file_path);
         }
         $template->delete();
+
+        if ($wasActive) {
+            // Find the next most recent template of the same type and make it active
+            $nextTemplate = TemplateSurat::where('type', $type)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($nextTemplate) {
+                $nextTemplate->update(['is_active' => true]);
+            }
+        }
+
         return back()->with('success', 'Template berhasil dihapus.');
     }
 

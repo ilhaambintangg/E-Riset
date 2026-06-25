@@ -20,11 +20,18 @@
                         <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
                         Format yang didukung: .docx
                     </p>
-                    <p class="text-[11px] text-fg-brand-strong leading-relaxed m-0 font-medium">Sistem menggunakan PHPWord. Gunakan variabel template seperti <code>${nama}</code>, <code>${nim}</code>, dan <code>${universitas}</code> di file Word Anda agar otomatis terisi data permohonan.</p>
+                    <p class="text-[11px] text-fg-brand-strong leading-relaxed m-0 font-medium">Sistem menggunakan PHPWord. Gunakan variabel template seperti <code>${nama}</code>, <code>${nim}</code>, <code>${universitas}</code>, dan <code>${tujuan_penelitian}</code> di file Word Anda agar otomatis terisi data permohonan.</p>
                 </div>
 
                 <form action="{{ route('templates.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                     @csrf
+                    <div>
+                        <label class="input-label text-xs">Jenis Template</label>
+                        <select name="type" required class="w-full text-xs text-fg-body border border-border-default rounded-sm py-2 px-3 focus:outline-none focus:border-brand">
+                            <option value="individu">Individu</option>
+                            <option value="kelompok">Kelompok</option>
+                        </select>
+                    </div>
                     <div>
                         <label class="input-label text-xs">Pilih File Template (.docx)</label>
                         <input type="file" name="template" accept=".docx" required
@@ -58,6 +65,7 @@
                                 <div>
                                     <p class="text-xs font-bold text-fg-heading mb-1">
                                         {{ basename($t->file_path) }}
+                                        <span class="{{ $t->type === 'kelompok' ? 'badge-info' : 'badge-neutral' }} ml-2 py-0.5">{{ ucfirst($t->type) }}</span>
                                         @if($t->is_active)
                                             <span class="badge-success ml-2 py-0.5">Aktif</span>
                                         @endif
@@ -69,15 +77,14 @@
                                 <a href="{{ route('templates.download', $t->id) }}" class="p-2 text-fg-body-subtle hover:text-fg-brand hover:bg-brand-soft rounded-default transition-colors" title="Download Template">
                                     <i data-lucide="download" class="w-4 h-4"></i>
                                 </a>
-                                @if(!$t->is_active)
-                                    <form action="{{ route('templates.destroy', $t->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus template ini?');">
+                                    <form action="{{ route('templates.destroy', $t->id) }}" method="POST" 
+                                          onsubmit="return confirm('{{ $t->is_active ? 'Ini adalah template aktif. Yakin ingin menghapusnya? (Template cadangan lain akan otomatis aktif jika ada)' : 'Yakin ingin menghapus template ini?' }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="p-2 text-fg-body-subtle hover:text-fg-danger hover:bg-danger-soft rounded-default transition-colors" title="Hapus Template">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
                                     </form>
-                                @endif
                             </div>
                         </div>
                     @empty

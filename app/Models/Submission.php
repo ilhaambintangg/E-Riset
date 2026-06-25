@@ -32,7 +32,14 @@ class Submission extends Model
         'current_status',
         'admin_notes',
         'permit_file_path',
-        'is_read'
+        'is_read',
+        'recipient_position',
+        'destination_city',
+        'reference_letter_number',
+        'reference_letter_date',
+        'research_title',
+        'research_location',
+        'research_type'
     ];
 
     public function documents(): HasMany
@@ -48,5 +55,10 @@ class Submission extends Model
     public function generatedLetter()
     {
         return $this->hasOne(GeneratedLetter::class);
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(SubmissionMember::class);
     }
 }

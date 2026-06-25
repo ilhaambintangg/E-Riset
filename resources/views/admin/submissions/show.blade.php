@@ -75,22 +75,54 @@
                         <p class="text-sm font-bold text-fg-heading"><i data-lucide="building-2" class="w-4 h-4 inline mr-1 text-brand-alt"></i> {{ $submission->university }}</p>
                         <p class="text-xs text-fg-body-subtle mt-1.5 ml-5">
                             Fakultas: <span class="font-semibold text-fg-body">{{ $submission->faculty }}</span> | 
-                            Prodi: <span class="font-semibold text-fg-body">{{ $submission->study_program }}</span> (Semester {{ $submission->semester }})
+                            Prodi: <span class="font-semibold text-fg-body">{{ $submission->study_program }}</span>
                         </p>
                     </div>
                     <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
+                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Surat Pengantar Kampus</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
+                                <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Nomor Surat Pengantar</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->reference_letter_number ?? '-' }}</p>
+                            </div>
+                            <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
+                                <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Tanggal Surat Pengantar</p>
+                                <p class="text-xs font-semibold text-fg-heading">
+                                    {{ $submission->reference_letter_date ? \Carbon\Carbon::parse($submission->reference_letter_date)->translatedFormat('d M Y') : '-' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
+                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Tujuan Surat</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
+                                <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Jabatan Penerima</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->recipient_position ?? '-' }}</p>
+                            </div>
+                            <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
+                                <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Kota Tujuan</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->destination_city ?? '-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Judul & Tujuan Penelitian</p>
-                        <p class="text-sm font-bold text-fg-heading">{{ $submission->title }}</p>
+                        <p class="text-sm font-bold text-fg-heading">{{ $submission->research_title ?? $submission->title }}</p>
+                        <p class="text-xs text-fg-body-subtle mt-1">Jenis Penelitian: <span class="font-bold text-fg-heading">{{ $submission->research_type ?? 'Skripsi' }}</span></p>
                         <div class="mt-2 bg-neutral-primary-soft p-4 rounded-default border border-border-default text-xs text-fg-body leading-relaxed whitespace-pre-line">
                             {{ $submission->purpose }}
                         </div>
                     </div>
+
                     <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Lokasi & Waktu Penelitian</p>
                         <div class="flex flex-col sm:flex-row gap-4 mt-2">
                             <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default flex-1">
                                 <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Tempat Penelitian</p>
-                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->location }}</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->research_location ?? $submission->location }}</p>
                             </div>
                             <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default flex-1">
                                 <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Rentang Tanggal</p>
@@ -101,6 +133,32 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($submission->members && $submission->members->count() > 0)
+                    <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
+                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-2">Anggota Penelitian Kelompok</p>
+                        <div class="overflow-x-auto border border-border-default rounded-default">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-neutral-primary-soft border-b border-border-default text-xs font-bold text-fg-heading">
+                                        <th class="p-3">No</th>
+                                        <th class="p-3">Nama Anggota</th>
+                                        <th class="p-3">NIM / NPM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($submission->members as $index => $m)
+                                    <tr class="border-b border-border-default last:border-0 hover:bg-neutral-primary-soft/50 text-xs">
+                                        <td class="p-3 font-semibold text-fg-heading">{{ $index + 1 }}</td>
+                                        <td class="p-3 text-fg-heading font-medium">{{ $m->member_name }}</td>
+                                        <td class="p-3 text-fg-body-subtle font-mono">{{ $m->member_npm }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -219,6 +277,16 @@
                 </h3>
             </div>
             <div class="p-6">
+                @if($errors->any())
+                <div class="mb-4 p-3 bg-danger-soft border border-border-danger-subtle rounded-default text-xs text-fg-danger-strong font-medium">
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <form action="{{ route('admin.submissions.status', $submission->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                     @csrf
                     
@@ -247,6 +315,10 @@
                                         <option value="{{ $p->id }}">{{ $p->nama_panitera }} - {{ $p->jabatan }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Tanggal Surat</label>
+                                <input type="date" name="letter_date" value="{{ date('Y-m-d') }}" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                             </div>
                         </div>
                     </div>
