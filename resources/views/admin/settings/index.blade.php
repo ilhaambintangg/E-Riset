@@ -19,10 +19,16 @@
                 @csrf
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="md:col-span-2">
+                    <div>
                         <label class="input-label">Nama Instansi</label>
                         <input type="text" name="nama_instansi" value="{{ old('nama_instansi', $setting->nama_instansi) }}" required 
                                class="input-standard">
+                    </div>
+                    
+                    <div>
+                        <label class="input-label">Kode Nomor Surat (LETTER_CODE)</label>
+                        <input type="text" name="letter_code" value="{{ old('letter_code', $setting->letter_code) }}" required 
+                               class="input-standard" placeholder="Contoh: PAN.04/SKET.HM2.1.4">
                     </div>
                     
                     <div class="md:col-span-2">

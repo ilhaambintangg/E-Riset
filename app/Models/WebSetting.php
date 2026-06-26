@@ -10,6 +10,7 @@ class WebSetting extends Model
     
     protected $fillable = [
         'nama_instansi',
+        'letter_code',
         'alamat',
         'telepon',
         'email',

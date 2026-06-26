@@ -13,6 +13,7 @@ class WebSettingController extends Controller
         if (!$setting) {
             $setting = WebSetting::create([
                 'nama_instansi' => 'Pengadilan Tinggi Tanjungkarang',
+                'letter_code' => 'PAN.04/SKET.HM2.1.4',
                 'alamat' => 'Jl. Cut Mutia No.42, Gulak Galik, Kec. Telukbetung Utara, Kota Bandar Lampung, Lampung 35214',
                 'telepon' => '(0721) 482436',
                 'email' => 'info@pt-tanjungkarang.go.id',
@@ -36,6 +37,7 @@ class WebSettingController extends Controller
 
         $validated = $request->validate([
             'nama_instansi' => 'required|string|max:255',
+            'letter_code' => 'required|string|max:255',
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string',
             'email' => 'nullable|email',

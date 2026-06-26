@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminDashboardController extends Controller
 {
+    protected $letterService;
+
+    public function __construct(\App\Services\LetterService $letterService)
+    {
+        $this->letterService = $letterService;
+    }
     /**
      * Show admin dashboard.
      */
@@ -112,7 +118,7 @@ class AdminDashboardController extends Controller
                 // Generate letter automatically if status is Sedang Diproses
                 if ($validated['status'] === 'Sedang Diproses') {
                     try {
-                        \App\Http\Controllers\GeneratedLetterController::generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
+                        $this->letterService->generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
                     } catch (\Exception $e) {
                         \Illuminate\Support\Facades\Log::error('Auto-generate letter failed: ' . $e->getMessage());
                         throw new \Exception('Gagal membuat surat: ' . $e->getMessage());
