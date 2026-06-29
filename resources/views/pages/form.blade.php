@@ -2,85 +2,113 @@
 
 @section('content')
 
-<div class="min-h-screen bg-neutral-primary-soft relative overflow-hidden flex flex-col pt-[100px] sm:pt-[120px]" x-data="submissionForm()">
+<div class="min-h-screen bg-neutral-primary-soft relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px]" x-data="submissionForm()">
+    <!-- Background abstract patterns -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     
     <div class="flex-1 pb-[80px] container-standard relative z-10 max-w-[800px] mx-auto w-full">
         <div class="mt-[20px]">
             <!-- Header -->
             <div class="text-center mb-[40px] animate-fade-up">
-                <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand-subtle px-[16px] py-[8px] rounded-full mb-[16px] shadow-sm">
-                    <i data-lucide="scale" class="w-[16px] h-[16px] text-brand"></i>
-                    <span class="text-brand font-bold text-[12px] tracking-widest uppercase">E-RISET</span>
+                <div class="inline-flex items-center gap-[8px] bg-brand-softer border-2 border-brand/20 px-[18px] py-[8px] rounded-full mb-[16px] shadow-2xs">
+                    <i data-lucide="scale" class="w-[16px] h-[16px] text-brand-alt"></i>
+                    <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET FORMULIR</span>
                 </div>
-                <h1 class="text-h2 text-fg-heading mb-[8px]">
-                    Formulir Pengajuan Izin Penelitian
+                <h1 class="text-h2 text-fg-heading mb-[8px] font-black">
+                    Pengajuan Izin Penelitian
                 </h1>
-                <p class="text-[15px] text-fg-body max-w-[600px] mx-auto opacity-90">
-                    Lengkapi semua data administrasi di bawah ini untuk menghasilkan surat izin otomatis.
+                <p class="text-[15px] text-fg-body max-w-[600px] mx-auto font-medium opacity-90">
+                    Isi formulir pendaftaran riset elektronik bersama Si Risi di bawah ini dengan lengkap.
                 </p>
             </div>
 
             <!-- Global Error -->
-            <div x-show="errors._global" x-transition x-cloak class="flex items-center gap-[12px] bg-danger-soft border border-border-danger-subtle rounded-[12px] p-[16px] mb-[24px] text-fg-danger-strong shadow-sm animate-fade-in">
-                <i data-lucide="alert-circle" class="w-[20px] h-[20px] shrink-0"></i>
-                <span class="text-[14px] font-medium" x-text="errors._global"></span>
+            <div x-show="errors._global" x-transition x-cloak class="flex items-center gap-[12px] bg-danger-soft border-2 border-danger rounded-base p-[16px] mb-[24px] text-fg-danger-strong shadow-xs animate-fade-in">
+                <i data-lucide="alert-circle" class="w-[22px] h-[22px] shrink-0 text-danger"></i>
+                <span class="text-[14px] font-bold" x-text="errors._global"></span>
             </div>
 
-            <!-- Success State (Will redirect, but kept as fallback) -->
-            <div x-show="success" x-transition x-cloak class="bg-white rounded-[24px] shadow-lg border border-border-default p-[48px] text-center animate-fade-up">
+            <!-- Success State -->
+            <div x-show="success" x-transition x-cloak class="bg-white rounded-base shadow-lg border-[3px] border-brand p-[48px] text-center animate-fade-up">
                 <div class="w-[96px] h-[96px] bg-success-soft rounded-full flex items-center justify-center mx-auto mb-[32px] border-[4px] border-white shadow-md">
                     <i data-lucide="check-circle-2" class="w-[48px] h-[48px] text-success-strong"></i>
                 </div>
-                <h2 class="font-heading font-bold text-[32px] text-fg-heading mb-[16px]">Permohonan Terkirim!</h2>
+                <h2 class="font-heading font-black text-[32px] text-fg-heading mb-[16px]">Permohonan Terkirim!</h2>
+                <p class="text-fg-body max-w-[500px] mx-auto leading-relaxed">
+                    Terima kasih telah mengajukan izin penelitian. Nomor registrasi dan konfirmasi telah kami kirimkan ke email Anda.
+                </p>
             </div>
 
-            <!-- Multi-Step Form -->
-            <div x-show="!success" x-transition class="bg-white rounded-[24px] shadow-lg border border-border-default overflow-hidden animate-fade-up">
+            <!-- Multi-Step Form Card -->
+            <div x-show="!success" x-transition class="bg-white rounded-base shadow-md border-3 border-border-default overflow-hidden animate-fade-up">
                 
                 <!-- Stepper Header -->
-                <div class="bg-neutral-primary-soft border-b border-border-default px-[24px] sm:px-[40px] py-[32px]">
-                    <div class="flex items-center justify-between mb-[16px]">
-                        <h3 class="font-heading font-bold text-[18px] text-fg-heading" x-text="'Langkah ' + step + ' dari 4'"></h3>
-                        <span class="text-[13px] font-bold text-brand" x-text="stepTitle()"></span>
+                <div class="bg-neutral-primary-medium border-b-3 border-border-default px-[24px] sm:px-[40px] py-[32px] relative">
+                    <!-- Dynamic Mascot Dialog Bubble -->
+                    <div class="flex items-center gap-4 mb-[20px] bg-white border-2 border-border-default rounded-base p-3.5 shadow-2xs">
+                        <div class="shrink-0 bg-brand rounded-full w-12 h-12 flex items-center justify-center">
+                            <!-- Mini Owl Head SVG -->
+                            <svg class="w-10 h-10 animate-head-bob" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="42" fill="#143A66" stroke="#0A2240" stroke-width="3"/>
+                                <circle cx="35" cy="50" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                                <circle cx="65" cy="50" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                                <path d="M44 50 L56 50" stroke="#F4A261" stroke-width="3"/>
+                                <g class="animate-risi-blink">
+                                    <circle cx="35" cy="50" r="4.5" fill="#0A2240"/>
+                                    <circle cx="65" cy="50" r="4.5" fill="#0A2240"/>
+                                </g>
+                                <polygon points="50,54 45,61 55,61" fill="#E76F51" stroke="#0A2240" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-[13px] text-fg-heading font-black" 
+                               x-text="step === 1 ? 'Si Risi: Yuk isi nama & data dirimu! 📝' : (step === 2 ? 'Si Risi: Ceritakan rencana riset hebatmu! 🎓' : (step === 3 ? 'Si Risi: Upload berkas pendukungnya ya! ☁️' : 'Si Risi: Cek kembali sebelum dikirim! 👀'))">
+                            </p>
+                            <p class="text-[11px] text-fg-body-subtle font-bold uppercase tracking-wider" x-text="stepTitle()"></p>
+                        </div>
+                        <span class="text-[14px] font-black text-brand bg-brand-softer border border-brand/20 px-3 py-1 rounded-full" x-text="'Langkah ' + step + ' / 4'"></span>
                     </div>
                     
                     <!-- Progress Bar -->
-                    <div class="w-full h-[6px] bg-neutral-secondary-medium rounded-full overflow-hidden">
-                        <div class="h-full bg-brand transition-all duration-500 ease-out" :style="'width: ' + ((step / 4) * 100) + '%'"></div>
+                    <div class="w-full h-[8px] bg-neutral-primary-strong rounded-full overflow-hidden border border-border-default/40">
+                        <div class="h-full bg-brand-alt transition-all duration-500 ease-out" :style="'width: ' + ((step / 4) * 100) + '%'"></div>
                     </div>
                     
-                    <!-- Steps Indicator -->
-                    <div class="flex justify-between mt-[16px]">
-                        <div class="flex flex-col items-center gap-[8px]" :class="step >= 1 ? 'opacity-100' : 'opacity-40'">
-                            <div class="w-[32px] h-[32px] rounded-full flex items-center justify-center font-bold text-[14px] transition-colors"
-                                 :class="step > 1 ? 'bg-brand text-white' : (step === 1 ? 'bg-brand text-white shadow-md' : 'bg-neutral-secondary-strong text-fg-body')">
+                    <!-- Steps Indicator circles -->
+                    <div class="flex justify-between mt-[20px] px-1">
+                        <div class="flex flex-col items-center gap-[6px]" :class="step >= 1 ? 'opacity-100' : 'opacity-40'">
+                            <div class="w-[36px] h-[36px] rounded-full flex items-center justify-center font-black text-[13px] border-2 transition-all duration-300"
+                                 :class="step > 1 ? 'bg-brand border-brand text-white shadow-2xs' : (step === 1 ? 'bg-brand-alt border-brand-alt text-white shadow-xs scale-110' : 'bg-white border-border-default text-fg-body-subtle')">
                                 <i x-show="step > 1" data-lucide="check" class="w-[16px] h-[16px]"></i>
                                 <span x-show="step <= 1">1</span>
                             </div>
-                            <span class="text-[12px] font-bold hidden sm:block" :class="step >= 1 ? 'text-brand' : 'text-fg-body-subtle'">Identitas & Anggota</span>
+                            <span class="text-[11px] font-extrabold hidden sm:block" :class="step >= 1 ? 'text-brand' : 'text-fg-body-subtle'">Identitas</span>
                         </div>
-                        <div class="flex flex-col items-center gap-[8px]" :class="step >= 2 ? 'opacity-100' : 'opacity-40'">
-                            <div class="w-[32px] h-[32px] rounded-full flex items-center justify-center font-bold text-[14px] transition-colors"
-                                 :class="step > 2 ? 'bg-brand text-white' : (step === 2 ? 'bg-brand text-white shadow-md' : 'bg-neutral-secondary-strong text-fg-body')">
+                        
+                        <div class="flex flex-col items-center gap-[6px]" :class="step >= 2 ? 'opacity-100' : 'opacity-40'">
+                            <div class="w-[36px] h-[36px] rounded-full flex items-center justify-center font-black text-[13px] border-2 transition-all duration-300"
+                                 :class="step > 2 ? 'bg-brand border-brand text-white shadow-2xs' : (step === 2 ? 'bg-brand-alt border-brand-alt text-white shadow-xs scale-110' : 'bg-white border-border-default text-fg-body-subtle')">
                                 <i x-show="step > 2" data-lucide="check" class="w-[16px] h-[16px]"></i>
                                 <span x-show="step <= 2">2</span>
                             </div>
-                            <span class="text-[12px] font-bold hidden sm:block" :class="step >= 2 ? 'text-brand' : 'text-fg-body-subtle'">Riset & Akademik</span>
+                            <span class="text-[11px] font-extrabold hidden sm:block" :class="step >= 2 ? 'text-brand' : 'text-fg-body-subtle'">Riset</span>
                         </div>
-                        <div class="flex flex-col items-center gap-[8px]" :class="step >= 3 ? 'opacity-100' : 'opacity-40'">
-                            <div class="w-[32px] h-[32px] rounded-full flex items-center justify-center font-bold text-[14px] transition-colors"
-                                 :class="step > 3 ? 'bg-brand text-white' : (step === 3 ? 'bg-brand text-white shadow-md' : 'bg-neutral-secondary-strong text-fg-body')">
+                        
+                        <div class="flex flex-col items-center gap-[6px]" :class="step >= 3 ? 'opacity-100' : 'opacity-40'">
+                            <div class="w-[36px] h-[36px] rounded-full flex items-center justify-center font-black text-[13px] border-2 transition-all duration-300"
+                                 :class="step > 3 ? 'bg-brand border-brand text-white shadow-2xs' : (step === 3 ? 'bg-brand-alt border-brand-alt text-white shadow-xs scale-110' : 'bg-white border-border-default text-fg-body-subtle')">
                                 <i x-show="step > 3" data-lucide="check" class="w-[16px] h-[16px]"></i>
                                 <span x-show="step <= 3">3</span>
                             </div>
-                            <span class="text-[12px] font-bold hidden sm:block" :class="step >= 3 ? 'text-brand' : 'text-fg-body-subtle'">Upload Dokumen</span>
+                            <span class="text-[11px] font-extrabold hidden sm:block" :class="step >= 3 ? 'text-brand' : 'text-fg-body-subtle'">Upload</span>
                         </div>
-                        <div class="flex flex-col items-center gap-[8px]" :class="step >= 4 ? 'opacity-100' : 'opacity-40'">
-                            <div class="w-[32px] h-[32px] rounded-full flex items-center justify-center font-bold text-[14px] transition-colors"
-                                 :class="step === 4 ? 'bg-brand text-white shadow-md' : 'bg-neutral-secondary-strong text-fg-body'">
+                        
+                        <div class="flex flex-col items-center gap-[6px]" :class="step >= 4 ? 'opacity-100' : 'opacity-40'">
+                            <div class="w-[36px] h-[36px] rounded-full flex items-center justify-center font-black text-[13px] border-2 transition-all duration-300"
+                                 :class="step === 4 ? 'bg-brand-alt border-brand-alt text-white shadow-xs scale-110' : 'bg-white border-border-default text-fg-body-subtle'">
                                 <span>4</span>
                             </div>
-                            <span class="text-[12px] font-bold hidden sm:block" :class="step === 4 ? 'text-brand' : 'text-fg-body-subtle'">Review</span>
+                            <span class="text-[11px] font-extrabold hidden sm:block" :class="step === 4 ? 'text-brand' : 'text-fg-body-subtle'">Review</span>
                         </div>
                     </div>
                 </div>

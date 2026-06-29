@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-RISET | Pengadilan Tinggi Tanjungkarang</title>
     
+    <!-- Google Fonts: Outfit & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Vite CSS -->
     @vite(['resources/css/app.css'])
     
@@ -17,7 +22,7 @@
 
     @stack('styles')
 </head>
-<body class="font-sans bg-neutral-primary selection:bg-brand-soft selection:text-fg-brand-strong text-fg-body antialiased">
+<body class="font-sans bg-neutral-primary-soft selection:bg-brand-alt-soft selection:text-fg-brand-alt-strong text-fg-body antialiased">
     
     @include('components.navbar')
     

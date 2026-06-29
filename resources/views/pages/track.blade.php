@@ -32,102 +32,139 @@ if (isset($submission)) {
 }
 @endphp
 
-<div class="min-h-screen bg-neutral-primary relative overflow-hidden flex flex-col pt-[100px] sm:pt-[120px] pb-[80px]">
-    <!-- Abstract pattern -->
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-50" style="background-image: radial-gradient(var(--color-border-default) 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="min-h-screen bg-neutral-primary-soft relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px] pb-[80px]">
+    <!-- Abstract pattern background -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
 
     <div class="container-standard max-w-[800px] relative z-10">
         <!-- Header -->
         <div class="text-center mb-[48px] animate-fade-up">
-            <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand-subtle px-[16px] py-[8px] rounded-full mb-[16px] shadow-sm">
-                <i data-lucide="search" class="w-[16px] h-[16px] text-brand"></i>
-                <span class="text-brand font-bold text-[12px] tracking-widest uppercase">E-RISET TRACKER</span>
+            <div class="inline-flex items-center gap-[8px] bg-brand-softer border-2 border-brand/20 px-[18px] py-[8px] rounded-full mb-[16px] shadow-2xs">
+                <i data-lucide="search" class="w-[16px] h-[16px] text-brand-alt"></i>
+                <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET LACAK</span>
             </div>
-            <h1 class="font-heading font-bold text-h2 text-fg-heading mb-[12px]">Lacak Status Permohonan</h1>
-            <p class="text-[16px] text-fg-body opacity-90">Masukkan nomor registrasi yang Anda terima setelah pengajuan</p>
+            <h1 class="font-heading font-black text-h2 text-fg-heading mb-[12px]">Lacak Status Permohonan</h1>
+            <p class="text-[16px] text-fg-body font-medium opacity-90">Masukkan nomor registrasi untuk melihat progress izin penelitian Anda.</p>
         </div>
 
-        <!-- Search Form -->
-        <form action="/track" method="GET" class="bg-white rounded-[24px] shadow-lg border border-border-default p-[32px] sm:p-[48px] mb-[40px] animate-fade-up" style="animation-delay: 0.1s;">
-            <label class="font-bold text-[14px] text-fg-heading uppercase tracking-wider mb-[12px] block">
-                Nomor Registrasi
-            </label>
-            <div class="flex flex-col sm:flex-row gap-[16px]">
-                <div class="relative flex-1 group">
-                    <i data-lucide="hash" class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[20px] h-[20px] text-fg-body-subtle group-focus-within:text-brand transition-colors"></i>
-                    <input
-                        type="text"
-                        name="registration_number"
-                        value="{{ request('registration_number') }}"
-                        class="input-standard pl-[48px] w-full font-mono uppercase text-[16px] placeholder:normal-case placeholder:font-sans placeholder:text-[15px]"
-                        placeholder="Contoh: ERS-2025-00001"
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    class="btn-brand h-[56px] px-[40px] flex items-center justify-center gap-[12px] text-[16px] shadow-md hover:shadow-lg transition-all"
-                >
-                    <i data-lucide="search" class="w-[20px] h-[20px]"></i>
-                    Lacak
-                </button>
+        <!-- Search Form & Detective Mascot -->
+        <div class="bg-white rounded-base shadow-md border-3 border-border-default p-[24px] sm:p-[40px] mb-[40px] animate-fade-up flex flex-col md:flex-row items-center gap-8 relative overflow-hidden" style="animation-delay: 0.1s;">
+            <!-- Detective Mascot SVG -->
+            <div class="shrink-0 bg-neutral-primary-medium border-2 border-border-default rounded-base p-4 flex flex-col items-center">
+                <svg class="w-[110px] h-[110px] animate-risi-float" viewBox="0 0 100 100" fill="none">
+                  <circle cx="42" cy="85" r="5" fill="#E76F51" />
+                  <circle cx="58" cy="85" r="5" fill="#E76F51" />
+                  <rect x="25" y="32" width="50" height="52" rx="25" fill="#143A66" stroke="#0A2240" stroke-width="3"/>
+                  <rect x="34" y="52" width="32" height="26" rx="13" fill="#FFFDF6" stroke="#0A2240" stroke-width="2"/>
+                  <path d="M25 48 C15 50, 12 60, 24 68" fill="#143A66" stroke="#0A2240" stroke-width="3" />
+                  <path d="M75 52 C83 50, 85 62, 76 68" fill="#143A66" stroke="#0A2240" stroke-width="3" />
+                  <!-- Magnifying Glass -->
+                  <g transform="translate(72, 58) rotate(45)">
+                     <rect x="0" y="0" width="4" height="15" fill="#F4A261" stroke="#0A2240" stroke-width="1.5"/>
+                     <circle cx="2" cy="-4" r="8" fill="white" fill-opacity="0.2" stroke="#0A2240" stroke-width="2"/>
+                  </g>
+                  <g class="animate-head-bob">
+                     <rect x="22" y="14" width="56" height="42" rx="21" fill="#143A66" stroke="#0A2240" stroke-width="3"/>
+                     <!-- Detective Cap -->
+                     <path d="M18 18 C25 6, 75 6, 82 18 Z" fill="#7F7457" stroke="#0A2240" stroke-width="2.5"/>
+                     <path d="M15 18 L85 18" stroke="#0A2240" stroke-width="4" stroke-linecap="round"/>
+                     <circle cx="50" cy="8" r="3" fill="#F4A261" stroke="#0A2240" stroke-width="1.5"/>
+                     <circle cx="37" cy="32" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                     <circle cx="63" cy="32" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                     <path d="M48 32 L52 32" stroke="#F4A261" stroke-width="3"/>
+                     <g class="animate-risi-blink">
+                        <circle cx="37" cy="32" r="4.5" fill="#0A2240"/>
+                        <circle cx="63" cy="32" r="4.5" fill="#0A2240"/>
+                        <circle cx="35" cy="30" r="1.5" fill="white"/>
+                        <circle cx="61" cy="30" r="1.5" fill="white"/>
+                     </g>
+                     <polygon points="50,35 45,42 55,42" fill="#E76F51" stroke="#0A2240" stroke-width="1.5"/>
+                  </g>
+                </svg>
+                <span class="text-[11px] font-extrabold uppercase text-brand mt-2 bg-brand-softer border border-brand/20 px-2 py-0.5 rounded-full">Detektif Risi</span>
             </div>
-            @if(isset($error))
-                <div class="flex items-start gap-[12px] mt-[24px] bg-danger-soft border border-border-danger-subtle rounded-[12px] px-[20px] py-[16px] text-danger-strong text-[14px] font-medium animate-fade-in shadow-sm">
-                    <i data-lucide="alert-circle" class="w-[20px] h-[20px] mt-[2px] shrink-0 text-danger"></i>
-                    {{ $error }}
-                </div>
-            @endif
-        </form>
 
-        <!-- Result -->
+            <!-- Search Form inputs -->
+            <form action="/track" method="GET" class="flex-1 w-full">
+                <label class="font-extrabold text-[12px] text-fg-heading uppercase tracking-wider mb-[8px] block">
+                    Masukkan Nomor Registrasi
+                </label>
+                <div class="flex flex-col sm:flex-row gap-[12px]">
+                    <div class="relative flex-1 group">
+                        <i data-lucide="hash" class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[20px] h-[20px] text-fg-body-subtle group-focus-within:text-brand-alt transition-colors"></i>
+                        <input
+                            type="text"
+                            name="registration_number"
+                            value="{{ request('registration_number') }}"
+                            class="input-standard pl-[48px] w-full font-mono uppercase text-[15px] placeholder:normal-case placeholder:font-sans placeholder:text-[14px]"
+                            placeholder="Contoh: ERS-2025-00001"
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="btn-brand h-[52px] px-[32px] rounded-default flex items-center justify-center gap-[10px] text-[15px] font-bold shadow-xs hover:shadow-sm"
+                    >
+                        <i data-lucide="search" class="w-[18px] h-[18px]"></i>
+                        Cari
+                    </button>
+                </div>
+                @if(isset($error))
+                    <div class="flex items-start gap-[12px] mt-[20px] bg-danger-soft border-2 border-danger rounded-[12px] px-[16px] py-[12px] text-danger-strong text-[13px] font-bold animate-fade-in shadow-2xs">
+                        <i data-lucide="alert-circle" class="w-[18px] h-[18px] mt-[1px] shrink-0 text-danger animate-bounce"></i>
+                        <span>{{ $error }}</span>
+                    </div>
+                @endif
+            </form>
+        </div>
+
+        <!-- Result Card -->
         @if(isset($submission))
-            <div class="bg-white rounded-[24px] shadow-lg border border-border-default overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="bg-white rounded-base shadow-md border-3 border-border-default overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
                 <!-- Status Header -->
-                <div class="p-[32px] sm:p-[40px] border-b border-border-default relative overflow-hidden bg-neutral-primary-soft">
-                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-multiply"></div>
-                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-[24px]">
+                <div class="p-[28px] sm:p-[36px] border-b-3 border-border-default relative overflow-hidden bg-neutral-primary-medium">
+                    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[20px]">
                         <div>
-                            <p class="text-[12px] text-fg-body-subtle font-bold mb-[8px] uppercase tracking-widest">Nomor Registrasi</p>
-                            <p class="font-mono font-black text-[32px] text-fg-heading tracking-tight leading-none">{{ $submission->registration_number }}</p>
+                            <p class="text-[11px] text-fg-body-subtle font-extrabold mb-[6px] uppercase tracking-widest">Nomor Registrasi Anda</p>
+                            <p class="font-mono font-black text-[28px] sm:text-[32px] text-fg-heading tracking-tight leading-none">{{ $submission->registration_number }}</p>
                         </div>
-                        <div class="flex items-center gap-[12px] px-[24px] py-[12px] rounded-full border border-[2px] font-bold text-[16px] shadow-sm {{ $cfg['color'] }}">
-                            <div class="w-[12px] h-[12px] rounded-full {{ $cfg['dot'] }} animate-pulse"></div>
+                        <div class="flex items-center gap-[10px] px-[20px] py-[10px] rounded-full border-2 font-black text-[15px] shadow-2xs {{ $cfg['color'] }}">
+                            <div class="w-[10px] h-[10px] rounded-full {{ $cfg['dot'] }} animate-ping"></div>
                             {{ $submission->current_status }}
                         </div>
                     </div>
                 </div>
 
-                <!-- Stepper Timeline -->
+                <!-- Timeline Progress Stepper -->
                 @if($submission->current_status !== 'Ditolak')
-                <div class="px-[32px] sm:px-[40px] pt-[40px] pb-[16px] border-b border-border-default">
-                    <h3 class="font-heading font-bold text-[18px] text-fg-heading mb-[32px]">Progress Permohonan</h3>
-                    <div class="relative flex justify-between items-center w-full max-w-[600px] mx-auto">
+                <div class="px-[28px] sm:px-[36px] pt-[36px] pb-[16px] border-b border-border-default bg-neutral-primary-soft/50">
+                    <h3 class="font-heading font-black text-[16px] text-fg-heading mb-[28px] uppercase tracking-wider">Progress Permohonan</h3>
+                    <div class="relative flex justify-between items-center w-full max-w-[560px] mx-auto mb-[20px]">
                         <!-- Connecting Line Background -->
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[4px] bg-neutral-secondary-strong rounded-full -z-10"></div>
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[4px] bg-border-default rounded-full -z-10"></div>
                         <!-- Connecting Line Active -->
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-[4px] bg-brand rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ $currentStepIndex === 0 ? '0%' : ($currentStepIndex === 1 ? '50%' : '100%') }}"></div>
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-[4px] bg-brand-alt rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ $currentStepIndex === 0 ? '0%' : ($currentStepIndex === 1 ? '50%' : '100%') }}"></div>
 
                         @foreach($steps as $index => $stepName)
-                            <div class="flex flex-col items-center gap-[12px] bg-white relative z-0">
+                            <div class="flex flex-col items-center gap-[10px] bg-white relative z-0 rounded-full p-0.5">
                                 @if($index < $currentStepIndex)
                                     <!-- Completed Step -->
-                                    <div class="w-[48px] h-[48px] rounded-full bg-brand text-white flex items-center justify-center shadow-md border-[4px] border-white">
-                                        <i data-lucide="check" class="w-[24px] h-[24px]"></i>
+                                    <div class="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center shadow-xs border-[3px] border-white">
+                                        <i data-lucide="check" class="w-[20px] h-[20px]"></i>
                                     </div>
-                                    <span class="text-[12px] font-bold text-fg-heading absolute -bottom-[24px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[11px] font-extrabold text-fg-body-subtle absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
                                 @elseif($index === $currentStepIndex)
-                                    <!-- Current Step -->
-                                    <div class="w-[48px] h-[48px] rounded-full bg-white text-brand border-[4px] border-brand flex items-center justify-center shadow-md animate-pulse">
-                                        <i data-lucide="{{ $index === 0 ? 'clock' : ($index === 1 ? 'loader-2' : 'check-circle-2') }}" class="w-[24px] h-[24px] {{ $index === 1 ? 'animate-spin' : '' }}"></i>
+                                    <!-- Current Active Step -->
+                                    <div class="w-[44px] h-[44px] rounded-full bg-white text-brand border-[3px] border-brand flex items-center justify-center shadow-md animate-pulse">
+                                        <i data-lucide="{{ $index === 0 ? 'clock' : ($index === 1 ? 'loader-2' : 'check-circle-2') }}" class="w-[20px] h-[20px] {{ $index === 1 ? 'animate-spin' : '' }}"></i>
                                     </div>
-                                    <span class="text-[12px] font-bold text-brand absolute -bottom-[24px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[11px] font-black text-brand absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
                                 @else
                                     <!-- Future Step -->
-                                    <div class="w-[48px] h-[48px] rounded-full bg-neutral-primary-soft text-neutral-tertiary-strong border-[4px] border-white flex items-center justify-center shadow-sm">
-                                        <span class="font-bold text-[16px]">{{ $index + 1 }}</span>
+                                    <div class="w-[44px] h-[44px] rounded-full bg-neutral-primary-medium text-neutral-tertiary-medium border-[3px] border-white flex items-center justify-center shadow-2xs">
+                                        <span class="font-extrabold text-[14px]">{{ $index + 1 }}</span>
                                     </div>
-                                    <span class="text-[12px] font-bold text-fg-body-subtle absolute -bottom-[24px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[11px] font-extrabold text-fg-disabled absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
                                 @endif
                             </div>
                         @endforeach
