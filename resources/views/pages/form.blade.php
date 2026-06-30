@@ -6,7 +6,7 @@
     <!-- Background abstract patterns -->
     <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     
-    <div class="flex-1 pb-[80px] container-standard relative z-10 max-w-[800px] mx-auto w-full">
+    <div class="flex-1 pb-[80px] container-standard relative z-10 max-w-[1000px] mx-auto w-full">
         <div class="mt-[20px]">
             <!-- Header -->
             <div class="text-center mb-[40px] animate-fade-up">
@@ -40,10 +40,10 @@
             </div>
 
             <!-- Multi-Step Form Card -->
-            <div x-show="!success" x-transition class="bg-white rounded-base shadow-md border-3 border-border-default overflow-hidden animate-fade-up">
+            <div x-show="!success" x-transition class="animate-fade-up space-y-[24px]">
                 
                 <!-- Stepper Header -->
-                <div class="bg-neutral-primary-medium border-b-3 border-border-default px-[24px] sm:px-[40px] py-[32px] relative">
+                <div class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs px-[24px] sm:px-[40px] py-[32px] relative">
                     <!-- Dynamic Mascot Dialog Bubble -->
                     <div class="flex items-center gap-4 mb-[20px] bg-white border-2 border-border-default rounded-base p-3.5 shadow-2xs">
                         <div class="shrink-0 bg-brand rounded-full w-12 h-12 flex items-center justify-center">
@@ -113,10 +113,10 @@
                     </div>
                 </div>
 
-                <form @submit.prevent="submit" class="p-[24px] sm:p-[40px]" novalidate>
+                <form @submit.prevent="submit" class="space-y-[24px]" novalidate>
                     
                     <!-- STEP 1: Identitas Pemohon & Anggota Penelitian -->
-                    <div x-show="step === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                    <div x-show="step === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px] space-y-[24px]">
                         <!-- Identitas Pemohon -->
                         <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
                             <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
@@ -260,136 +260,130 @@
                     </div>
 
                     <!-- STEP 2: Riset & Akademik -->
-                    <div x-show="step === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
-                        <!-- Informasi Akademik -->
-                        <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
-                            <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
-                                <i data-lucide="building-2" class="w-[16px] h-[16px] text-brand"></i>
-                            </div>
-                            Informasi Akademik
-                        </h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px] mb-[40px]">
-                            <!-- Universitas -->
-                            <div class="md:col-span-2">
-                                <label class="input-label">Universitas / Instansi <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.university" @input="clearError('university')" placeholder="Nama Universitas / Instansi Lengkap" 
-                                       class="input-standard"
-                                       :class="errors.university ? '!border-border-danger focus:!ring-danger' : ''">
-                                <p x-show="errors.university" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.university"></p>
-                            </div>
-
-                            <!-- Fakultas -->
-                            <div>
-                                <label class="input-label">Fakultas <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.faculty" @input="clearError('faculty')" placeholder="Nama Fakultas" 
-                                       class="input-standard"
-                                       :class="errors.faculty ? '!border-border-danger focus:!ring-danger' : ''">
-                                <p x-show="errors.faculty" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.faculty"></p>
-                            </div>
-
-                            <!-- Program Studi -->
-                            <div>
-                                <label class="input-label">Program Studi <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.study_program" @input="clearError('study_program')" placeholder="Nama Program Studi" 
-                                       class="input-standard"
-                                       :class="errors.study_program ? '!border-border-danger focus:!ring-danger' : ''">
-                                <p x-show="errors.study_program" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.study_program"></p>
-                            </div>
-                        </div>
-
-                        <!-- Tujuan Surat & Lokasi -->
-                        <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
-                            <div class="w-[32px] h-[32px] bg-brand-alt-soft rounded-[10px] flex items-center justify-center border border-brand-alt-subtle">
-                                <i data-lucide="map-pin" class="w-[16px] h-[16px] text-brand-alt-strong"></i>
-                            </div>
-                            Tujuan Surat & Lokasi
-                        </h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px] mb-[40px]">
-                            <!-- Jabatan Tujuan Surat -->
-                            <div>
-                                <label class="input-label">Jabatan Tujuan Surat <span class="text-fg-danger">*</span></label>
-                                <select x-model="form.recipient_position" @change="clearError('recipient_position')" class="input-standard" :class="errors.recipient_position ? '!border-border-danger' : ''">
-                                    <option value="" disabled selected>Pilih Jabatan...</option>
-                                    <option value="Rektor">Rektor</option>
-                                    <option value="Dekan">Dekan</option>
-                                    <option value="Ketua Program Studi">Ketua Program Studi</option>
-                                    <option value="Direktur Program Pascasarjana">Direktur Program Pascasarjana</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                                <p x-show="errors.recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.recipient_position"></p>
-                            </div>
-
-                            <!-- Kota Tujuan -->
-                            <div>
-                                <label class="input-label">Kota Tujuan Surat <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.destination_city" @input="clearError('destination_city')" placeholder="Contoh: Bandar Lampung" 
-                                       class="input-standard" :class="errors.destination_city ? '!border-border-danger' : ''">
-                                <p x-show="errors.destination_city" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.destination_city"></p>
-                            </div>
-
-                            <!-- Custom Jabatan (Shown when "Lainnya" is selected) -->
-                            <div class="md:col-span-2" x-show="form.recipient_position === 'Lainnya'" x-transition x-cloak>
-                                <label class="input-label">Masukkan Jabatan <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.custom_recipient_position" @input="clearError('custom_recipient_position')" placeholder="Contoh: Kepala Program Magister Hukum" 
-                                       class="input-standard" :class="errors.custom_recipient_position ? '!border-border-danger' : ''">
-                                <p x-show="errors.custom_recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_recipient_position"></p>
-                            </div>
-                        </div>
-
-                        <!-- Surat Pengantar Kampus -->
-                        <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
-                            <div class="w-[32px] h-[32px] bg-brand-alt-soft rounded-[10px] flex items-center justify-center border border-brand-alt-subtle">
-                                <i data-lucide="file-check-2" class="w-[16px] h-[16px] text-brand-alt-strong"></i>
-                            </div>
-                            Surat Pengantar Kampus
-                        </h2>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px] mb-[40px]">
-                            <!-- Nomor Surat Pengantar -->
-                            <div>
-                                <label class="input-label">Nomor Surat Pengantar Kampus <span class="text-fg-danger">*</span></label>
-                                <input type="text" x-model="form.reference_letter_number" @input="clearError('reference_letter_number')" placeholder="Contoh: 68/021003/PL/VI/2026" 
-                                       class="input-standard" :class="errors.reference_letter_number ? '!border-border-danger' : ''">
-                                <p x-show="errors.reference_letter_number" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.reference_letter_number"></p>
-                            </div>
-
-                            <!-- Tanggal Surat Pengantar -->
-                            <div>
-                                <label class="input-label">Tanggal Surat Pengantar <span class="text-fg-danger">*</span></label>
-                                <input type="date" x-model="form.reference_letter_date" @change="clearError('reference_letter_date')" 
-                                       class="input-standard" :class="errors.reference_letter_date ? '!border-border-danger' : ''">
-                                <p x-show="errors.reference_letter_date" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.reference_letter_date"></p>
-                            </div>
-                        </div>
-
-                        <!-- Informasi Penelitian -->
-                        <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
-                            <div class="w-[32px] h-[32px] bg-brand-alt-soft rounded-[10px] flex items-center justify-center border border-brand-alt-subtle">
-                                <i data-lucide="file-text" class="w-[16px] h-[16px] text-brand-alt-strong"></i>
-                            </div>
-                            Informasi Penelitian
-                        </h2>
-
-                        <div class="space-y-[24px]">
-                            <!-- Judul Penelitian -->
-                            <div>
-                                <label class="input-label">Judul Penelitian <span class="text-fg-danger">*</span></label>
-                                <textarea rows="2" x-model="form.research_title" @input="clearError('research_title')" placeholder="Masukkan judul penelitian sesuai proposal..." 
-                                          class="input-standard resize-none" :class="errors.research_title ? '!border-border-danger' : ''"></textarea>
-                                <p x-show="errors.research_title" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_title"></p>
-                            </div>
-
-                            <!-- Tujuan Penelitian -->
-                            <div>
-                                <label class="input-label">Tujuan Penelitian <span class="text-fg-danger">*</span></label>
-                                <textarea rows="2" x-model="form.purpose" @input="clearError('purpose')" placeholder="Jelaskan tujuan utama penelitian dilakukan di instansi ini..." 
-                                          class="input-standard resize-none" :class="errors.purpose ? '!border-border-danger' : ''"></textarea>
-                                <p x-show="errors.purpose" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.purpose"></p>
-                            </div>
+                    <div x-show="step === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak class="space-y-[24px]">
+                        <!-- Card 1: Informasi Akademik -->
+                        <div class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px]">
+                            <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
+                                <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
+                                    <i data-lucide="building-2" class="w-[16px] h-[16px] text-brand"></i>
+                                </div>
+                                Informasi Akademik
+                            </h2>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
+                                <!-- Universitas -->
+                                <div class="md:col-span-2">
+                                    <label class="input-label">Universitas / Instansi <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.university" @input="clearError('university')" placeholder="Masukkan nama universitas atau instansi secara lengkap" 
+                                           class="input-standard"
+                                           :class="errors.university ? '!border-border-danger focus:!ring-danger' : ''">
+                                    <p x-show="errors.university" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.university"></p>
+                                </div>
+
+                                <!-- Fakultas -->
+                                <div>
+                                    <label class="input-label">Fakultas <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.faculty" @input="clearError('faculty')" placeholder="Contoh: Hukum" 
+                                           class="input-standard"
+                                           :class="errors.faculty ? '!border-border-danger focus:!ring-danger' : ''">
+                                    <p x-show="errors.faculty" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.faculty"></p>
+                                </div>
+
+                                <!-- Program Studi -->
+                                <div>
+                                    <label class="input-label">Program Studi <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.study_program" @input="clearError('study_program')" placeholder="Contoh: S1 Ilmu Hukum" 
+                                           class="input-standard"
+                                           :class="errors.study_program ? '!border-border-danger focus:!ring-danger' : ''">
+                                    <p x-show="errors.study_program" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.study_program"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Surat Pengantar Kampus -->
+                        <div class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px]">
+                            <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
+                                <div class="w-[32px] h-[32px] bg-brand-alt-soft rounded-[10px] flex items-center justify-center border border-brand-alt-subtle">
+                                    <i data-lucide="file-check-2" class="w-[16px] h-[16px] text-brand-alt-strong"></i>
+                                </div>
+                                Surat Pengantar Kampus
+                            </h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
+                                <!-- Jabatan Tujuan Surat -->
+                                <div class="md:col-span-2">
+                                    <label class="input-label">Jabatan Tujuan Surat <span class="text-fg-danger">*</span></label>
+                                    <select x-model="form.recipient_position" @change="clearError('recipient_position')" class="input-standard" :class="errors.recipient_position ? '!border-border-danger' : ''">
+                                        <option value="" disabled selected>Pilih Jabatan...</option>
+                                        <option value="Rektor">Rektor</option>
+                                        <option value="Dekan">Dekan</option>
+                                        <option value="Ketua Program Studi">Ketua Program Studi</option>
+                                        <option value="Direktur Program Pascasarjana">Direktur Program Pascasarjana</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                    <p x-show="errors.recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.recipient_position"></p>
+                                </div>
+
+                                <!-- Custom Jabatan (Shown when "Lainnya" is selected) -->
+                                <div class="md:col-span-2" x-show="form.recipient_position === 'Lainnya'" x-transition x-cloak>
+                                    <label class="input-label">Masukkan Jabatan <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.custom_recipient_position" @input="clearError('custom_recipient_position')" placeholder="Contoh: Kepala Program Magister Hukum" 
+                                           class="input-standard" :class="errors.custom_recipient_position ? '!border-border-danger' : ''">
+                                    <p x-show="errors.custom_recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_recipient_position"></p>
+                                </div>
+
+                                <!-- Kota Tujuan Surat -->
+                                <div class="md:col-span-2">
+                                    <label class="input-label">Kota Tujuan Surat <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.destination_city" @input="clearError('destination_city')" placeholder="Contoh: Bandar Lampung" 
+                                           class="input-standard" :class="errors.destination_city ? '!border-border-danger' : ''">
+                                    <p x-show="errors.destination_city" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.destination_city"></p>
+                                </div>
+
+                                <!-- Nomor Surat Pengantar Kampus -->
+                                <div>
+                                    <label class="input-label">Nomor Surat Pengantar Kampus <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.reference_letter_number" @input="clearError('reference_letter_number')" placeholder="Contoh: 68/021003/PL/VI/2024" 
+                                           class="input-standard" :class="errors.reference_letter_number ? '!border-border-danger' : ''">
+                                    <p x-show="errors.reference_letter_number" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.reference_letter_number"></p>
+                                </div>
+
+                                <!-- Tanggal Surat Pengantar -->
+                                <div>
+                                    <label class="input-label">Tanggal Surat Pengantar <span class="text-fg-danger">*</span></label>
+                                    <input type="date" x-model="form.reference_letter_date" @change="clearError('reference_letter_date')" 
+                                           class="input-standard" :class="errors.reference_letter_date ? '!border-border-danger' : ''">
+                                    <p x-show="errors.reference_letter_date" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.reference_letter_date"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Informasi Penelitian -->
+                        <div class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px]">
+                            <h2 class="text-h4 text-fg-heading mb-[24px] pb-[16px] border-b border-border-default flex items-center gap-[12px]">
+                                <div class="w-[32px] h-[32px] bg-brand-alt-soft rounded-[10px] flex items-center justify-center border border-brand-alt-subtle">
+                                    <i data-lucide="file-text" class="w-[16px] h-[16px] text-brand-alt-strong"></i>
+                                </div>
+                                Informasi Penelitian
+                            </h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
+                                <!-- Judul Penelitian -->
+                                <div class="md:col-span-2">
+                                    <label class="input-label">Judul Penelitian <span class="text-fg-danger">*</span></label>
+                                    <textarea rows="2" x-model="form.research_title" @input="clearError('research_title')" placeholder="Masukkan judul penelitian sesuai dengan proposal yang diajukan" 
+                                              class="input-standard resize-none" :class="errors.research_title ? '!border-border-danger' : ''"></textarea>
+                                    <p x-show="errors.research_title" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_title"></p>
+                                </div>
+
+                                <!-- Tujuan Penelitian -->
+                                <div class="md:col-span-2">
+                                    <label class="input-label">Tujuan Penelitian <span class="text-fg-danger">*</span></label>
+                                    <textarea rows="2" x-model="form.purpose" @input="clearError('purpose')" placeholder="Jelaskan tujuan utama penelitian dilakukan di instansi ini secara ringkas dan jelas" 
+                                              class="input-standard resize-none" :class="errors.purpose ? '!border-border-danger' : ''"></textarea>
+                                    <p x-show="errors.purpose" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.purpose"></p>
+                                </div>
+
                                 <!-- Lokasi Penelitian -->
                                 <div>
                                     <label class="input-label">Lokasi Penelitian <span class="text-fg-danger">*</span></label>
@@ -431,32 +425,32 @@
                                            class="input-standard" :class="errors.custom_research_location ? '!border-border-danger' : ''">
                                     <p x-show="errors.custom_research_location" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_research_location"></p>
                                 </div>
-                            </div>
 
-                            <!-- Periode Estimasi Penelitian -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px] bg-neutral-primary-soft p-[24px] rounded-[16px] border border-border-default">
-                                <div class="md:col-span-2">
-                                    <h4 class="font-bold text-[14px] text-fg-heading mb-[4px]">Periode Penelitian</h4>
-                                    <p class="text-[13px] text-fg-body-subtle mb-[16px]">Tentukan estimasi waktu pelaksanaan riset.</p>
-                                </div>
-                                <div>
-                                    <label class="input-label">Tanggal Mulai <span class="text-fg-danger">*</span></label>
-                                    <input type="date" x-model="form.start_date" @change="clearError('start_date')" 
-                                           class="input-standard" :class="errors.start_date ? '!border-border-danger' : ''">
-                                    <p x-show="errors.start_date" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.start_date"></p>
-                                </div>
-                                <div>
-                                    <label class="input-label">Tanggal Selesai <span class="text-fg-danger">*</span></label>
-                                    <input type="date" x-model="form.end_date" @change="clearError('end_date')" 
-                                           class="input-standard" :class="errors.end_date ? '!border-border-danger' : ''">
-                                    <p x-show="errors.end_date" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.end_date"></p>
+                                <!-- Periode Estimasi Penelitian Box -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px] bg-neutral-primary-soft p-[24px] rounded-[16px] border border-border-default md:col-span-2">
+                                    <div class="md:col-span-2">
+                                        <h4 class="font-bold text-[14px] text-fg-heading mb-[4px]">Periode Penelitian</h4>
+                                        <p class="text-[13px] text-fg-body-subtle mb-[16px]">Tentukan estimasi waktu pelaksanaan riset.</p>
+                                    </div>
+                                    <div>
+                                        <label class="input-label">Tanggal Mulai <span class="text-fg-danger">*</span></label>
+                                        <input type="date" x-model="form.start_date" @change="clearError('start_date')" 
+                                               class="input-standard" :class="errors.start_date ? '!border-border-danger' : ''">
+                                        <p x-show="errors.start_date" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.start_date"></p>
+                                    </div>
+                                    <div>
+                                        <label class="input-label">Tanggal Selesai <span class="text-fg-danger">*</span></label>
+                                        <input type="date" x-model="form.end_date" @change="clearError('end_date')" 
+                                               class="input-standard" :class="errors.end_date ? '!border-border-danger' : ''">
+                                        <p x-show="errors.end_date" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.end_date"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- STEP 3: Dokumen Persyaratan -->
-                    <div x-show="step === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                    <div x-show="step === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px] space-y-[24px]">
                         <h2 class="text-h4 text-fg-heading mb-[8px] flex items-center gap-[12px]">
                             <div class="w-[32px] h-[32px] bg-warning-soft rounded-[10px] flex items-center justify-center border border-border-warning-subtle">
                                 <i data-lucide="upload" class="w-[16px] h-[16px] text-warning-strong"></i>
@@ -539,7 +533,7 @@
                     </div>
 
                     <!-- STEP 4: Ringkasan Sebelum Submit -->
-                    <div x-show="step === 4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak>
+                    <div x-show="step === 4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0" x-cloak class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs p-[24px] sm:p-[40px] space-y-[24px]">
                         <h2 class="text-h4 text-fg-heading mb-[8px] flex items-center gap-[12px]">
                             <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
                                 <i data-lucide="eye" class="w-[16px] h-[16px] text-brand"></i>
@@ -662,7 +656,7 @@
                     </div>
 
                     <!-- Navigation Buttons -->
-                    <div class="mt-[40px] pt-[24px] border-t border-border-default flex justify-between items-center">
+                    <div class="mt-[12px] flex justify-between items-center">
                         <button type="button" @click="prevStep()" x-show="step > 1" class="btn-secondary h-[48px] px-[24px] flex items-center gap-[8px]">
                             <i data-lucide="arrow-left" class="w-[18px] h-[18px]"></i>
                             Sebelumnya
@@ -718,6 +712,7 @@ function submissionForm() {
             recipient_position: '',
             custom_recipient_position: '',
             destination_city: '',
+            target_institution: '',
             reference_letter_number: '',
             reference_letter_date: '',
             research_title: '',
