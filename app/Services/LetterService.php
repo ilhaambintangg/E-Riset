@@ -39,6 +39,20 @@ class LetterService
     }
 
     /**
+     * Convert string to Title Case (format huruf kapital awal tiap kata).
+     * Tidak mengubah data asli di database, hanya untuk tampilan surat.
+     *
+     * @param string|null $str
+     * @return string
+     */
+    public static function toTitleCase(?string $str): string
+    {
+        if (empty($str)) return '';
+        // mb_convert_case handles multi-byte characters (Indonesian names)
+        return mb_convert_case(trim($str), MB_CASE_TITLE, 'UTF-8');
+    }
+
+    /**
      * Generate dynamic letter number.
      *
      * @param string $registrationNumber
@@ -205,20 +219,24 @@ class LetterService
         $templateProcessor->setValue('nomor_surat', $nomorSurat);
         $templateProcessor->setValue('tanggal_surat', $tanggalSurat);
         $templateProcessor->setValue('jabatan_tujuan', self::formatRecipientPosition($submission));
-        $templateProcessor->setValue('universitas', $submission->university ?? '-');
-        $templateProcessor->setValue('kota_tujuan', $submission->destination_city ?? '-');
+        // Universitas dan kota dalam Title Case sesuai format surat resmi
+        $templateProcessor->setValue('universitas', self::toTitleCase($submission->university) ?: '-');
+        $templateProcessor->setValue('kota_tujuan', self::toTitleCase($submission->destination_city) ?: '-');
         $templateProcessor->setValue('nomor_surat_pengantar', $submission->reference_letter_number ?? '-');
         $templateProcessor->setValue('tanggal_surat_pengantar', $tanggalSuratPengantar);
         
         if (!$isKelompokTemplate) {
-            $templateProcessor->setValue('nama', $submission->name);
+            // Nama pemohon dalam Title Case
+            $templateProcessor->setValue('nama', self::toTitleCase($submission->name));
             $templateProcessor->setValue('npm', $submission->nim ?? '-');
         }
 
         $templateProcessor->setValue('semester', $submission->semester ?? '-');
-        $templateProcessor->setValue('fakultas', $submission->faculty ?? '-');
-        $templateProcessor->setValue('program_studi', $submission->study_program ?? '-');
-        $templateProcessor->setValue('lokasi_penelitian', $submission->research_location ?? '-');
+        // Fakultas dan program studi dalam Title Case
+        $templateProcessor->setValue('fakultas', self::toTitleCase($submission->faculty) ?: '-');
+        $templateProcessor->setValue('program_studi', self::toTitleCase($submission->study_program) ?: '-');
+        // Lokasi penelitian dalam Title Case
+        $templateProcessor->setValue('lokasi_penelitian', self::toTitleCase($submission->research_location) ?: '-');
         $templateProcessor->setValue('judul_penelitian', $submission->research_title ?? '-');
         $templateProcessor->setValue('tujuan_penelitian', $submission->research_type ?? '-');
 
@@ -244,16 +262,16 @@ class LetterService
 
             $templateProcessor->cloneRow($cloneKey, $totalCount);
 
-            // Row 1: Ketua Kelompok (from main submission)
+            // Row 1: Ketua Kelompok (from main submission) — nama dalam Title Case
             $templateProcessor->setValue('no#1', 1);
-            $templateProcessor->setValue($cloneKey . '#1', $submission->name);
+            $templateProcessor->setValue($cloneKey . '#1', self::toTitleCase($submission->name));
             $templateProcessor->setValue($npmKey . '#1', $submission->nim ?? '-');
 
-            // Subsequent rows: Members
+            // Subsequent rows: Members — nama anggota dalam Title Case
             foreach ($members as $index => $member) {
                 $rowNumber = $index + 2;
                 $templateProcessor->setValue('no#' . $rowNumber, $rowNumber);
-                $templateProcessor->setValue($cloneKey . '#' . $rowNumber, $member->member_name);
+                $templateProcessor->setValue($cloneKey . '#' . $rowNumber, self::toTitleCase($member->member_name));
                 $templateProcessor->setValue($npmKey . '#' . $rowNumber, $member->member_npm);
             }
 
@@ -266,15 +284,16 @@ class LetterService
                 $location = trim($submission->research_location ?? '');
                 if (!empty($location)) {
                     if (stripos($location, 'Pengadilan Negeri') !== false) {
-                        $targetPn = "Ketua " . $location;
+                        $targetPn = "Ketua " . self::toTitleCase($location);
                     } elseif (stripos($location, 'PN ') === 0 || stripos($location, 'PN. ') === 0) {
                         $targetPn = "Ketua Pengadilan Negeri " . preg_replace('/^PN\.?\s+/i', '', $location);
                     }
                 }
                 $tembusanItems[] = $targetPn;
-                $tembusanItems[] = "Sdr. " . $submission->name;
+                // Nama pemohon dan anggota dalam Title Case di tembusan
+                $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
                 foreach ($members as $member) {
-                    $tembusanItems[] = "Sdr. " . $member->member_name;
+                    $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
                 }
                 $tembusanItems[] = "Arsip";
 
@@ -282,9 +301,10 @@ class LetterService
             } else {
                 // User's custom layout: replace 'tembusan_anggota' and 'arsip'
                 $tembusanItems = [];
-                $tembusanItems[] = "Sdr. " . $submission->name;
+                // Nama pemohon dan anggota dalam Title Case di tembusan
+                $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
                 foreach ($members as $member) {
-                    $tembusanItems[] = "Sdr. " . $member->member_name;
+                    $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
                 }
 
                 $templateProcessor->replaceXmlBlock('tembusan_anggota', self::formatTembusanXml($tembusanItems, 3), 'w:p');

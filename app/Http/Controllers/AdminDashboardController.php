@@ -92,10 +92,12 @@ class AdminDashboardController extends Controller
 
         $validated = $request->validate([
             'status' => ['required', 'string', 'in:Menunggu Verifikasi,Sedang Diproses,Disetujui,Ditolak'],
-            'notes' => ['nullable', 'string'],
+            'notes' => [$request->status === 'Ditolak' ? 'required' : 'nullable', 'string'],
             'panitera_id' => ['nullable', 'exists:panitera,id'], // Required if status is Sedang Diproses
             'letter_date' => ['nullable', 'date'], // Required if status is Sedang Diproses
             'permit_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // Required if status is Disetujui
+        ], [
+            'notes.required' => 'Catatan wajib diisi saat menolak permohonan.',
         ]);
 
         if ($validated['status'] === 'Sedang Diproses') {

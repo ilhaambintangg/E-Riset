@@ -407,15 +407,24 @@
                                 <!-- Jenis Penelitian -->
                                 <div>
                                     <label class="input-label">Jenis Penelitian <span class="text-fg-danger">*</span></label>
-                                    <select x-model="form.research_type" @change="clearError('research_type')" class="input-standard" :class="errors.research_type ? '!border-border-danger' : ''">
+                                    <select x-model="form.research_type" @change="clearError('research_type'); clearError('custom_research_type')" class="input-standard" :class="errors.research_type ? '!border-border-danger' : ''">
                                         <option value="" disabled selected>Pilih Jenis Penelitian...</option>
                                         <option value="Skripsi">Skripsi</option>
                                         <option value="Tesis">Tesis</option>
                                         <option value="Disertasi">Disertasi</option>
                                         <option value="Penelitian Akademik">Penelitian Akademik</option>
                                         <option value="Penelitian Lainnya">Penelitian Lainnya</option>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                     <p x-show="errors.research_type" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_type"></p>
+                                </div>
+
+                                <!-- Custom Jenis Penelitian (Shown when "Lainnya" is selected) -->
+                                <div class="md:col-span-2" x-show="form.research_type === 'Lainnya'" x-transition x-cloak>
+                                    <label class="input-label">Masukkan Jenis Penelitian <span class="text-fg-danger">*</span></label>
+                                    <input type="text" x-model="form.custom_research_type" @input="clearError('custom_research_type')" placeholder="Contoh: Laporan Magang, PKL, Tugas Akhir" 
+                                           class="input-standard" :class="errors.custom_research_type ? '!border-border-danger' : ''">
+                                    <p x-show="errors.custom_research_type" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_research_type"></p>
                                 </div>
 
                                 <!-- Custom Lokasi (Shown when "Lainnya" is selected) -->
@@ -599,7 +608,7 @@
                                     </div>
                                     <div>
                                         <span class="text-fg-body-subtle block text-[12px]">Jenis Penelitian</span> 
-                                        <strong class="text-fg-heading" x-text="form.research_type"></strong>
+                                        <strong class="text-fg-heading" x-text="form.research_type === 'Lainnya' ? form.custom_research_type : form.research_type"></strong>
                                     </div>
                                     <div>
                                         <span class="text-fg-body-subtle block text-[12px]">Estimasi Waktu Riset</span> 
@@ -720,6 +729,7 @@ function submissionForm() {
             research_location: '',
             custom_research_location: '',
             research_type: '',
+            custom_research_type: '', // Untuk opsi "Lainnya" pada Jenis Penelitian
             is_group: 'individu',
             members: [] // { name: '', npm: '' }
         },
@@ -886,6 +896,10 @@ function submissionForm() {
                     errs.custom_research_location = 'Lokasi custom wajib diisi.';
                 }
                 if (!f.research_type) errs.research_type = 'Jenis Penelitian wajib dipilih.';
+                // Jika "Lainnya" dipilih, wajib isi custom_research_type
+                if (f.research_type === 'Lainnya' && !f.custom_research_type.trim()) {
+                    errs.custom_research_type = 'Jenis Penelitian wajib diisi.';
+                }
                 if (!f.start_date) errs.start_date = 'Tanggal Mulai wajib diisi.';
                 if (!f.end_date) errs.end_date = 'Tanggal Selesai wajib diisi.';
             }
@@ -940,6 +954,11 @@ function submissionForm() {
                     fd.append('recipient_position', this.form.custom_recipient_position);
                 } else if (k === 'research_location' && this.form.research_location === 'Lainnya') {
                     fd.append('research_location', this.form.custom_research_location);
+                } else if (k === 'research_type' && this.form.research_type === 'Lainnya') {
+                    // Jika "Lainnya" dipilih, kirim nilai custom sebagai research_type
+                    fd.append('research_type', this.form.custom_research_type);
+                } else if (k === 'custom_research_type') {
+                    // Skip — sudah di-handle di atas bersama research_type
                 } else {
                     fd.append(k, this.form[k]);
                 }

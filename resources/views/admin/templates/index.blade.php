@@ -70,7 +70,7 @@
                                             <span class="badge-success ml-2 py-0.5">Aktif</span>
                                         @endif
                                     </p>
-                                    <p class="text-[10px] text-fg-body-subtle">Diunggah: {{ $t->created_at->format('d M Y, H:i') }}</p>
+                                    <p class="text-[10px] text-fg-body-subtle">Diunggah: {{ $t->created_at->translatedFormat('d M Y, H:i') }} WIB</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">

@@ -35,7 +35,7 @@
                 <tbody class="divide-y divide-border-default text-fg-body font-medium bg-white">
                     @forelse($announcements as $a)
                         <tr class="hover:bg-neutral-primary-soft transition-colors">
-                            <td class="px-6 py-4 whitespace-nowrap text-fg-body-subtle">{{ $a->created_at->format('d M Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-fg-body-subtle">{{ $a->created_at->translatedFormat('d M Y') }}</td>
                             <td class="px-6 py-4 font-bold text-fg-heading">{{ $a->title }}</td>
                             <td class="px-6 py-4 max-w-sm truncate text-fg-body-subtle" title="{{ $a->content }}">{{ $a->content }}</td>
                             <td class="px-6 py-4">

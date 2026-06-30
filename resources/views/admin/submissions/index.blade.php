@@ -59,7 +59,7 @@
                     <tr class="hover:bg-neutral-primary-soft transition-colors">
                         <td class="px-6 py-4">
                             <p class="font-mono font-bold text-fg-brand mb-1">{{ $sub->registration_number }}</p>
-                            <p class="text-xs text-fg-body-subtle">{{ $sub->created_at->format('d/m/Y H:i') }}</p>
+                            <p class="text-xs text-fg-body-subtle">{{ $sub->created_at->translatedFormat('d M Y, H:i') }} WIB</p>
                         </td>
                         <td class="px-6 py-4">
                             <p class="font-bold text-fg-heading">{{ $sub->name }}</p>

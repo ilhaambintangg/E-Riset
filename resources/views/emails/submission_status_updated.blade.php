@@ -11,7 +11,7 @@
     <ul>
         <li><strong>Status Terbaru:</strong> <span style="font-size: 16px; font-weight: bold; color: #d9534f;">{{ $submission->current_status }}</span></li>
         <li><strong>Catatan Admin:</strong> {{ $submission->admin_notes ?: '-' }}</li>
-        <li><strong>Tanggal Update:</strong> {{ now()->format('d/m/Y H:i') }}</li>
+        <li><strong>Tanggal Update:</strong> {{ now()->translatedFormat('d F Y, H:i') }} WIB</li>
     </ul>
 
     <p>Silakan login atau cek status pengajuan secara berkala melalui link berikut:</p>

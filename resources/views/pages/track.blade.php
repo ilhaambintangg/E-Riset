@@ -249,7 +249,7 @@ if (isset($submission)) {
                                             <div class="w-[calc(100%-32px)] md:w-[calc(50%-40px)] bg-neutral-primary-soft p-[16px] rounded-[12px] border border-border-default shadow-xs">
                                                 <div class="flex items-center justify-between mb-[4px]">
                                                     <p class="font-bold text-[14px] text-fg-heading">{{ $log->status }}</p>
-                                                    <span class="text-[11px] text-fg-body-subtle font-medium">{{ $log->created_at->translatedFormat('d M Y, H:i') }}</span>
+                                                    <span class="text-[11px] text-fg-body-subtle font-medium">{{ $log->created_at->translatedFormat('d M Y, H:i') }} WIB</span>
                                                 </div>
                                                 @if($log->notes)
                                                     <p class="text-[13px] text-fg-body mt-[8px] leading-[1.5]">{{ $log->notes }}</p>

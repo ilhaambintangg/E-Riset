@@ -75,7 +75,7 @@
                         <td class="px-6 py-4 font-mono font-bold text-fg-brand">{{ $sub->registration_number }}</td>
                         <td class="px-6 py-4">{{ $sub->name }}</td>
                         <td class="px-6 py-4">{{ $sub->university }}</td>
-                        <td class="px-6 py-4 text-fg-body-subtle">{{ $sub->created_at->format('d M Y') }}</td>
+                        <td class="px-6 py-4 text-fg-body-subtle">{{ $sub->created_at->translatedFormat('d M Y') }}</td>
                         <td class="px-6 py-4">
                             @php
                                 $badgeClass = match($sub->current_status) {

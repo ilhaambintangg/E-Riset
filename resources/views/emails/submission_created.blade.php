@@ -12,7 +12,7 @@
     <ul>
         <li><strong>Nomor Registrasi:</strong> {{ $submission->registration_number }}</li>
         <li><strong>Judul Penelitian:</strong> {{ $submission->title }}</li>
-        <li><strong>Tanggal Pengajuan:</strong> {{ $submission->created_at->format('d/m/Y') }}</li>
+        <li><strong>Tanggal Pengajuan:</strong> {{ $submission->created_at->translatedFormat('d F Y, H:i') }} WIB</li>
         <li><strong>Status Saat Ini:</strong> {{ $submission->current_status }}</li>
     </ul>
 

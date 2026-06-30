@@ -338,8 +338,12 @@
                     </div>
 
                     <div>
-                        <label class="input-label text-xs">Catatan Tambahan (Opsional)</label>
-                        <textarea name="notes" rows="3" placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
+                        <label class="input-label text-xs">
+                            Catatan Tambahan 
+                            <span x-show="status === 'Ditolak'" class="text-fg-danger font-bold">* (Wajib diisi jika menolak)</span>
+                            <span x-show="status !== 'Ditolak'">(Opsional)</span>
+                        </label>
+                        <textarea name="notes" rows="3" :required="status === 'Ditolak'" placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
                     </div>
 
                     <button type="submit" class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3.5 rounded-default shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-xs">
@@ -390,7 +394,7 @@
                                 <div>
                                     <div class="flex items-center justify-between">
                                         <p class="text-xs font-bold text-fg-heading">{{ $log->status }}</p>
-                                        <time class="text-[9px] font-bold text-fg-body-subtle">{{ $log->created_at->format('d/m H:i') }}</time>
+                                        <time class="text-[9px] font-bold text-fg-body-subtle">{{ $log->created_at->translatedFormat('d M Y, H:i') }} WIB</time>
                                     </div>
                                     @if($log->notes)
                                         <p class="text-xs text-fg-body-subtle mt-1 bg-neutral-primary-soft p-2.5 rounded-sm border border-border-default-subtle leading-relaxed">{{ $log->notes }}</p>
