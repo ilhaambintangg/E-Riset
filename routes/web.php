@@ -27,6 +27,10 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // Portal & Edvokat
+    Route::get('/portal', [\App\Http\Controllers\Admin\Portal\PortalController::class, 'index'])->name('admin.portal');
+    Route::get('/edvokat', [\App\Http\Controllers\Admin\Edvokat\EdvokatDashboardController::class, 'index'])->name('admin.edvokat');
+
     // Dashboard & Submissions
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/submissions', [AdminDashboardController::class, 'submissions'])->name('admin.submissions.index');
