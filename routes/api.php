@@ -22,4 +22,9 @@ Route::prefix('public')->group(function () {
 
     // Public Web Settings
     Route::get('settings', [\App\Http\Controllers\WebSettingController::class, 'index']);
+
+    // Live Chat
+    Route::post('livechat/start', [\App\Http\Controllers\PublicChatController::class, 'startSession']);
+    Route::get('livechat/messages', [\App\Http\Controllers\PublicChatController::class, 'getMessages']);
+    Route::post('livechat/send', [\App\Http\Controllers\PublicChatController::class, 'sendMessage']);
 });

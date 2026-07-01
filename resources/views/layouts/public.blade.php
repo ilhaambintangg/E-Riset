@@ -32,6 +32,8 @@
 
     @include('components.footer')
 
+    @include('components.chat-widget')
+
     <!-- Initialize Lucide Icons -->
     <script>
         lucide.createIcons();

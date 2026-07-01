@@ -31,6 +31,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/portal', [\App\Http\Controllers\Admin\Portal\PortalController::class, 'index'])->name('admin.portal');
     Route::get('/edvokat', [\App\Http\Controllers\Admin\Edvokat\EdvokatDashboardController::class, 'index'])->name('admin.edvokat');
 
+    // Live Chat Admin Panel
+    Route::get('/chats', [\App\Http\Controllers\Admin\Chats\AdminChatsController::class, 'index'])->name('admin.chats.index');
+    Route::get('/chats/sessions', [\App\Http\Controllers\Admin\Chats\AdminChatsController::class, 'getSessions'])->name('admin.chats.sessions');
+    Route::get('/chats/{id}/messages', [\App\Http\Controllers\Admin\Chats\AdminChatsController::class, 'getMessages'])->name('admin.chats.messages');
+    Route::post('/chats/{id}/reply', [\App\Http\Controllers\Admin\Chats\AdminChatsController::class, 'reply'])->name('admin.chats.reply');
+    Route::post('/chats/{id}/close', [\App\Http\Controllers\Admin\Chats\AdminChatsController::class, 'closeSession'])->name('admin.chats.close');
+
     // Dashboard & Submissions
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/submissions', [AdminDashboardController::class, 'submissions'])->name('admin.submissions.index');
@@ -62,3 +69,4 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('settings', [WebSettingController::class, 'index'])->name('admin.settings.index');
     Route::post('settings', [WebSettingController::class, 'update'])->name('admin.settings.update');
 });
+

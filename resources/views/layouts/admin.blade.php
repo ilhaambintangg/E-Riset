@@ -54,6 +54,7 @@
                     ['url' => route('admin.dashboard'), 'icon' => 'layout-dashboard', 'label' => 'Dashboard', 'active' => request()->routeIs('admin.dashboard')],
                     ['url' => route('admin.submissions.index'), 'icon' => 'inbox', 'label' => 'Permohonan Masuk', 'active' => request()->routeIs('admin.submissions.*')],
                     ['url' => route('admin.reports.index'), 'icon' => 'bar-chart-3', 'label' => 'Laporan', 'active' => request()->routeIs('admin.reports.*')],
+                    ['url' => route('admin.chats.index'), 'icon' => 'message-square', 'label' => 'Live Chat', 'active' => request()->routeIs('admin.chats.*')],
                     
                     ['is_divider' => true, 'label' => 'Master Data'],
                     

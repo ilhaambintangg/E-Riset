@@ -59,7 +59,7 @@
         <div class="text-center mb-12 max-w-2xl animate-fade-in">
             <h2 class="text-h4 text-fg-body-subtle font-medium m-0">Selamat Datang,</h2>
             <h1 class="text-h2 text-fg-heading font-black mt-1 mb-3 leading-tight tracking-tight">
-                {{ auth()->user()->name ?? 'Administrator' }}
+                {{ 'Administrator' }}
             </h1>
             <p class="text-sm text-fg-body-subtle font-medium">
                 Silakan pilih sistem aplikasi yang ingin Anda kelola di bawah ini.
@@ -99,7 +99,7 @@
                         <span class="text-3xl">⚖️</span>
                     </div>
                     <!-- Content -->
-                    <h3 class="text-h3 text-fg-heading font-extrabold m-0 tracking-tight">EDVOKAT</h3>
+                    <h3 class="text-h3 text-fg-heading font-extrabold m-0 tracking-tight">EVOKAT</h3>
                     <p class="text-xs text-brand-medium font-bold uppercase tracking-wider mt-1">Sistem Administrasi Advokat</p>
                     <p class="text-sm text-fg-body-subtle font-medium mt-4 leading-relaxed">
                         Kelola data advokat, pendaftaran, administrasi berkas, serta verifikasi keanggotaan advokat.
