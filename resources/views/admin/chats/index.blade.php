@@ -37,6 +37,16 @@
                         if (active) {
                             this.activeSession = active;
                         }
+                    } else {
+                        // Check if session_id query param exists to auto-select session
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const sessionId = parseInt(urlParams.get('session_id'));
+                        if (sessionId) {
+                            const session = this.sessions.find(s => s.id === sessionId);
+                            if (session) {
+                                this.selectSession(session);
+                            }
+                        }
                     }
                 }
             })

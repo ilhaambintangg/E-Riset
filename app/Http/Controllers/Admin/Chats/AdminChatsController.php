@@ -12,8 +12,16 @@ class AdminChatsController extends Controller
     /**
      * Display the Live Chat dashboard.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('session_id')) {
+            $sessionId = $request->input('session_id');
+            ChatMessage::where('chat_session_id', $sessionId)
+                ->where('sender', 'visitor')
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+        }
+
         return view('admin.chats.index');
     }
 

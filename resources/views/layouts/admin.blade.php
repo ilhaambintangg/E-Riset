@@ -140,16 +140,17 @@
 
             <!-- Right Side Actions: Notifications, Web View, Profile -->
             <div class="flex items-center gap-4">
-                <!-- Notification Bell Dropdown -->
-                <div class="relative" x-data="{ open: false }">
+                 <!-- Notification Bell Dropdown -->
+                <div class="relative" x-data="{ open: false, hasNew: {{ ($unreadSubmissions->count() + $unreadChatMessages->count()) > 0 ? 'true' : 'false' }} }">
+                    @php
+                        $totalNotifications = $unreadSubmissions->count() + $unreadChatMessages->count();
+                    @endphp
                     <button @click="open = !open" class="p-2.5 text-fg-body hover:text-brand hover:bg-neutral-primary-soft rounded-full transition-colors relative cursor-pointer">
                         <i data-lucide="bell" class="w-6 h-6"></i>
-                        @if($unreadSubmissions->count() > 0)
-                            <span class="absolute top-1 right-1 flex h-3 w-3">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
-                            </span>
-                        @endif
+                        <span x-show="hasNew" class="absolute top-1 right-1 flex h-3 w-3" x-cloak>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-danger opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-danger"></span>
+                        </span>
                     </button>
                     <!-- Dropdown menu -->
                     <div x-show="open" @click.away="open = false" 
@@ -163,24 +164,48 @@
                          x-cloak>
                         <div class="px-4 py-2 border-b border-border-default flex items-center justify-between">
                             <span class="font-bold text-sm text-fg-heading">Notifikasi</span>
-                            @if($unreadSubmissions->count() > 0)
-                                <span class="text-[10px] bg-brand-soft text-brand px-2 py-0.5 rounded-full font-bold">{{ $unreadSubmissions->count() }} Baru</span>
-                            @else
-                                <span class="text-[10px] bg-neutral-primary-strong text-fg-body-subtle px-2 py-0.5 rounded-full font-bold">0</span>
-                            @endif
+                            <span x-show="hasNew" class="text-[10px] bg-brand-soft text-brand px-2 py-0.5 rounded-full font-bold" x-cloak>{{ $totalNotifications }} Baru</span>
+                            <span x-show="!hasNew" class="text-[10px] bg-neutral-primary-strong text-fg-body-subtle px-2 py-0.5 rounded-full font-bold" x-cloak>0</span>
                         </div>
                         <div class="max-h-[250px] overflow-y-auto">
-                            @forelse($unreadSubmissions as $unread)
-                                <a href="{{ route('admin.submissions.show', $unread->id) }}" class="block px-4 py-3 hover:bg-neutral-primary-soft transition-colors border-b border-border-default-subtle last:border-0 cursor-pointer">
-                                    <p class="text-sm text-fg-body font-medium">Permohonan baru masuk: <span class="font-bold text-fg-heading">{{ $unread->name }}</span> ({{ $unread->university }})</p>
-                                    <span class="text-xs text-fg-body-subtle mt-1 block">{{ $unread->created_at->diffForHumans() }}</span>
+                            <!-- Unread Chat Messages -->
+                            @foreach($unreadChatMessages as $msg)
+                                <a href="{{ route('admin.chats.index') }}?session_id={{ $msg->chat_session_id }}" @click="hasNew = false" class="block px-4 py-3 hover:bg-neutral-primary-soft transition-colors border-b border-border-default-subtle last:border-0 cursor-pointer">
+                                    <div class="flex items-start gap-2.5">
+                                        <div class="p-1.5 bg-brand-soft text-brand rounded-full shrink-0">
+                                            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-sm text-fg-body font-medium leading-tight">Pesan baru dari <span class="font-bold text-fg-heading">{{ $msg->session->name ?: 'Pemohon' }}</span></p>
+                                            <p class="text-xs text-fg-body-subtle truncate mt-0.5">"{{ $msg->message }}"</p>
+                                            <span class="text-[10px] text-fg-body-subtle mt-1 block">{{ $msg->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
                                 </a>
-                            @empty
-                                <div class="px-4 py-6 text-center text-fg-body-subtle text-xs">
-                                    <i data-lucide="bell-off" class="w-8 h-8 text-neutral-tertiary mx-auto mb-2"></i>
-                                    Tidak ada notifikasi baru
+                            @endforeach
+
+                            <!-- Unread Submissions -->
+                            @foreach($unreadSubmissions as $unread)
+                                <a href="{{ route('admin.submissions.show', $unread->id) }}" @click="hasNew = false" class="block px-4 py-3 hover:bg-neutral-primary-soft transition-colors border-b border-border-default-subtle last:border-0 cursor-pointer">
+                                    <div class="flex items-start gap-2.5">
+                                        <div class="p-1.5 bg-brand-soft text-brand rounded-full shrink-0">
+                                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-sm text-fg-body font-medium leading-tight">Permohonan baru masuk: <span class="font-bold text-fg-heading">{{ $unread->name }}</span></p>
+                                            <p class="text-xs text-fg-body-subtle truncate mt-0.5">{{ $unread->university }}</p>
+                                            <span class="text-[10px] text-fg-body-subtle mt-1 block">{{ $unread->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+
+                            @if($totalNotifications === 0)
+                                <div class="px-4 py-6 text-center text-fg-body-subtle text-xs flex flex-col items-center justify-center">
+                                    <i data-lucide="bell-off" class="w-8 h-8 text-neutral-tertiary mb-2"></i>
+                                    <p>Tidak ada notifikasi baru</p>
                                 </div>
-                            @endforelse
+                            @endif
                         </div>
                     </div>
                 </div>
