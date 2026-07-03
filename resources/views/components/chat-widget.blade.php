@@ -8,8 +8,13 @@
     isActive: true,
     isRegistering: false,
     pollInterval: null,
+    isAdminOnline: false,
+    statusPollInterval: null,
     
     init() {
+        this.checkAdminStatus();
+        this.startStatusPolling();
+
         if (this.token) {
             this.fetchMessages();
             this.startPolling();
@@ -104,12 +109,31 @@
         }, 3000);
     },
     
+    checkAdminStatus() {
+        fetch('/api/public/livechat/status')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                this.isAdminOnline = data.admin_online;
+            }
+        })
+        .catch(err => console.error('Gagal mengambil status admin:', err));
+    },
+    
+    startStatusPolling() {
+        if (this.statusPollInterval) clearInterval(this.statusPollInterval);
+        this.statusPollInterval = setInterval(() => {
+            this.checkAdminStatus();
+        }, 30000);
+    },
+
     toggleChat() {
         this.isOpen = !this.isOpen;
         if (this.isOpen) {
             this.scrollBottom();
             this.fetchMessages();
             this.startPolling();
+            this.checkAdminStatus();
         } else {
             if (this.pollInterval) {
                 clearInterval(this.pollInterval);
@@ -139,6 +163,7 @@
                 clearInterval(this.pollInterval);
                 this.pollInterval = null;
             }
+            this.checkAdminStatus();
         }
     }
 }" class="relative">
@@ -147,8 +172,9 @@
     <button @click="toggleChat()" 
             class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-brand-alt to-amber-500 hover:from-brand-alt-strong hover:to-orange-600 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer group"
             title="Tanya Si Risi (Live Chat)">
-        <!-- Glowing Pulse -->
-        <span class="absolute inline-flex h-full w-full rounded-full bg-brand-alt opacity-75 animate-ping group-hover:hidden"></span>
+        <!-- Glowing Pulse (Only active when admin is online) -->
+        <span x-show="isAdminOnline" class="absolute inline-flex h-full w-full rounded-full bg-brand-alt opacity-75 animate-ping group-hover:hidden"></span>
+        
         <span class="relative">
             <!-- Chat Icon -->
             <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
@@ -159,6 +185,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </span>
+
+        <!-- Small Online/Offline Indicator Badge on floating button -->
+        <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white"
+              :class="isAdminOnline ? 'bg-success' : 'bg-[#9ca3af]'"></span>
     </button>
 
     <!-- Chat Panel Widget -->
@@ -182,8 +212,9 @@
                 <div>
                     <h3 class="text-sm font-bold m-0 tracking-tight leading-none text-white">Layanan Live Chat</h3>
                     <p class="text-[10px] text-brand-alt font-medium mt-1 uppercase tracking-wider flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-success rounded-full animate-pulse inline-block"></span>
-                        Admin Online
+                        <span class="w-1.5 h-1.5 rounded-full inline-block"
+                              :class="isAdminOnline ? 'bg-success animate-pulse' : 'bg-[#9ca3af]'"></span>
+                        <span x-text="isAdminOnline ? 'Admin Online' : 'Admin Offline'"></span>
                     </p>
                 </div>
             </div>

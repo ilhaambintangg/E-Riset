@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\ChatSession;
 use App\Models\ChatMessage;
+use App\Models\Admin;
 use Illuminate\Support\Str;
 
 class PublicChatController extends Controller
@@ -12,12 +15,9 @@ class PublicChatController extends Controller
     /**
      * Start a new chat session.
      */
-    public function startSession(Request $request)
+    public function startSession(\App\Http\Requests\API\LiveChat\StartSessionRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-        ]);
+        $validated = $request->validated();
 
         $token = Str::random(40);
 
@@ -72,13 +72,11 @@ class PublicChatController extends Controller
     /**
      * Send a message from the visitor.
      */
-    public function sendMessage(Request $request)
+    public function sendMessage(\App\Http\Requests\API\LiveChat\SendMessageRequest $request)
     {
         $token = $request->header('X-Chat-Token') ?? $request->input('token');
         
-        $validated = $request->validate([
-            'message' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         if (!$token) {
             return response()->json(['error' => 'Token required'], 400);
@@ -104,6 +102,21 @@ class PublicChatController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => $message
+        ]);
+    }
+
+    /**
+     * Check if any admin is online.
+     */
+    public function status()
+    {
+        $isAdminOnline = Admin::whereNotNull('last_seen_at')
+            ->where('last_seen_at', '>=', now()->subMinutes(5))
+            ->exists();
+
+        return response()->json([
+            'status' => 'success',
+            'admin_online' => $isAdminOnline
         ]);
     }
 }

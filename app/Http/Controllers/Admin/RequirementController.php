@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Requirement;
@@ -13,13 +15,9 @@ class RequirementController extends Controller
         return view('admin.requirements.index', compact('requirements'));
     }
 
-    public function store(Request $request)
+    public function store(\App\Http\Requests\Admin\Requirement\StoreRequirementRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'is_required' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         Requirement::create($validated);
         return back()->with('success', 'Persyaratan dokumen berhasil ditambahkan.');
@@ -31,15 +29,11 @@ class RequirementController extends Controller
         return response()->json($requirement);
     }
 
-    public function update(Request $request, $id)
+    public function update(\App\Http\Requests\Admin\Requirement\UpdateRequirementRequest $request, $id)
     {
         $requirement = Requirement::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'is_required' => 'boolean',
-        ]);
+        $validated = $request->validated();
 
         $requirement->update($validated);
         return back()->with('success', 'Persyaratan dokumen berhasil diperbarui.');

@@ -1,17 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicWebController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\RequirementController;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\AnnouncementController;
-use App\Http\Controllers\PaniteraController;
-use App\Http\Controllers\TemplateSuratController;
-use App\Http\Controllers\GeneratedLetterController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\WebSettingController;
+use App\Http\Controllers\Public\PublicWebController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\RequirementController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\PaniteraController;
+use App\Http\Controllers\Admin\TemplateSuratController;
+use App\Http\Controllers\Admin\GeneratedLetterController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\WebSettingController;
 
 // Public Blade Routes
 Route::get('/', [PublicWebController::class, 'landing']);
@@ -24,7 +24,7 @@ Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'login']);
 
 // Admin Routes Protected by Session Auth
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLastSeen::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Portal & Edvokat

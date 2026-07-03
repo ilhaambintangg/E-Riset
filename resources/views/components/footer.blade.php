@@ -61,16 +61,29 @@
                 </p>
 
                 <!-- Social Media -->
-                <div class="flex items-center gap-[12px] pt-[8px]">
-                    <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-full border-2 border-brand-medium flex items-center justify-center transition-all bg-brand-medium text-white hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-md" title="Instagram">
-                        <i data-lucide="instagram" class="w-[18px] h-[18px]"></i>
+                <div class="flex items-center gap-3 pt-2">
+
+                    <a href="https://instagram.com"
+                    target="_blank"
+                    class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
+                    title="Instagram">
+                        <i class="fa-brands fa-instagram text-lg"></i>
                     </a>
-                    <a href="https://facebook.com" target="_blank" class="w-10 h-10 rounded-full border-2 border-brand-medium flex items-center justify-center transition-all bg-brand-medium text-white hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-md" title="Facebook">
-                        <i data-lucide="facebook" class="w-[18px] h-[18px]"></i>
+
+                    <a href="https://facebook.com"
+                    target="_blank"
+                    class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
+                    title="Facebook">
+                        <i class="fa-brands fa-facebook-f text-lg"></i>
                     </a>
-                    <a href="https://youtube.com" target="_blank" class="w-10 h-10 rounded-full border-2 border-brand-medium flex items-center justify-center transition-all bg-brand-medium text-white hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-md" title="YouTube">
-                        <i data-lucide="youtube" class="w-[18px] h-[18px]"></i>
+
+                    <a href="https://youtube.com"
+                    target="_blank"
+                    class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
+                    title="YouTube">
+                        <i class="fa-brands fa-youtube text-lg"></i>
                     </a>
+
                 </div>
             </div>
 

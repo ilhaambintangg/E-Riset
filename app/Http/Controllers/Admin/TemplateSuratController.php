@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\TemplateSurat;
 use Illuminate\Http\Request;
@@ -14,12 +16,8 @@ class TemplateSuratController extends Controller
         return view('admin.templates.index', compact('templates'));
     }
 
-    public function store(Request $request)
+    public function store(\App\Http\Requests\Admin\TemplateSurat\StoreTemplateSuratRequest $request)
     {
-        $request->validate([
-            'template' => 'required|file|mimes:docx|max:5120',
-            'type' => 'required|string|in:individu,kelompok',
-        ]);
 
         if ($request->hasFile('template')) {
             $file = $request->file('template');

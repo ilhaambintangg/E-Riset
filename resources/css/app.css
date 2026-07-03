@@ -5,18 +5,16 @@
 @source '../../storage/framework/views/*.php';
 
 /* ==========================================================================
-   Design System Tokens (Warm-Organic & Bubbly Court Theme)
+   Design System Tokens (E-RISET Premium Modern Theme)
    ========================================================================== */
 :root {
-  /* Warm Backgrounds */
-  --color-neutral-primary-soft: #FFFDF6;
-  /* Warm Ivory Paper Background */
-  --color-neutral-primary: #FFFFFF;
-  /* Clean card */
-  --color-neutral-primary-medium: #FBF7EC;
-  /* Bubbly soft cream background */
-  --color-neutral-primary-strong: #F2ECDC;
-  /* Card borders & dividers */
+  /* Clean Backgrounds & Cards (Restored Original Colors) */
+  --color-neutral-primary-soft: #FFFDF6;   /* Warm Ivory Paper Background */
+  --color-neutral-primary: #FFFFFF;        /* Clean Card Background */
+  --color-neutral-primary-medium: #FBF7EC; /* Bubbly Soft Cream Backdrop */
+  --color-neutral-primary-strong: #F2ECDC; /* Card borders & dividers strong */
+
+  /* Borders & Dividers */
   --color-neutral-secondary-soft: #FFFFFF;
   --color-neutral-secondary: #FFFDF6;
   --color-neutral-secondary-medium: #F9F4E3;
@@ -27,21 +25,19 @@
   --color-neutral-quaternary: #A39673;
   --color-gray: #7F7457;
 
-  /* Court Brand Colors (Warm Deep Navy) */
+  /* Brand Colors (Restored Deep Royal Navy) */
   --color-brand-softer: #F0F4FC;
   --color-brand-soft: #D3E0F7;
-  --color-brand: #0A2240;
-  /* Deep Royal Navy */
-  --color-brand-medium: #143A66;
-  --color-brand-strong: #041021;
+  --color-brand: #0A2240;                 /* Deep Royal Navy */
+  --color-brand-medium: #143A66;          /* Navy Medium */
+  --color-brand-strong: #041021;          /* Navy Strong */
 
-  /* Bubbly Gold Highlights (Honey Gold) */
+  /* Alternative Highlights (Honey Gold/Coral Amber) */
   --color-brand-alt-soft: #FFF5E0;
-  --color-brand-alt: #F4A261;
-  /* Honey Coral Amber */
+  --color-brand-alt: #F4A261;             /* Honey Coral Gold */
   --color-brand-alt-strong: #E76F51;
 
-  /* Soft Playful Status Colors */
+  /* Status Colors (Restored Original Palette) */
   --color-success-soft: #E8F5E9;
   --color-success: #2E7D32;
   --color-success-medium: #81C784;
@@ -61,13 +57,11 @@
   --color-info: #00796B;
   --color-info-strong: #004D40;
 
-  /* Text Colors */
+  /* Text Colors (Restored Original Palette) */
   --text-white: #FFFFFF;
   --text-black: #0A121A;
   --text-heading: #0A2240;
-  /* Heading Deep Navy */
   --text-body: #333F4D;
-  /* Dark body */
   --text-body-subtle: #667585;
 
   --text-brand-subtle: #1E4E8C;
@@ -84,7 +78,7 @@
   --text-info-strong: #004D40;
   --text-disabled: #A3AAB2;
 
-  /* Playful Rounded Borders */
+  /* Rounded Corner & Borders */
   --border-default-subtle: #F9F4E3;
   --border-default: #EAE2CF;
   --border-default-medium: #D5CBAC;
@@ -102,8 +96,8 @@
 }
 
 @theme {
-  --font-sans: 'Quicksand', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-heading: 'Outfit', var(--font-sans);
+  --font-sans: 'Quicksand', 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Outfit', 'Quicksand', var(--font-sans);
 
   /* Map Background Colors */
   --color-neutral-primary-soft: var(--color-neutral-primary-soft);
@@ -182,20 +176,36 @@
   --color-border-info: var(--border-info);
   --color-border-info-subtle: var(--border-info-subtle);
 
-  /* Playful Bouncy Shadows */
-  --shadow-2xs: 0 2px 0 0 rgba(10, 34, 64, 0.05);
-  --shadow-xs: 0 4px 0 0 rgba(10, 34, 64, 0.08);
-  --shadow-sm: 0 6px 0 0 rgba(10, 34, 64, 0.1);
-  --shadow-md: 0 8px 0 0 rgba(10, 34, 64, 0.12), 0 10px 20px -5px rgba(10, 34, 64, 0.05);
-  --shadow-lg: 0 12px 0 0 rgba(10, 34, 64, 0.15), 0 16px 30px -10px rgba(10, 34, 64, 0.08);
-  --shadow-xl: 0 16px 0 0 rgba(10, 34, 64, 0.2), 0 24px 40px -12px rgba(10, 34, 64, 0.15);
+  /* Soft Shadows (Premium & Modern) */
+  --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  --shadow-xs: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 24px 48px -12px rgba(0, 0, 0, 0.08);
+  --shadow-premium: 0 12px 30px -4px rgba(67, 56, 202, 0.04), 0 4px 12px -2px rgba(67, 56, 202, 0.02);
+  --shadow-soft: 0 4px 20px -2px rgba(10, 34, 64, 0.03), 0 2px 8px -1px rgba(10, 34, 64, 0.02);
 
-  /* Bubbly Radius (Slightly irregular/organic style) */
-  --radius-sm: 12px;
-  --radius-default: 18px;
-  --radius-base: 24px;
-  --radius-lg: 32px;
+  /* Rounded Corner (Premium besar) */
+  --radius-sm: 8px;
+  --radius-default: 12px;
+  --radius-base: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
   --radius-full: 9999px;
+
+  /* Font sizes overrides to scale up all text elements */
+  --text-2xs: 13px;
+  --text-xs: 15px;
+  --text-sm: 17px;
+  --text-base: 19px;
+  --text-lg: 22px;
+  --text-xl: 26px;
+  --text-2xl: 32px;
+  --text-3xl: 38px;
+  --text-4xl: 46px;
+  --text-5xl: 54px;
 }
 
 @layer base {
@@ -203,6 +213,8 @@
     background-color: var(--color-neutral-primary-soft);
     color: var(--text-body);
     font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -220,31 +232,31 @@
   .font-heading {
     color: var(--text-heading);
     font-family: var(--font-heading);
-    font-weight: 800;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .text-h1 {
-    font-size: 38px;
-    line-height: 1.25;
+    font-size: 36px;
+    line-height: 1.2;
     margin-bottom: 24px;
   }
 
   @media (min-width: 768px) {
     .text-h1 {
-      font-size: 52px;
+      font-size: 48px;
     }
   }
 
   @media (min-width: 1024px) {
     .text-h1 {
-      font-size: 60px;
+      font-size: 56px;
     }
   }
 
   .text-h2 {
-    font-size: 32px;
-    line-height: 1.3;
+    font-size: 30px;
+    line-height: 1.25;
   }
 
   @media (min-width: 768px) {
@@ -261,7 +273,7 @@
 
   .text-h3 {
     font-size: 24px;
-    line-height: 1.35;
+    line-height: 1.3;
   }
 
   @media (min-width: 768px) {
@@ -278,115 +290,109 @@
 
   .text-h4 {
     font-size: 20px;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
   @media (min-width: 768px) {
     .text-h4 {
-      font-size: 26px;
+      font-size: 24px;
     }
   }
 
-  /* Bouncy Buttons (Spring Physics) */
+  /* Modern Rounded Full Buttons (Larger Scaling) */
   .btn-brand {
-    @apply bg-brand text-white font-bold border-2 border-brand transition-all duration-300 active:scale-95 rounded-default focus:outline-none focus:ring-4 focus:ring-brand-soft flex justify-center items-center gap-2 shadow-sm cursor-pointer;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-brand text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-brand/30 flex justify-center items-center gap-2.5 shadow-sm cursor-pointer border border-transparent;
   }
 
   .btn-brand:hover {
-    @apply bg-brand-medium border-brand-medium -translate-y-1 shadow-md;
+    @apply bg-brand-medium -translate-y-0.5 shadow-md;
   }
 
   .btn-secondary {
-    @apply bg-white text-fg-heading font-bold border-2 border-border-default transition-all duration-300 active:scale-95 rounded-default focus:outline-none focus:ring-4 focus:ring-neutral-tertiary flex justify-center items-center gap-2 shadow-2xs cursor-pointer;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-white text-fg-heading font-semibold border border-border-default transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-tertiary flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer;
   }
 
   .btn-secondary:hover {
-    @apply bg-neutral-primary-medium border-border-default-strong -translate-y-1 shadow-xs;
+    @apply bg-neutral-primary-medium border-border-default-strong -translate-y-0.5 shadow-xs;
   }
 
   .btn-danger {
-    @apply bg-danger text-white font-bold border-2 border-danger transition-all duration-300 active:scale-95 rounded-default focus:outline-none focus:ring-4 focus:ring-danger-soft flex justify-center items-center gap-2 shadow-2xs cursor-pointer;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-danger text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-danger-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-danger:hover {
-    @apply bg-danger-strong border-danger-strong -translate-y-1 shadow-xs;
+    @apply bg-danger-strong -translate-y-0.5 shadow-xs;
   }
 
   .btn-warning {
-    @apply bg-brand-alt text-white font-bold border-2 border-brand-alt transition-all duration-300 active:scale-95 rounded-default focus:outline-none focus:ring-4 focus:ring-brand-alt-soft flex justify-center items-center gap-2 shadow-2xs cursor-pointer;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-brand-alt text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-alt-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-warning:hover {
-    @apply bg-brand-alt-strong border-brand-alt-strong -translate-y-1 shadow-xs;
+    @apply bg-brand-alt-strong -translate-y-0.5 shadow-xs;
   }
 
   .btn-success {
-    @apply bg-success text-white font-bold border-2 border-success transition-all duration-300 active:scale-95 rounded-default focus:outline-none focus:ring-4 focus:ring-success-soft flex justify-center items-center gap-2 shadow-2xs cursor-pointer;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-success text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-success-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-success:hover {
-    @apply bg-success-strong border-success-strong -translate-y-1 shadow-xs;
+    @apply bg-success-strong -translate-y-0.5 shadow-xs;
   }
 
   .btn-base {
-    @apply text-[14px] px-[20px] py-[12px];
+    @apply text-[15px] px-[22px] py-[11px];
   }
 
   .btn-lg {
-    @apply text-[16px] px-[28px] py-[14px] rounded-base border-[3px];
+    @apply text-[18px] px-[28px] py-[14px];
   }
 
   .btn-sm {
-    @apply text-[12px] px-[16px] py-[8px];
+    @apply text-[13px] px-[18px] py-[8px];
   }
 
-  /* Bouncy Cards */
+  /* Premium Cards */
   .card-static {
-    @apply bg-white border-2 border-border-default rounded-base shadow-xs;
+    @apply bg-white border border-border-default rounded-xl shadow-premium;
   }
 
   .card-interactive {
-    @apply bg-white border-2 border-border-default rounded-base shadow-xs transition-all duration-300;
-    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    @apply bg-white border border-border-default rounded-xl shadow-premium transition-all duration-200;
   }
 
   .card-interactive:hover {
-    @apply border-brand -translate-y-2 shadow-md;
+    @apply border-brand/20 -translate-y-1 shadow-md;
   }
 
-  /* Bubbly Inputs */
+  /* Modern Inputs (Larger Scaling) */
   .input-standard {
-    @apply block w-full rounded-default border-2 border-border-default bg-white text-[15px] text-fg-heading px-[18px] py-[14px] transition-all duration-200 focus:outline-none focus:border-brand-alt focus:ring-4 focus:ring-brand-alt-soft;
+    @apply block w-full rounded-lg border border-border-default bg-white text-[15px] text-fg-heading px-[18px] py-[11px] transition-all duration-200 focus:outline-none focus:border-brand-alt focus:ring-2 focus:ring-brand-alt/25;
   }
 
   .input-label {
-    @apply block text-[14px] font-bold text-fg-heading mb-[6px] tracking-wide;
+    @apply block text-[14px] font-semibold text-fg-heading mb-[8px] tracking-wide;
   }
 
-  /* Status Badges */
+  /* Status Badges with Dots & Soft Backgrounds (Larger Scaling) */
   .badge-success {
-    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-success-soft text-fg-success-strong border-2 border-border-success;
+    @apply inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] font-semibold bg-success-soft text-fg-success border border-border-success-subtle;
   }
 
   .badge-warning {
-    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-warning-soft text-fg-warning-strong border-2 border-border-warning;
+    @apply inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] font-semibold bg-warning-soft text-fg-warning border border-border-warning-subtle;
   }
 
   .badge-danger {
-    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-danger-soft text-fg-danger-strong border-2 border-border-danger;
+    @apply inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] font-semibold bg-danger-soft text-fg-danger border border-border-danger-subtle;
   }
 
   .badge-info {
-    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-info-soft text-fg-info-strong border-2 border-border-info;
+    @apply inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] font-semibold bg-info-soft text-fg-info border border-border-info-subtle;
   }
 
   .badge-neutral {
-    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-neutral-tertiary-soft text-fg-body border-2 border-border-default;
+    @apply inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] font-semibold bg-neutral-primary-strong text-fg-body border border-border-default;
   }
 
   /* Containers & Spacing */
@@ -395,7 +401,7 @@
   }
 
   .container-standard {
-    @apply max-w-[1280px] mx-auto px-[24px] lg:px-[32px];
+    @apply max-w-[1400px] mx-auto px-[24px] lg:px-[32px];
   }
 }
 
@@ -403,68 +409,53 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom Playful Animations & Mascot Timers */
+/* Animations */
 @keyframes cuteFadeUp {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(20px);
   }
-
-  60% {
-    transform: translateY(-5px) scale(1.01);
-  }
-
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
 .animate-fade-up {
-  animation: cuteFadeUp 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: cuteFadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes cuteFadeIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
   }
-
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
 .animate-fade-in {
-  animation: cuteFadeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: cuteFadeIn 0.3s ease-out forwards;
 }
 
 /* Si Risi Owl Mascot Animations */
 @keyframes risiFloat {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
-
   50% {
-    transform: translateY(-15px) rotate(3deg);
+    transform: translateY(-10px) rotate(2deg);
   }
 }
 
 .animate-risi-float {
-  animation: risiFloat 5s ease-in-out infinite;
+  animation: risiFloat 4s ease-in-out infinite;
 }
 
 @keyframes risiBlink {
-
-  0%,
-  95%,
-  100% {
+  0%, 95%, 100% {
     transform: scaleY(1);
   }
-
   97% {
     transform: scaleY(0);
   }
@@ -475,14 +466,11 @@ html {
 }
 
 @keyframes wingWave {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(0deg);
   }
-
   50% {
-    transform: rotate(-8deg);
+    transform: rotate(-6deg);
   }
 }
 
@@ -492,14 +480,11 @@ html {
 }
 
 @keyframes wingWaveRight {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(0deg);
   }
-
   50% {
-    transform: rotate(8deg);
+    transform: rotate(6deg);
   }
 }
 
@@ -509,29 +494,25 @@ html {
 }
 
 @keyframes headBob {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(0deg) translateY(0);
   }
-
   33% {
-    transform: rotate(-3deg) translateY(1px);
+    transform: rotate(-2deg) translateY(1px);
   }
-
   66% {
-    transform: rotate(3deg) translateY(-1px);
+    transform: rotate(2deg) translateY(-1px);
   }
 }
 
 .animate-head-bob {
-  animation: headBob 6s ease-in-out infinite;
+  animation: headBob 5s ease-in-out infinite;
 }
 
 /* Playful Doodle Path Animations */
 .doodle-path {
   stroke-dasharray: 10;
-  animation: dash 20s linear infinite;
+  animation: dash 25s linear infinite;
 }
 
 @keyframes dash {
@@ -547,7 +528,7 @@ html {
 
 .step-item:not(:last-child)::after {
   content: '';
-  @apply absolute top-[24px] left-[50%] w-full h-[4px] bg-border-default -z-10 transition-colors duration-300;
+  @apply absolute top-[20px] left-[50%] w-full h-[3px] bg-border-default -z-10 transition-colors duration-300;
 }
 
 .step-item.active:not(:last-child)::after {
@@ -555,14 +536,35 @@ html {
 }
 
 .step-circle {
-  @apply w-[48px] h-[48px] rounded-full flex items-center justify-center font-bold text-[16px] bg-white border-[3px] border-border-default text-fg-body-subtle transition-all duration-300 shadow-2xs;
-  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  @apply w-[40px] h-[40px] rounded-full flex items-center justify-center font-bold text-[14px] bg-white border-2 border-border-default text-fg-body-subtle transition-all duration-300 shadow-2xs;
 }
 
 .step-item.active .step-circle {
-  @apply border-brand-alt bg-brand-alt text-white shadow-xs scale-110;
+  @apply border-brand-alt bg-brand-alt text-white shadow-xs scale-105;
 }
 
 .step-item.completed .step-circle {
   @apply border-brand bg-brand-soft text-fg-brand;
+}
+
+/* ==========================================================================
+   Arbitrary Tailwind Utility Overrides (Public & Admin Readable Scaling)
+   ========================================================================== */
+@layer utilities {
+  .text-\[9px\] { font-size: 12px !important; }
+  .text-\[10px\] { font-size: 13px !important; }
+  .text-\[11px\] { font-size: 14px !important; }
+  .text-\[12px\] { font-size: 15px !important; }
+  .text-\[13px\] { font-size: 16px !important; }
+  .text-\[14px\] { font-size: 17px !important; }
+  .text-\[15px\] { font-size: 18px !important; }
+  .text-\[16px\] { font-size: 19px !important; }
+  .text-\[17px\] { font-size: 20px !important; }
+  .text-\[18px\] { font-size: 22px !important; }
+  .text-\[19px\] { font-size: 23px !important; }
+  .text-\[22px\] { font-size: 26px !important; }
+  .text-\[28px\] { font-size: 32px !important; }
+  .text-\[32px\] { font-size: 36px !important; }
+  .text-\[38px\] { font-size: 42px !important; }
+  .text-\[44px\] { font-size: 48px !important; }
 }

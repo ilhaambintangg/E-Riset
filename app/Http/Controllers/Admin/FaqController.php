@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Faq;
@@ -13,12 +15,9 @@ class FaqController extends Controller
         return view('admin.faqs.index', compact('faqs'));
     }
 
-    public function store(Request $request)
+    public function store(\App\Http\Requests\Admin\Faq\StoreFaqRequest $request)
     {
-        $validated = $request->validate([
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         Faq::create($validated);
         return back()->with('success', 'FAQ berhasil ditambahkan.');
@@ -30,14 +29,11 @@ class FaqController extends Controller
         return response()->json($faq);
     }
 
-    public function update(Request $request, $id)
+    public function update(\App\Http\Requests\Admin\Faq\UpdateFaqRequest $request, $id)
     {
         $faq = Faq::findOrFail($id);
 
-        $validated = $request->validate([
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string',
-        ]);
+        $validated = $request->validated();
 
         $faq->update($validated);
         return back()->with('success', 'FAQ berhasil diperbarui.');

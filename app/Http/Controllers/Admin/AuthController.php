@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use App\Http\Requests\Admin\Auth\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -21,12 +25,9 @@ class AuthController extends Controller
     /**
      * Handle admin login.
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'username' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -43,6 +44,12 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            $admin = Auth::user();
+            $admin->last_seen_at = null;
+            $admin->saveQuietly();
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

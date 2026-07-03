@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\WebSetting;
@@ -28,23 +30,14 @@ class WebSettingController extends Controller
         return view('admin.settings.index', compact('setting'));
     }
 
-    public function update(Request $request)
+    public function update(\App\Http\Requests\Admin\WebSetting\UpdateWebSettingRequest $request)
     {
         $setting = WebSetting::first();
         if (!$setting) {
             $setting = new WebSetting();
         }
 
-        $validated = $request->validate([
-            'nama_instansi' => 'required|string|max:255',
-            'letter_code' => 'required|string|max:255',
-            'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string',
-            'email' => 'nullable|email',
-            'website' => 'nullable|string',
-            'google_maps' => 'nullable|string',
-            'link_terkait' => 'nullable|array'
-        ]);
+        $validated = $request->validated();
 
         $setting->fill($validated);
         $setting->save();

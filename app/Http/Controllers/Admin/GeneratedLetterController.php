@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\GeneratedLetter;
 use App\Models\Submission;
@@ -29,12 +31,8 @@ class GeneratedLetterController extends Controller
      * @param int $submissionId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function generate(Request $request, $submissionId)
+    public function generate(\App\Http\Requests\Admin\GeneratedLetter\GenerateLetterRequest $request, $submissionId)
     {
-        $request->validate([
-            'panitera_id' => 'required|exists:panitera,id',
-            'letter_date' => 'nullable|date',
-        ]);
 
         $submission = Submission::findOrFail($submissionId);
         if ($submission->current_status !== 'Disetujui') {

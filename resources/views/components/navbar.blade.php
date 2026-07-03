@@ -13,7 +13,6 @@
                 <div>
                     <span class="text-[20px] font-heading font-black text-fg-heading tracking-tight flex items-center">
                         E-RISET
-                        <span class="ml-1.5 px-2 py-0.5 bg-brand-alt-soft text-brand-alt-strong text-[10px] font-extrabold rounded-full border border-brand-alt/30 animate-pulse">v2.0</span>
                     </span>
                     <p class="text-[9px] text-brand font-bold uppercase tracking-widest hidden sm:block">PT Tanjungkarang</p>
                 </div>

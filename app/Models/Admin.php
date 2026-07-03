@@ -16,6 +16,7 @@ class Admin extends Authenticatable
         'email',
         'password',
         'api_token',
+        'last_seen_at',
     ];
 
     protected $hidden = [
@@ -26,5 +27,6 @@ class Admin extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'last_seen_at' => 'datetime',
     ];
 }

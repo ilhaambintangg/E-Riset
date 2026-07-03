@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicSubmissionController;
-use App\Http\Controllers\PermohonanController;
+use App\Http\Controllers\API\PublicSubmissionController;
+use App\Http\Controllers\API\PermohonanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +21,11 @@ Route::prefix('public')->group(function () {
     Route::post('permohonan', [PermohonanController::class, 'store']);
 
     // Public Web Settings
-    Route::get('settings', [\App\Http\Controllers\WebSettingController::class, 'index']);
+    Route::get('settings', [\App\Http\Controllers\Admin\WebSettingController::class, 'index']);
 
     // Live Chat
-    Route::post('livechat/start', [\App\Http\Controllers\PublicChatController::class, 'startSession']);
-    Route::get('livechat/messages', [\App\Http\Controllers\PublicChatController::class, 'getMessages']);
-    Route::post('livechat/send', [\App\Http\Controllers\PublicChatController::class, 'sendMessage']);
+    Route::get('livechat/status', [\App\Http\Controllers\API\PublicChatController::class, 'status']);
+    Route::post('livechat/start', [\App\Http\Controllers\API\PublicChatController::class, 'startSession']);
+    Route::get('livechat/messages', [\App\Http\Controllers\API\PublicChatController::class, 'getMessages']);
+    Route::post('livechat/send', [\App\Http\Controllers\API\PublicChatController::class, 'sendMessage']);
 });

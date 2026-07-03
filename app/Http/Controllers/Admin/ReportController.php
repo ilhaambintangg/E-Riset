@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Submission;
+use App\Repositories\SubmissionRepository;
 
 class ReportController extends Controller
 {
+    protected $submissionRepository;
+
+    public function __construct(SubmissionRepository $submissionRepository)
+    {
+        $this->submissionRepository = $submissionRepository;
+    }
+
     public function index(Request $request)
     {
         $year = $request->input('year', date('Y'));
         
         // Monthly stats for the selected year
-        $monthlyData = Submission::selectRaw('MONTH(created_at) as month, count(*) as count')
-            ->whereYear('created_at', $year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->keyBy('month');
+        $monthlyData = $this->submissionRepository->getMonthlyStats($year)->keyBy('month');
             
         $monthlyStats = [];
         for ($i = 1; $i <= 12; $i++) {
@@ -28,11 +31,7 @@ class ReportController extends Controller
         }
 
         // Status distribution for the selected year
-        $statusData = Submission::selectRaw('current_status, count(*) as count')
-            ->whereYear('created_at', $year)
-            ->groupBy('current_status')
-            ->get()
-            ->pluck('count', 'current_status');
+        $statusData = $this->submissionRepository->getStatusStats($year)->pluck('count', 'current_status');
             
         $statusStats = [
             'Menunggu Verifikasi' => $statusData->get('Menunggu Verifikasi', 0),
@@ -42,10 +41,7 @@ class ReportController extends Controller
         ];
 
         // List of available years
-        $availableYears = Submission::selectRaw('YEAR(created_at) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->pluck('year');
+        $availableYears = $this->submissionRepository->getAvailableYears();
 
         if ($availableYears->isEmpty()) {
             $availableYears = collect([date('Y')]);
@@ -60,10 +56,7 @@ class ReportController extends Controller
         $year = (int) $request->input('year', date('Y'));
         $format = $request->input('format', 'excel');
 
-        $submissions = Submission::whereMonth('created_at', $month)
-            ->whereYear('created_at', $year)
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $submissions = $this->submissionRepository->getSubmissionsByMonthAndYear($month, $year);
 
         $monthsIndo = [
             1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
@@ -146,7 +139,7 @@ class ReportController extends Controller
         ];
 
         for ($i = 1; $i <= 12; $i++) {
-            $subs = Submission::whereMonth('created_at', $i)->whereYear('created_at', $year)->get();
+            $subs = $this->submissionRepository->getSubmissionsByMonthAndYear($i, $year);
             $count = $subs->count();
             $approved = $subs->where('current_status', 'Disetujui')->count();
             $rejected = $subs->where('current_status', 'Ditolak')->count();

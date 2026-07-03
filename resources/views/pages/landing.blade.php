@@ -28,7 +28,7 @@
             </h1>
 
             <p class="text-lead text-fg-body mx-auto lg:mx-0 mb-[40px] opacity-95 max-w-[620px] font-medium">
-                Selamat datang di **E-RISET**. Kami membantu mempermudah pengajuan izin penelitian secara online, resmi, dan transparan bersama <span class="text-brand font-bold">Si Risi</span>, asisten pintar riset Anda!
+                Selamat datang di <span class="text-brand font-bold">E-Riset</span>. Kami membantu mempermudah pengajuan izin penelitian secara online, resmi, dan transparan bersama <span class="text-brand font-bold">Si Risi</span>, asisten pintar riset Anda!
             </p>
 
             <div class="flex flex-col sm:flex-row gap-[16px] justify-center lg:justify-start items-center">
