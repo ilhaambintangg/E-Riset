@@ -21,7 +21,7 @@ class StorePaniteraRequest extends FormRequest
     {
         return [
             'nama_panitera' => 'required|string|max:255',
-            'nip' => 'required|string|max:255|unique:panitera',
+            'nip' => 'nullable|string|max:255|unique:panitera',
             'jabatan' => 'required|string|max:255',
             'status_aktif' => 'boolean',
         ];

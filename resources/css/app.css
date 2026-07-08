@@ -186,26 +186,256 @@
   --shadow-premium: 0 12px 30px -4px rgba(67, 56, 202, 0.04), 0 4px 12px -2px rgba(67, 56, 202, 0.02);
   --shadow-soft: 0 4px 20px -2px rgba(10, 34, 64, 0.03), 0 2px 8px -1px rgba(10, 34, 64, 0.02);
 
-  /* Rounded Corner (Premium besar) */
-  --radius-sm: 8px;
-  --radius-default: 12px;
-  --radius-base: 16px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  /* Rounded Corner (Clean & Professional) */
+  --radius-sm: 4px;
+  --radius-default: 6px;
+  --radius-base: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
 
   /* Font sizes overrides to scale up all text elements */
-  --text-2xs: 13px;
-  --text-xs: 15px;
-  --text-sm: 17px;
-  --text-base: 19px;
-  --text-lg: 22px;
-  --text-xl: 26px;
-  --text-2xl: 32px;
-  --text-3xl: 38px;
-  --text-4xl: 46px;
-  --text-5xl: 54px;
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+}
+
+/* Admin Specific Font Scaling (Compact & Clean) & Professional Styles */
+.admin-theme {
+  /* Typography Overrides */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', var(--font-sans);
+
+  /* Font Scale (SaaS-friendly Hierarchy: H1 32px, H2 24px, H3 20px, Body 16px, Caption 14px) */
+  --text-2xs: 12px;
+  --text-xs: 13px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 28px;
+  --text-4xl: 32px;
+  --text-5xl: 40px;
+
+  /* Modern SaaS Color Palette */
+  --color-neutral-primary-soft: #F8FAFC;   /* Slate 50 background */
+  --color-neutral-primary: #FFFFFF;        /* Solid white cards */
+  --color-neutral-primary-medium: #F1F5F9; /* Slate 100 panels/footer */
+  --color-neutral-primary-strong: #E5E7EB; /* Slate 200 borders/dividers */
+
+  /* Borders & Dividers */
+  --border-default-subtle: #F1F5F9;
+  --border-default: #E5E7EB;
+  --border-default-medium: #D1D5DB;
+  --border-default-strong: #9CA3AF;
+  --color-neutral-secondary-soft: #FFFFFF;
+  --color-neutral-secondary: #F8FAFC;
+  --color-neutral-secondary-medium: #F1F5F9;
+  --color-neutral-secondary-strong: #E5E7EB;
+  --color-neutral-tertiary-soft: #F8FAFC;
+  --color-neutral-tertiary: #E5E7EB;
+  --color-neutral-tertiary-medium: #D1D5DB;
+  --color-neutral-quaternary: #9CA3AF;
+  --color-gray: #6B7280;
+
+  /* SaaS Rounded Corner (18px for cards, 12-14px for elements) */
+  --radius-sm: 8px;
+  --radius-default: 12px;
+  --radius-base: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 18px;
+  --radius-2xl: 18px;
+
+  /* Brand Colors (Navy & Honey Gold matched with Pemohon UI) */
+  --color-brand: #0A2240;
+  --color-brand-medium: #143A66;
+  --color-brand-strong: #041021;
+  --color-brand-soft: #D3E0F7;
+  --color-brand-softer: #F0F4FC;
+  --color-brand-alt: #F4A261;
+  --color-brand-alt-soft: #FFF5E0;
+  --color-brand-alt-strong: #E76F51;
+  --text-heading: #111827;
+  --text-body: #111827;
+  --text-body-subtle: #6B7280;
+  --color-success: #16A34A;
+  --color-success-soft: #F0FDF4;
+  --color-success-strong: #15803D;
+  --color-warning: #F59E0B;
+  --color-warning-soft: #FFFBEB;
+  --color-warning-strong: #B45309;
+  --color-danger: #DC2626;
+  --color-danger-soft: #FEF2F2;
+  --color-danger-strong: #B91C1C;
+
+  /* Force clean professional fonts on all nested elements */
+  font-family: var(--font-sans) !important;
+}
+
+.admin-theme h1,
+.admin-theme h2,
+.admin-theme h3,
+.admin-theme h4,
+.admin-theme h5,
+.admin-theme h6,
+.admin-theme .font-heading {
+  font-family: var(--font-heading) !important;
+  letter-spacing: -0.015em !important;
+}
+
+/* Button & input style overrides for modern SaaS style */
+.admin-theme .btn-brand {
+  background-color: #0F172A !important;
+  color: #FFFFFF !important;
+  border-radius: 14px !important;
+  font-weight: 500 !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+.admin-theme .btn-brand:hover {
+  background-color: #1E293B !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+
+.admin-theme .btn-secondary {
+  background-color: #FFFFFF !important;
+  color: #111827 !important;
+  border: 1px solid #E5E7EB !important;
+  border-radius: 14px !important;
+  font-weight: 500 !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+.admin-theme .btn-secondary:hover {
+  background-color: #F8FAFC !important;
+  border-color: #D1D5DB !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+}
+
+.admin-theme .btn-danger {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  border-radius: 14px !important;
+  font-weight: 500 !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+.admin-theme .btn-danger:hover {
+  background-color: #B91C1C !important;
+  transform: scale(1.02) !important;
+}
+
+.admin-theme .btn-sm {
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  border-radius: 10px !important;
+}
+.admin-theme .btn-lg {
+  padding: 12px 24px !important;
+  font-size: 15px !important;
+  border-radius: 14px !important;
+}
+
+.admin-theme .input-standard {
+  height: 50px !important;
+  border: 1px solid #E5E7EB !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  background-color: #FFFFFF !important;
+  transition: all 0.2s ease !important;
+}
+.admin-theme .input-standard:focus {
+  border-color: #0F172A !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1) !important;
+}
+
+.admin-theme .card-static {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  border-radius: 18px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+  padding: 24px !important;
+}
+.admin-theme .card-interactive {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  border-radius: 18px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+  padding: 24px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.admin-theme .card-interactive:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: #D1D5DB !important;
+}
+
+.admin-theme .badge-success,
+.admin-theme .badge-warning,
+.admin-theme .badge-danger,
+.admin-theme .badge-info,
+.admin-theme .badge-neutral {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  padding: 4px 10px !important;
+}
+
+/* Sidebar premium links hover & transitions */
+.admin-theme .sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748B;
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.admin-theme .sidebar-link:hover {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+.admin-theme .sidebar-link:hover i {
+  transform: translateX(2px) !important;
+  color: #0F172A !important;
+}
+.admin-theme .sidebar-link i {
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.admin-theme .sidebar-link.active {
+  background-color: #0F172A !important;
+  color: #FFFFFF !important;
+}
+.admin-theme .sidebar-link.active i {
+  color: #FFFFFF !important;
+}
+
+body.admin-theme {
+  font-size: 16px;
 }
 
 @layer base {
@@ -299,9 +529,9 @@
     }
   }
 
-  /* Modern Rounded Full Buttons (Larger Scaling) */
+  /* Modern Rounded Buttons (Clean & Professional) */
   .btn-brand {
-    @apply bg-brand text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-brand/30 flex justify-center items-center gap-2.5 shadow-sm cursor-pointer border border-transparent;
+    @apply bg-brand text-white font-semibold transition-all duration-200 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand/30 flex justify-center items-center gap-2.5 shadow-sm cursor-pointer border border-transparent;
   }
 
   .btn-brand:hover {
@@ -309,7 +539,7 @@
   }
 
   .btn-secondary {
-    @apply bg-white text-fg-heading font-semibold border border-border-default transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-tertiary flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer;
+    @apply bg-white text-fg-heading font-semibold border border-border-default transition-all duration-200 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-tertiary flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer;
   }
 
   .btn-secondary:hover {
@@ -317,7 +547,7 @@
   }
 
   .btn-danger {
-    @apply bg-danger text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-danger-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
+    @apply bg-danger text-white font-semibold transition-all duration-200 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-danger-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-danger:hover {
@@ -325,7 +555,7 @@
   }
 
   .btn-warning {
-    @apply bg-brand-alt text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-alt-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
+    @apply bg-brand-alt text-white font-semibold transition-all duration-200 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-alt-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-warning:hover {
@@ -333,7 +563,7 @@
   }
 
   .btn-success {
-    @apply bg-success text-white font-semibold transition-all duration-200 active:scale-95 rounded-full focus:outline-none focus:ring-2 focus:ring-success-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
+    @apply bg-success text-white font-semibold transition-all duration-200 active:scale-95 rounded-lg focus:outline-none focus:ring-2 focus:ring-success-soft flex justify-center items-center gap-2.5 shadow-2xs cursor-pointer border border-transparent;
   }
 
   .btn-success:hover {
@@ -547,24 +777,47 @@ html {
   @apply border-brand bg-brand-soft text-fg-brand;
 }
 
-/* ==========================================================================
-   Arbitrary Tailwind Utility Overrides (Public & Admin Readable Scaling)
-   ========================================================================== */
-@layer utilities {
-  .text-\[9px\] { font-size: 12px !important; }
-  .text-\[10px\] { font-size: 13px !important; }
-  .text-\[11px\] { font-size: 14px !important; }
-  .text-\[12px\] { font-size: 15px !important; }
-  .text-\[13px\] { font-size: 16px !important; }
-  .text-\[14px\] { font-size: 17px !important; }
-  .text-\[15px\] { font-size: 18px !important; }
-  .text-\[16px\] { font-size: 19px !important; }
-  .text-\[17px\] { font-size: 20px !important; }
-  .text-\[18px\] { font-size: 22px !important; }
-  .text-\[19px\] { font-size: 23px !important; }
-  .text-\[22px\] { font-size: 26px !important; }
-  .text-\[28px\] { font-size: 32px !important; }
-  .text-\[32px\] { font-size: 36px !important; }
-  .text-\[38px\] { font-size: 42px !important; }
-  .text-\[44px\] { font-size: 48px !important; }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Premium Admin Background Gradient with Dot Grid */
+.admin-bg-gradient {
+  background: 
+    linear-gradient(180deg, #0a2240 0%, #143a66 120px, #f8fafc 400px),
+    radial-gradient(rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
+  background-size: 100% 100%, 24px 24px;
+}
+
+/* Premium Public (Pemohon) Background - Aurora Mesh Gradient */
+.public-bg-gradient {
+  background-color: #f7f4ef;
+  background-image:
+    /* Navy bloom top-left */
+    radial-gradient(ellipse 80% 60% at 0% 0%,   rgba(10, 34, 64, 0.18)  0%, transparent 70%),
+    /* Honey Gold bloom top-right */
+    radial-gradient(ellipse 70% 55% at 100% 0%,  rgba(244, 162, 97, 0.22) 0%, transparent 65%),
+    /* Teal-navy bloom bottom-left */
+    radial-gradient(ellipse 60% 50% at 0% 100%,  rgba(20, 58, 102, 0.14)  0%, transparent 60%),
+    /* Warm amber glow bottom-right */
+    radial-gradient(ellipse 65% 55% at 100% 100%, rgba(231, 111, 81, 0.09)  0%, transparent 65%),
+    /* Soft centrepiece glow */
+    radial-gradient(ellipse 50% 40% at 50% 45%,  rgba(255, 255, 255, 0.60) 0%, transparent 100%),
+    /* Fine dot grid overlay */
+    radial-gradient(rgba(10, 34, 64, 0.045) 1.3px, transparent 1.3px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    26px 26px;
+}
+
+/* Overrides removed to allow standard Tailwind sizes */

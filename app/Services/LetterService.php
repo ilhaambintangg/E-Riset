@@ -126,8 +126,7 @@ class LetterService
             'judul_penelitian',
             'lokasi_penelitian',
             'nama_panitera',
-            'jabatan_panitera',
-            'nip_panitera'
+            'jabatan_panitera'
         ];
 
         if ($isKelompok) {
@@ -243,7 +242,7 @@ class LetterService
         // Replace Panitera Details
         $templateProcessor->setValue('nama_panitera', $panitera->nama_panitera);
         $templateProcessor->setValue('jabatan_panitera', $panitera->jabatan ?? 'Panitera');
-        $templateProcessor->setValue('nip_panitera', $panitera->nip);
+        $templateProcessor->setValue('nip_panitera', $panitera->nip ?? '');
 
         // Handle Group Submission (Kelompok) members list & tembusan list
         if ($isKelompokTemplate) {

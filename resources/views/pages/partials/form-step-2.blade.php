@@ -152,7 +152,6 @@
                     <option value="Tesis">Tesis</option>
                     <option value="Disertasi">Disertasi</option>
                     <option value="Penelitian Akademik">Penelitian Akademik</option>
-                    <option value="Penelitian Lainnya">Penelitian Lainnya</option>
                     <option value="Lainnya">Lainnya</option>
                 </select>
                 <p x-show="errors.research_type" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_type"></p>

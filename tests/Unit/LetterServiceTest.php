@@ -616,4 +616,91 @@ class LetterServiceTest extends TestCase
         // Clean up
         @unlink($tempPath);
     }
+
+    public function test_generate_letter_with_null_nip()
+    {
+        // 1. Create a Panitera with null NIP
+        $panitera = \App\Models\Panitera::create([
+            'nama_panitera' => 'Drs. H. M. Fauzan, S.H., M.H.',
+            'jabatan' => 'Panitera Pengadilan Tinggi',
+            'nip' => null
+        ]);
+
+        // 2. Create Submission
+        $submission = \App\Models\Submission::create([
+            'registration_number' => 'ERS-2026-999993',
+            'name' => 'John Doe',
+            'nim' => '12345',
+            'university' => 'Universitas Indonesia',
+            'faculty' => 'Fakultas Hukum',
+            'study_program' => 'Ilmu Hukum',
+            'email' => 'john@test.com',
+            'phone' => '08123456',
+            'address' => 'Jakarta',
+            'title' => 'Analisis Hukum A',
+            'target_institution' => 'PN Jakarta Pusat',
+            'purpose' => 'Skripsi',
+            'methodology' => 'Kualitatif',
+            'start_date' => '2026-06-25',
+            'end_date' => '2026-07-25',
+            'recipient_position' => 'Dekan',
+            'destination_city' => 'Jakarta',
+            'reference_letter_number' => 'REF-123',
+            'reference_letter_date' => '2026-06-20',
+            'research_title' => 'Analisis Hukum A',
+            'research_location' => 'Pengadilan Negeri Jakarta Pusat',
+            'research_type' => 'Skripsi',
+            'current_status' => 'Disetujui'
+        ]);
+
+        // 3. Create dummy template file
+        $tempDir = storage_path('app/public/templates');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+        $tempFile = 'test_temp_null_nip_' . time() . '.docx';
+        $tempPath = $tempDir . '/' . $tempFile;
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        $placeholders = [
+            'nomor_surat', 'tanggal_surat', 'jabatan_tujuan', 'universitas', 'kota_tujuan',
+            'nomor_surat_pengantar', 'tanggal_surat_pengantar', 'semester', 'fakultas',
+            'program_studi', 'lokasi_penelitian', 'judul_penelitian', 'tujuan_penelitian',
+            'nama_panitera', 'jabatan_panitera', 'nip_panitera', 'nama', 'npm'
+        ];
+        foreach ($placeholders as $p) {
+            $section->addText('${' . $p . '}');
+        }
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($tempPath);
+
+        $template = \App\Models\TemplateSurat::create([
+            'file_path' => 'templates/' . $tempFile,
+            'type' => 'individu',
+            'is_active' => true
+        ]);
+
+        // 4. Generate Letter
+        $letterService = new LetterService();
+        $generated = $letterService->generateLetter($submission, $panitera->id, '2026-06-25');
+
+        $this->assertNotNull($generated);
+        $outputPath = storage_path('app/public/' . $generated->file_path);
+        $this->assertFileExists($outputPath);
+
+        // 5. Verify NIP content
+        $zip = new \ZipArchive();
+        $this->assertTrue($zip->open($outputPath));
+        $xmlContent = $zip->getFromName('word/document.xml');
+        $zip->close();
+
+        // Verify that nip_panitera was replaced (placeholder is gone)
+        $this->assertStringNotContainsString('${nip_panitera}', $xmlContent);
+
+        // Clean up
+        @unlink($tempPath);
+        @unlink($outputPath);
+    }
 }

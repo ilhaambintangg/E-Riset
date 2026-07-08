@@ -26,7 +26,7 @@ class UpdatePaniteraRequest extends FormRequest
 
         return [
             'nama_panitera' => 'required|string|max:255',
-            'nip' => 'required|string|max:255|unique:panitera,nip,' . $paniteraId,
+            'nip' => 'nullable|string|max:255|unique:panitera,nip,' . $paniteraId,
             'jabatan' => 'required|string|max:255',
             'status_aktif' => 'boolean',
         ];

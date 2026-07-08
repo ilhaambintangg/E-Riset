@@ -39,7 +39,7 @@ if (isset($submission)) {
     <div class="container-standard max-w-[800px] relative z-10">
         <!-- Header -->
         <div class="text-center mb-[48px] animate-fade-up">
-            <div class="inline-flex items-center gap-[8px] bg-brand-softer border-2 border-brand/20 px-[18px] py-[8px] rounded-full mb-[16px] shadow-2xs">
+            <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
                 <i data-lucide="search" class="w-[16px] h-[16px] text-brand-alt"></i>
                 <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET LACAK</span>
             </div>
@@ -48,7 +48,7 @@ if (isset($submission)) {
         </div>
 
         <!-- Search Form & Detective Mascot -->
-        <div class="bg-white rounded-base shadow-md border-3 border-border-default p-[24px] sm:p-[40px] mb-[40px] animate-fade-up flex flex-col md:flex-row items-center gap-8 relative overflow-hidden" style="animation-delay: 0.1s;">
+        <div class="bg-white rounded-base shadow-md border-2 border-border-default p-[24px] sm:p-[40px] mb-[40px] animate-fade-up flex flex-col md:flex-row items-center gap-8 relative overflow-hidden" style="animation-delay: 0.1s;">
             <!-- Detective Mascot SVG -->
             <div class="shrink-0 bg-neutral-primary-medium border-2 border-border-default rounded-base p-4 flex flex-col items-center">
                 <svg class="w-[110px] h-[110px] animate-risi-float" viewBox="0 0 100 100" fill="none">
@@ -81,7 +81,7 @@ if (isset($submission)) {
                      <polygon points="50,35 45,42 55,42" fill="#E76F51" stroke="#0A2240" stroke-width="1.5"/>
                   </g>
                 </svg>
-                <span class="text-[11px] font-extrabold uppercase text-brand mt-2 bg-brand-softer border border-brand/20 px-2 py-0.5 rounded-full">Detektif Risi</span>
+                <span class="text-[11px] font-extrabold uppercase text-brand mt-2 bg-brand-softer border border-brand/20 px-2 py-0.5 rounded-lg">Detektif Risi</span>
             </div>
 
             <!-- Search Form inputs -->
@@ -110,7 +110,7 @@ if (isset($submission)) {
                     </button>
                 </div>
                 @if(isset($error))
-                    <div class="flex items-start gap-[12px] mt-[20px] bg-danger-soft border-2 border-danger rounded-[12px] px-[16px] py-[12px] text-danger-strong text-[13px] font-bold animate-fade-in shadow-2xs">
+                    <div class="flex items-start gap-[12px] mt-[20px] bg-danger-soft border-2 border-danger rounded-lg px-[16px] py-[12px] text-danger-strong text-[13px] font-bold animate-fade-in shadow-2xs">
                         <i data-lucide="alert-circle" class="w-[18px] h-[18px] mt-[1px] shrink-0 text-danger animate-bounce"></i>
                         <span>{{ $error }}</span>
                     </div>
@@ -120,15 +120,15 @@ if (isset($submission)) {
 
         <!-- Result Card -->
         @if(isset($submission))
-            <div class="bg-white rounded-base shadow-md border-3 border-border-default overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="bg-white rounded-base shadow-md border-2 border-border-default overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
                 <!-- Status Header -->
-                <div class="p-[28px] sm:p-[36px] border-b-3 border-border-default relative overflow-hidden bg-neutral-primary-medium">
+                <div class="p-[28px] sm:p-[36px] border-b-2 border-border-default relative overflow-hidden bg-neutral-primary-medium">
                     <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[20px]">
                         <div>
                             <p class="text-[11px] text-fg-body-subtle font-extrabold mb-[6px] uppercase tracking-widest">Nomor Registrasi Anda</p>
                             <p class="font-mono font-black text-[28px] sm:text-[32px] text-fg-heading tracking-tight leading-none">{{ $submission->registration_number }}</p>
                         </div>
-                        <div class="flex items-center gap-[10px] px-[20px] py-[10px] rounded-full border-2 font-black text-[15px] shadow-2xs {{ $cfg['color'] }}">
+                        <div class="flex items-center gap-[10px] px-[20px] py-[10px] rounded-lg border-2 font-black text-[15px] shadow-2xs {{ $cfg['color'] }}">
                             <div class="w-[10px] h-[10px] rounded-full {{ $cfg['dot'] }} animate-ping"></div>
                             {{ $submission->current_status }}
                         </div>

@@ -50,9 +50,17 @@ class AdminDashboardController extends Controller
             'search' => $request->query('search'),
         ];
 
-        $submissions = $this->submissionRepository->getSubmissionsPaginated($filters, 10);
+        $submissions = $this->submissionRepository->getSubmissionsPaginated($filters, 5);
         
-        return view('admin.submissions.index', compact('submissions'));
+        $stats = [
+            'total' => $this->submissionRepository->countAll(),
+            'pending' => $this->submissionRepository->countByStatus('Menunggu Verifikasi'),
+            'processing' => $this->submissionRepository->countByStatus('Sedang Diproses'),
+            'approved' => $this->submissionRepository->countByStatus('Disetujui'),
+            'rejected' => $this->submissionRepository->countByStatus('Ditolak'),
+        ];
+        
+        return view('admin.submissions.index', compact('submissions', 'stats'));
     }
 
     /**

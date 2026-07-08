@@ -10,7 +10,7 @@
         <div class="mt-[20px]">
             <!-- Header -->
             <div class="text-center mb-[40px] animate-fade-up">
-                <div class="inline-flex items-center gap-[8px] bg-brand-softer border-2 border-brand/20 px-[18px] py-[8px] rounded-full mb-[16px] shadow-2xs">
+                <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
                     <i data-lucide="scale" class="w-[16px] h-[16px] text-brand-alt"></i>
                     <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET FORMULIR</span>
                 </div>
@@ -29,8 +29,8 @@
             </div>
 
             <!-- Success State -->
-            <div x-show="success" x-transition x-cloak class="bg-white rounded-base shadow-lg border-[3px] border-brand p-[48px] text-center animate-fade-up">
-                <div class="w-[96px] h-[96px] bg-success-soft rounded-full flex items-center justify-center mx-auto mb-[32px] border-[4px] border-white shadow-md">
+            <div x-show="success" x-transition x-cloak class="bg-white rounded-base shadow-lg border-2 border-brand p-[48px] text-center animate-fade-up">
+                <div class="w-[96px] h-[96px] bg-success-soft rounded-full flex items-center justify-center mx-auto mb-[32px] border-2 border-white shadow-md">
                     <i data-lucide="check-circle-2" class="w-[48px] h-[48px] text-success-strong"></i>
                 </div>
                 <h2 class="font-heading font-black text-[32px] text-fg-heading mb-[16px]">Permohonan Terkirim!</h2>
@@ -43,9 +43,9 @@
             <div x-show="!success" x-transition class="animate-fade-up space-y-[24px]">
                 
                 <!-- Stepper Header -->
-                <div class="bg-white border-2 border-border-default rounded-[16px] shadow-2xs px-[24px] sm:px-[40px] py-[32px] relative">
+                <div class="bg-white border border-border-default rounded-xl shadow-2xs px-[24px] sm:px-[40px] py-[32px] relative">
                     <!-- Dynamic Mascot Dialog Bubble -->
-                    <div class="flex items-center gap-4 mb-[20px] bg-white border-2 border-border-default rounded-base p-3.5 shadow-2xs">
+                    <div class="flex items-center gap-4 mb-[20px] bg-white border border-border-default rounded-base p-3.5 shadow-2xs">
                         <div class="shrink-0 bg-brand rounded-full w-12 h-12 flex items-center justify-center">
                             <!-- Mini Owl Head SVG -->
                             <svg class="w-10 h-10 animate-head-bob" viewBox="0 0 100 100" fill="none">
@@ -66,7 +66,7 @@
                             </p>
                             <p class="text-[11px] text-fg-body-subtle font-bold uppercase tracking-wider" x-text="stepTitle()"></p>
                         </div>
-                        <span class="text-[14px] font-black text-brand bg-brand-softer border border-brand/20 px-3 py-1 rounded-full" x-text="'Langkah ' + step + ' / 4'"></span>
+                        <span class="text-[14px] font-black text-brand bg-brand-softer border border-brand/20 px-3 py-1 rounded-lg" x-text="'Langkah ' + step + ' / 4'"></span>
                     </div>
                     
                     <!-- Progress Bar -->
@@ -407,6 +407,11 @@ function submissionForm() {
             
             this.loading = true;
             this.errors = {};
+
+            // Buka tab survei LANGSUNG ke URL-nya secara sinkron (masih dalam user gesture klik submit),
+            // sehingga browser mengizinkannya tanpa popup blocker dan tanpa menampilkan tab kosong.
+            // Jika fetch gagal, tab akan ditutup otomatis.
+            const surveyTab = window.open('http://esurvey.badilum.mahkamahagung.go.id/pengadilan/400364', '_blank');
             
             const fd = new FormData();
             
@@ -446,9 +451,12 @@ function submissionForm() {
             .then(res => {
                 if (res.status >= 200 && res.status < 300) {
                     this.success = true;
-                    // Redirect to the success page!
+                    // Tab survei sudah terbuka langsung ke URL yang benar — tidak perlu redirect lagi
+                    // Redirect halaman utama ke halaman sukses
                     window.location.href = `/success/${res.body.registration_number}`;
                 } else {
+                    // Submit gagal — tutup tab survei yang sudah terbuka
+                    if (surveyTab) surveyTab.close();
                     if (res.body.errors) {
                         let mapped = {};
                         for (let k in res.body.errors) {
@@ -470,6 +478,8 @@ function submissionForm() {
                 }
             })
             .catch(err => {
+                // Error jaringan — tutup tab survei
+                if (surveyTab) surveyTab.close();
                 this.errors = { _global: 'Terjadi kesalahan jaringan. Silakan coba lagi.' };
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             })
