@@ -123,12 +123,6 @@
             <i data-lucide="help-circle" class="w-4 h-4"></i>
             <span class="flex-1">Kelola FAQ</span>
         </a>
-        <!-- Pengumuman -->
-        <a href="{{ route('announcements.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('announcements.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="megaphone" class="w-4 h-4"></i>
-            <span class="flex-1">Pengumuman</span>
-        </a>
 
         <!-- System Section -->
         <div class="pt-4 pb-1">

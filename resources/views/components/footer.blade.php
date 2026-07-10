@@ -63,25 +63,34 @@
                 <!-- Social Media -->
                 <div class="flex items-center gap-3 pt-2">
 
-                    <a href="https://instagram.com"
+                    <a href="https://www.instagram.com/pttanjungkarang/"
                     target="_blank"
                     class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
                     title="Instagram">
-                        <i class="fa-brands fa-instagram text-lg"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                        </svg>
                     </a>
 
-                    <a href="https://facebook.com"
+                    <a href="https://www.facebook.com/pt.tanjungkarang/"
                     target="_blank"
                     class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
                     title="Facebook">
-                        <i class="fa-brands fa-facebook-f text-lg"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
                     </a>
 
-                    <a href="https://youtube.com"
+                    <a href="https://www.youtube.com/@PTTanjungkarang"
                     target="_blank"
                     class="w-10 h-10 rounded-full bg-brand-medium border-2 border-brand-medium flex items-center justify-center text-white transition-all hover:bg-brand-alt hover:border-brand-alt hover:-translate-y-1 hover:shadow-lg"
                     title="YouTube">
-                        <i class="fa-brands fa-youtube text-lg"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17z"/>
+                            <polygon points="10 15 15 12 10 9"/>
+                        </svg>
                     </a>
 
                 </div>

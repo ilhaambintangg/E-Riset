@@ -10,7 +10,7 @@
     <title>Portal Admin - Pengadilan Tinggi Tanjungkarang</title>
     @vite(['resources/css/app.css'])
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         /* Extra hover glow effect */
         .hover-glow:hover {

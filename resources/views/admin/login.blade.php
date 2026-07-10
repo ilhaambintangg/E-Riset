@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - E-Riset PT Tanjungkarang</title>
     @vite(['resources/css/app.css'])
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body class="h-full font-sans text-fg-body bg-neutral-primary-soft antialiased flex items-center justify-center p-4 relative overflow-hidden">
 
