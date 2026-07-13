@@ -2,9 +2,9 @@
 
 @section('content')
 
-<div class="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col pt-20">
+<div class="min-h-screen bg-transparent relative overflow-hidden flex flex-col pt-20">
     <!-- Decorative Background Elements -->
-    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-amber-100/50 to-transparent z-0"></div>
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-brand-alt-soft/10 to-transparent z-0"></div>
     
     <div class="flex items-center justify-center flex-1 py-20 px-4 relative z-10">
         <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white p-10 max-w-lg w-full text-center animate-fade-in-up">
@@ -36,7 +36,7 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <a href="/" class="flex items-center justify-center gap-2 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:shadow-slate-900/30">
+                <a href="/" class="flex items-center justify-center gap-2 bg-gradient-to-r from-brand to-brand-medium hover:from-brand-medium hover:to-brand text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:shadow-brand-medium/30">
                     Kembali ke Beranda
                 </a>
                 <a href="/track?registration_number={{ $registration_number }}" class="flex items-center justify-center gap-2 bg-white text-slate-900 border border-slate-200 font-bold py-3.5 rounded-xl transition-all hover:bg-slate-50">

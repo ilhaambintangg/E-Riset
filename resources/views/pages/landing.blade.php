@@ -6,29 +6,29 @@
 <section id="tentang" class="relative section-padding overflow-hidden pt-[160px] pb-[100px]">
     <!-- Modern Playful Grid & Shapes -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-brand-alt-soft/60 rounded-full blur-[80px] animate-risi-float"></div>
-        <div class="absolute top-[30%] -left-[10%] w-[400px] h-[400px] bg-brand-soft/60 rounded-full blur-[80px] animate-risi-float" style="animation-delay: 2.5s;"></div>
+        <div class="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-brand-alt-soft/30 rounded-full blur-[80px] animate-risi-float"></div>
+        <div class="absolute top-[30%] -left-[10%] w-[400px] h-[400px] bg-brand-soft/20 rounded-full blur-[80px] animate-risi-float" style="animation-delay: 2.5s;"></div>
         <!-- Decorative grid -->
-        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(var(--color-brand) 1.5px, transparent 1.5px); background-size: 32px 32px;"></div>
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(rgba(255,255,255,0.4) 1.5px, transparent 1.5px); background-size: 32px 32px;"></div>
     </div>
 
     <div class="relative z-10 container-standard flex flex-col lg:flex-row items-center gap-[64px]">
         <!-- Text Content -->
         <div class="flex-1 text-center lg:text-left animate-fade-up">
-            <div class="inline-flex items-center gap-2 bg-brand-softer border-2 border-brand/20 rounded-full px-[18px] py-[8px] mb-[32px] shadow-2xs">
+            <div class="inline-flex items-center gap-2 bg-white/10 border-2 border-white/20 rounded-full px-[18px] py-[8px] mb-[32px] shadow-2xs">
                 <div class="w-[10px] h-[10px] bg-brand-alt rounded-full animate-ping"></div>
-                <span class="text-brand text-[12px] font-extrabold tracking-widest uppercase">{{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}</span>
+                <span class="text-white text-[12px] font-extrabold tracking-widest uppercase">{{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}</span>
             </div>
 
-            <h1 class="text-h1 text-fg-heading mx-auto lg:mx-0 max-w-[800px] font-black leading-tight">
+            <h1 class="text-h1 text-white mx-auto lg:mx-0 max-w-[800px] font-black leading-tight">
                 Layanan Izin Riset & <br class="hidden md:block" />
-                <span class="text-brand-alt decoration-brand decoration-wavy underline underline-offset-8">
+                <span class="text-brand-alt decoration-brand-alt decoration-wavy underline underline-offset-8">
                     Penelitian Elektronik
                 </span>
             </h1>
 
-            <p class="text-lead text-fg-body mx-auto lg:mx-0 mb-[40px] opacity-95 max-w-[620px] font-medium">
-                Selamat datang di <span class="text-brand font-bold">E-Riset</span>. Kami membantu mempermudah pengajuan izin penelitian secara online, resmi, dan transparan bersama <span class="text-brand font-bold">Si Risi</span>, asisten pintar riset Anda!
+            <p class="text-lead text-white/80 mx-auto lg:mx-0 mb-[40px] opacity-95 max-w-[620px] font-medium">
+                Selamat datang di <span class="text-brand-alt font-black">E-Riset</span>. Kami membantu mempermudah pengajuan izin penelitian secara online, resmi, dan transparan bersama <span class="text-brand-alt font-black">Si Risi</span>, asisten pintar riset Anda!
             </p>
 
             <div class="flex flex-col sm:flex-row gap-[16px] justify-center lg:justify-start items-center">
@@ -135,7 +135,7 @@
 </section>
 
 <!-- ── ALUR PERMOHONAN (Roadmap Visual) ── -->
-<section id="alur" class="section-padding bg-white border-y-4 border-border-default-subtle relative overflow-hidden">
+<section id="alur" class="section-padding bg-gradient-to-b from-transparent to-white relative overflow-hidden">
     <div class="container-standard">
         <div class="text-center mb-[80px] animate-fade-up">
             <span class="text-brand-alt font-extrabold uppercase tracking-widest text-[12px] mb-[8px] block">Prosedur Layanan</span>
@@ -227,7 +227,7 @@
 </section>
 
 <!-- ── PERSYARATAN ADMINISTRASI (Memo-Styled Cards) ── -->
-<section id="persyaratan" class="section-padding bg-neutral-primary-soft">
+<section id="persyaratan" class="section-padding bg-gradient-to-b from-white to-neutral-primary-soft">
     <div class="container-standard">
         <div class="text-center mb-[80px] animate-fade-up">
             <span class="text-brand-alt font-extrabold uppercase tracking-widest text-[12px] mb-[8px] block">Dokumen Wajib</span>
@@ -270,7 +270,7 @@
 </section>
 
 <!-- ── FAQ (Bubbly Balloon Dialogs) ── -->
-<section id="faq" class="section-padding bg-white border-t-4 border-border-default-subtle">
+<section id="faq" class="section-padding bg-gradient-to-b from-neutral-primary-soft to-white">
     <div class="container-standard max-w-[800px]">
         <div class="text-center mb-[80px] animate-fade-up">
             <span class="text-brand-alt font-extrabold uppercase tracking-widest text-[12px] mb-[8px] block">Pusat Bantuan</span>
@@ -312,18 +312,18 @@
 </section>
 
 <!-- ── CTA BANNER (Playful Court Banner) ── -->
-<section class="py-[100px] relative overflow-hidden bg-brand text-center">
+<section class="pt-[100px] pb-[160px] relative overflow-hidden bg-neutral-primary-soft text-center">
     <!-- Bubble Pattern -->
-    <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(#FFFFFF 2px, transparent 2px); background-size: 20px 20px;"></div>
+    <div class="absolute inset-0 opacity-[0.4] pointer-events-none" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     
     <div class="relative z-10 container-standard max-w-[800px] animate-fade-up">
         <!-- Floating Gavel Icon -->
-        <div class="w-[72px] h-[72px] bg-brand-medium rounded-full border-[3px] border-brand-alt/30 flex items-center justify-center mx-auto mb-[28px] shadow-lg animate-risi-float">
+        <div class="w-[72px] h-[72px] bg-brand rounded-full border-[3px] border-brand-alt/30 flex items-center justify-center mx-auto mb-[28px] shadow-lg animate-risi-float">
             <i data-lucide="file-badge" class="w-[36px] h-[36px] text-brand-alt"></i>
         </div>
         
-        <h2 class="font-heading font-black text-[38px] sm:text-[44px] text-white mb-[20px] leading-tight">Siap Mengajukan Izin Penelitian?</h2>
-        <p class="text-[17px] sm:text-[19px] text-brand-soft opacity-95 mb-[48px] max-w-[620px] mx-auto leading-[1.7] font-medium">
+        <h2 class="font-heading font-black text-[38px] sm:text-[44px] text-fg-heading mb-[20px] leading-tight">Siap Mengajukan Izin Penelitian?</h2>
+        <p class="text-[17px] sm:text-[19px] text-fg-body opacity-95 mb-[48px] max-w-[620px] mx-auto leading-[1.7] font-medium">
             Pengurusan administrasi permohonan izin penelitian kini dapat dilakukan dari mana saja, kapan saja, dan dijamin gratis.
         </p>
         
@@ -333,6 +333,19 @@
                 <i data-lucide="arrow-right-circle" class="w-[22px] h-[22px] animate-pulse"></i>
             </a>
         </div>
+    </div>
+
+    <!-- Layer 1: Orange Wave -->
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-0 translate-y-[4px]">
+        <svg class="relative block w-full h-[60px] sm:h-[80px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,50 C300,110 900,20 1200,80 L1200,120 L0,120 Z" fill="#F4A261"></path>
+        </svg>
+    </div>
+    <!-- Layer 2: Navy Wave -->
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-10">
+        <svg class="relative block w-full h-[60px] sm:h-[80px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,60 C300,120 900,30 1200,90 L1200,120 L0,120 Z" fill="#0a2240"></path>
+        </svg>
     </div>
 </section>
 

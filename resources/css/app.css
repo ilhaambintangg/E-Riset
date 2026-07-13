@@ -9,10 +9,14 @@
    ========================================================================== */
 :root {
   /* Clean Backgrounds & Cards (Restored Original Colors) */
-  --color-neutral-primary-soft: #FFFDF6;   /* Warm Ivory Paper Background */
-  --color-neutral-primary: #FFFFFF;        /* Clean Card Background */
-  --color-neutral-primary-medium: #FBF7EC; /* Bubbly Soft Cream Backdrop */
-  --color-neutral-primary-strong: #F2ECDC; /* Card borders & dividers strong */
+  --color-neutral-primary-soft: #FFFDF6;
+  /* Warm Ivory Paper Background */
+  --color-neutral-primary: #FFFFFF;
+  /* Clean Card Background */
+  --color-neutral-primary-medium: #FBF7EC;
+  /* Bubbly Soft Cream Backdrop */
+  --color-neutral-primary-strong: #F2ECDC;
+  /* Card borders & dividers strong */
 
   /* Borders & Dividers */
   --color-neutral-secondary-soft: #FFFFFF;
@@ -28,13 +32,17 @@
   /* Brand Colors (Restored Deep Royal Navy) */
   --color-brand-softer: #F0F4FC;
   --color-brand-soft: #D3E0F7;
-  --color-brand: #0A2240;                 /* Deep Royal Navy */
-  --color-brand-medium: #143A66;          /* Navy Medium */
-  --color-brand-strong: #041021;          /* Navy Strong */
+  --color-brand: #0A2240;
+  /* Deep Royal Navy */
+  --color-brand-medium: #143A66;
+  /* Navy Medium */
+  --color-brand-strong: #041021;
+  /* Navy Strong */
 
   /* Alternative Highlights (Honey Gold/Coral Amber) */
   --color-brand-alt-soft: #FFF5E0;
-  --color-brand-alt: #F4A261;             /* Honey Coral Gold */
+  --color-brand-alt: #F4A261;
+  /* Honey Coral Gold */
   --color-brand-alt-strong: #E76F51;
 
   /* Status Colors (Restored Original Palette) */
@@ -227,10 +235,14 @@
   --text-5xl: 40px;
 
   /* Modern SaaS Color Palette */
-  --color-neutral-primary-soft: #F8FAFC;   /* Slate 50 background */
-  --color-neutral-primary: #FFFFFF;        /* Solid white cards */
-  --color-neutral-primary-medium: #F1F5F9; /* Slate 100 panels/footer */
-  --color-neutral-primary-strong: #E5E7EB; /* Slate 200 borders/dividers */
+  --color-neutral-primary-soft: #F8FAFC;
+  /* Slate 50 background */
+  --color-neutral-primary: #FFFFFF;
+  /* Solid white cards */
+  --color-neutral-primary-medium: #F1F5F9;
+  /* Slate 100 panels/footer */
+  --color-neutral-primary-strong: #E5E7EB;
+  /* Slate 200 borders/dividers */
 
   /* Borders & Dividers */
   --border-default-subtle: #F1F5F9;
@@ -304,6 +316,7 @@
   border: 1px solid transparent !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
+
 .admin-theme .btn-brand:hover {
   background-color: #1E293B !important;
   transform: scale(1.02) !important;
@@ -321,6 +334,7 @@
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
 }
+
 .admin-theme .btn-secondary:hover {
   background-color: #F8FAFC !important;
   border-color: #D1D5DB !important;
@@ -339,6 +353,7 @@
   border: 1px solid transparent !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
+
 .admin-theme .btn-danger:hover {
   background-color: #B91C1C !important;
   transform: scale(1.02) !important;
@@ -349,6 +364,7 @@
   font-size: 12px !important;
   border-radius: 10px !important;
 }
+
 .admin-theme .btn-lg {
   padding: 12px 24px !important;
   font-size: 15px !important;
@@ -365,6 +381,7 @@
   background-color: #FFFFFF !important;
   transition: all 0.2s ease !important;
 }
+
 .admin-theme .input-standard:focus {
   border-color: #0F172A !important;
   outline: none !important;
@@ -378,6 +395,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
   padding: 24px !important;
 }
+
 .admin-theme .card-interactive {
   background-color: #FFFFFF !important;
   border: 1px solid #E5E7EB !important;
@@ -386,6 +404,7 @@
   padding: 24px !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
 .admin-theme .card-interactive:hover {
   transform: translateY(-4px) !important;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
@@ -415,21 +434,26 @@
   color: #64748B;
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
 .admin-theme .sidebar-link:hover {
   background-color: #F1F5F9 !important;
   color: #0F172A !important;
 }
+
 .admin-theme .sidebar-link:hover i {
   transform: translateX(2px) !important;
   color: #0F172A !important;
 }
+
 .admin-theme .sidebar-link i {
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
 .admin-theme .sidebar-link.active {
   background-color: #0F172A !important;
   color: #FFFFFF !important;
 }
+
 .admin-theme .sidebar-link.active i {
   color: #FFFFFF !important;
 }
@@ -645,6 +669,7 @@ html {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -659,6 +684,7 @@ html {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -670,9 +696,12 @@ html {
 
 /* Si Risi Owl Mascot Animations */
 @keyframes risiFloat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-10px) rotate(2deg);
   }
@@ -683,9 +712,13 @@ html {
 }
 
 @keyframes risiBlink {
-  0%, 95%, 100% {
+
+  0%,
+  95%,
+  100% {
     transform: scaleY(1);
   }
+
   97% {
     transform: scaleY(0);
   }
@@ -696,9 +729,12 @@ html {
 }
 
 @keyframes wingWave {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg);
   }
+
   50% {
     transform: rotate(-6deg);
   }
@@ -710,9 +746,12 @@ html {
 }
 
 @keyframes wingWaveRight {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg);
   }
+
   50% {
     transform: rotate(6deg);
   }
@@ -724,12 +763,16 @@ html {
 }
 
 @keyframes headBob {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg) translateY(0);
   }
+
   33% {
     transform: rotate(-2deg) translateY(1px);
   }
+
   66% {
     transform: rotate(2deg) translateY(-1px);
   }
@@ -781,43 +824,31 @@ html {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Premium Admin Background Gradient with Dot Grid */
 .admin-bg-gradient {
-  background: 
+  background:
     linear-gradient(180deg, #0a2240 0%, #143a66 120px, #f8fafc 400px),
     radial-gradient(rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
   background-size: 100% 100%, 24px 24px;
 }
 
-/* Premium Public (Pemohon) Background - Aurora Mesh Gradient */
+/* Premium Public (Pemohon) Background - Navy to Ivory Gradient with Dot Grid */
 .public-bg-gradient {
-  background-color: #f7f4ef;
+  background-color: #fffdf6;
   background-image:
-    /* Navy bloom top-left */
-    radial-gradient(ellipse 80% 60% at 0% 0%,   rgba(10, 34, 64, 0.18)  0%, transparent 70%),
-    /* Honey Gold bloom top-right */
-    radial-gradient(ellipse 70% 55% at 100% 0%,  rgba(244, 162, 97, 0.22) 0%, transparent 65%),
-    /* Teal-navy bloom bottom-left */
-    radial-gradient(ellipse 60% 50% at 0% 100%,  rgba(20, 58, 102, 0.14)  0%, transparent 60%),
-    /* Warm amber glow bottom-right */
-    radial-gradient(ellipse 65% 55% at 100% 100%, rgba(231, 111, 81, 0.09)  0%, transparent 65%),
-    /* Soft centrepiece glow */
-    radial-gradient(ellipse 50% 40% at 50% 45%,  rgba(255, 255, 255, 0.60) 0%, transparent 100%),
-    /* Fine dot grid overlay */
-    radial-gradient(rgba(10, 34, 64, 0.045) 1.3px, transparent 1.3px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    26px 26px;
+    linear-gradient(180deg, #0a2240 0%, #143a66 400px, #fffdf6 700px),
+    radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px);
+  background-size: 100% 700px, 24px 24px;
+  background-repeat: no-repeat, repeat;
 }
 
 /* Overrides removed to allow standard Tailwind sizes */

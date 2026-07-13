@@ -32,19 +32,19 @@ if (isset($submission)) {
 }
 @endphp
 
-<div class="min-h-screen bg-neutral-primary-soft relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px] pb-[80px]">
+<div class="min-h-screen bg-transparent relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px] pb-[80px]">
     <!-- Abstract pattern background -->
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background-image: radial-gradient(rgba(255, 255, 255, 0.3) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
 
     <div class="container-standard max-w-[800px] relative z-10">
         <!-- Header -->
         <div class="text-center mb-[48px] animate-fade-up">
-            <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
+            <div class="inline-flex items-center gap-[8px] bg-white/10 border border-white/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
                 <i data-lucide="search" class="w-[16px] h-[16px] text-brand-alt"></i>
-                <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET LACAK</span>
+                <span class="text-white font-extrabold text-[12px] tracking-widest uppercase">E-RISET LACAK</span>
             </div>
-            <h1 class="font-heading font-black text-h2 text-fg-heading mb-[12px]">Lacak Status Permohonan</h1>
-            <p class="text-[16px] text-fg-body font-medium opacity-90">Masukkan nomor registrasi untuk melihat progress izin penelitian Anda.</p>
+            <h1 class="font-heading font-black text-h2 text-white mb-[12px]">Lacak Status Permohonan</h1>
+            <p class="text-[16px] text-white/85 font-medium opacity-90">Masukkan nomor registrasi untuk melihat progress izin penelitian Anda.</p>
         </div>
 
         <!-- Search Form & Detective Mascot -->

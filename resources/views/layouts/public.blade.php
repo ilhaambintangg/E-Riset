@@ -22,7 +22,7 @@
 
     @stack('styles')
 </head>
-<body class="font-sans bg-neutral-primary-soft selection:bg-brand-alt-soft selection:text-fg-brand-alt-strong text-fg-body antialiased">
+<body class="font-sans bg-neutral-primary-soft public-bg-gradient selection:bg-brand-alt-soft selection:text-fg-brand-alt-strong text-fg-body antialiased min-h-screen">
     
     @include('components.navbar')
     

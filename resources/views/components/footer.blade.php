@@ -2,7 +2,7 @@
     $setting = \App\Models\WebSetting::first();
 @endphp
 
-<footer class="relative border-t-[8px] border-brand-alt pt-[80px] pb-[40px] overflow-hidden z-10 bg-brand text-white">
+<footer class="relative pt-[80px] pb-[40px] overflow-hidden z-10 bg-brand text-white">
     <!-- Subtle Background Accent Glows -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div class="absolute -bottom-[20%] -left-[10%] w-[400px] h-[400px] rounded-full blur-[100px]" style="background-color: rgba(244, 162, 97, 0.1);"></div>

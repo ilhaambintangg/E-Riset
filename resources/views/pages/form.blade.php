@@ -2,22 +2,22 @@
 
 @section('content')
 
-<div class="min-h-screen bg-neutral-primary-soft relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px]" x-data="submissionForm()">
+<div class="min-h-screen bg-transparent relative overflow-hidden flex flex-col pt-[120px] sm:pt-[140px]" x-data="submissionForm()">
     <!-- Background abstract patterns -->
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-40" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background-image: radial-gradient(rgba(255, 255, 255, 0.3) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     
     <div class="flex-1 pb-[80px] container-standard relative z-10 max-w-[1000px] mx-auto w-full">
         <div class="mt-[20px]">
             <!-- Header -->
             <div class="text-center mb-[40px] animate-fade-up">
-                <div class="inline-flex items-center gap-[8px] bg-brand-softer border border-brand/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
+                <div class="inline-flex items-center gap-[8px] bg-white/10 border border-white/20 px-[18px] py-[8px] rounded-lg mb-[16px] shadow-2xs">
                     <i data-lucide="scale" class="w-[16px] h-[16px] text-brand-alt"></i>
-                    <span class="text-brand font-extrabold text-[12px] tracking-widest uppercase">E-RISET FORMULIR</span>
+                    <span class="text-white font-extrabold text-[12px] tracking-widest uppercase">E-RISET FORMULIR</span>
                 </div>
-                <h1 class="text-h2 text-fg-heading mb-[8px] font-black">
+                <h1 class="text-h2 text-white mb-[8px] font-black">
                     Pengajuan Izin Penelitian
                 </h1>
-                <p class="text-[15px] text-fg-body max-w-[600px] mx-auto font-medium opacity-90">
+                <p class="text-[15px] text-white/85 max-w-[600px] mx-auto font-medium opacity-90">
                     Isi formulir pendaftaran riset elektronik bersama Si Risi di bawah ini dengan lengkap.
                 </p>
             </div>
