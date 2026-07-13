@@ -27,7 +27,7 @@
                 </span>
             </h1>
 
-            <p class="text-lead text-white/80 mx-auto lg:mx-0 mb-[40px] opacity-95 max-w-[620px] font-medium">
+            <p class="text-lead text-white mx-auto lg:mx-0 mb-[40px] max-w-[620px] font-semibold drop-shadow-[0_1.5px_2px_rgba(0,0,0,0.4)]">
                 Selamat datang di <span class="text-brand-alt font-black">E-Riset</span>. Kami membantu mempermudah pengajuan izin penelitian secara online, resmi, dan transparan bersama <span class="text-brand-alt font-black">Si Risi</span>, asisten pintar riset Anda!
             </p>
 

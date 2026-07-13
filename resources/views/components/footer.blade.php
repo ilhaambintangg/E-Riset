@@ -2,7 +2,7 @@
     $setting = \App\Models\WebSetting::first();
 @endphp
 
-<footer class="relative pt-[80px] pb-[40px] overflow-hidden z-10 bg-brand text-white">
+<footer class="relative pt-[80px] pb-[40px] overflow-hidden z-10 bg-gradient-to-b from-[#0D1E36] via-[#091524] to-[#040910] text-white">
     <!-- Subtle Background Accent Glows -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div class="absolute -bottom-[20%] -left-[10%] w-[400px] h-[400px] rounded-full blur-[100px]" style="background-color: rgba(244, 162, 97, 0.1);"></div>
@@ -15,13 +15,15 @@
             <div class="space-y-[24px]">
                 <div class="inline-flex items-center gap-1.5 border-2 border-brand-medium rounded-full px-4 py-1.5 shadow-inner bg-brand-medium/50">
                     <div class="w-2.5 h-2.5 rounded-full bg-brand-alt animate-ping"></div>
-                    <span class="text-[11px] font-extrabold uppercase tracking-widest text-brand-soft">{{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}</span>
+                    <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-100">{{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}</span>
                 </div>
 
                 <div class="flex items-center gap-[16px]">
                     <!-- Waving Risi Mascot -->
-                    <div class="shrink-0">
-                        <svg class="w-[72px] h-[72px] animate-risi-float" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="shrink-0 relative">
+                        <!-- Glow behind mascot to prevent merging with background -->
+                        <div class="absolute inset-0 bg-blue-400/20 rounded-full blur-[14px] pointer-events-none scale-90 animate-pulse"></div>
+                        <svg class="relative z-10 w-[72px] h-[72px] animate-risi-float" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="40" cy="85" r="5" fill="#E76F51" />
                           <circle cx="60" cy="85" r="5" fill="#E76F51" />
                           <rect x="25" y="30" width="50" height="55" rx="25" fill="#143A66" stroke="#0A2240" stroke-width="3"/>
@@ -56,7 +58,7 @@
                     </div>
                 </div>
 
-                <p class="text-[14px] leading-[1.7] max-w-[360px] text-brand-soft">
+                <p class="text-[14px] leading-[1.7] max-w-[360px] text-slate-100">
                     E-RISET merupakan sistem pelayanan digital yang digunakan untuk mempermudah proses permohonan izin penelitian secara elektronik pada {{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}.
                 </p>
 
@@ -111,7 +113,7 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-extrabold uppercase tracking-wider mb-1 text-brand-alt">Alamat Kantor</p>
-                                <p class="text-[13px] leading-relaxed text-brand-soft">{{ $setting->alamat ?? 'Jl. Cut Mutia No.42, Gulak Galik, Kec. Telukbetung Utara, Kota Bandar Lampung, Lampung 35214' }}</p>
+                                <p class="text-[13px] leading-relaxed text-slate-100">{{ $setting->alamat ?? 'Jl. Cut Mutia No.42, Gulak Galik, Kec. Telukbetung Utara, Kota Bandar Lampung, Lampung 35214' }}</p>
                             </div>
                         </div>
                     </div>
@@ -124,8 +126,8 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-extrabold uppercase tracking-wider mb-1 text-brand-alt">Hubungi Kami</p>
-                                <p class="text-[13px] leading-relaxed mb-0.5 text-brand-soft font-mono">Telp: {{ $setting->telepon ?? '(0721) 482436' }}</p>
-                                <p class="text-[13px] leading-relaxed text-brand-soft font-mono">Email: {{ $setting->email ?? 'info@pt-tanjungkarang.go.id' }}</p>
+                                <p class="text-[13px] leading-relaxed mb-0.5 text-slate-100 font-mono">Telp: {{ $setting->telepon ?? '(0721) 482436' }}</p>
+                                <p class="text-[13px] leading-relaxed text-slate-100 font-mono">Email: {{ $setting->email ?? 'info@pt-tanjungkarang.go.id' }}</p>
                             </div>
                         </div>
                     </div>
@@ -138,7 +140,7 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-extrabold uppercase tracking-wider mb-1 text-brand-alt">Jam Operasional</p>
-                                <p class="text-[13px] leading-relaxed text-brand-soft">Senin - Jumat: 08:00 - 16:30 WIB</p>
+                                <p class="text-[13px] leading-relaxed text-slate-100">Senin - Jumat: 08:00 - 16:30 WIB</p>
                             </div>
                         </div>
                     </div>
@@ -179,10 +181,10 @@
 
         <!-- Bottom Footer -->
         <div class="border-t-2 border-brand-medium pt-[32px] flex flex-col md:flex-row justify-between items-center gap-[16px] text-center md:text-left">
-            <div class="text-[13px] text-brand-soft">
+            <div class="text-[13px] text-slate-200">
                 &copy; 2026 <strong class="text-white">E-RISET</strong> — {{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}. Semua Hak Dilindungi.
             </div>
-            <div class="text-[13px] text-brand-soft/60">
+            <div class="text-[13px] text-slate-300">
                 Powered by: <span class="font-extrabold text-brand-alt">Tim Pengembang E-RISET</span>
             </div>
         </div>
