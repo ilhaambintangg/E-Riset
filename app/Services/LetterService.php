@@ -67,7 +67,7 @@ class LetterService
         $bulanRomawi = self::toRomanMonth($date->month);
         $tahun = $date->year;
 
-        return '   /' . $letterCode . '/' . $bulanRomawi . '/' . $tahun;
+        return '         /' . $letterCode . '/' . $bulanRomawi . '/' . $tahun;
     }
 
     /**
@@ -198,6 +198,9 @@ class LetterService
         self::fixPlaceholderParagraphAlignment($templateProcessor, 'universitas');
         self::fixPlaceholderParagraphAlignment($templateProcessor, 'jabatan_tujuan');
         self::fixPlaceholderParagraphAlignment($templateProcessor, 'kota_tujuan');
+
+        // Ensure spaces in nomor_surat are preserved in Word
+        self::preservePlaceholderSpaces($templateProcessor, 'nomor_surat');
 
         $isKelompokTemplate = ($template->type === 'kelompok');
 
@@ -404,6 +407,36 @@ class LetterService
                 $pContent = preg_replace('/\bw:right="\d+"/', 'w:right="0"', $pContent);
                 
                 return $pContent;
+            }, $xml);
+
+            $ref->setValue($templateProcessor, $xml);
+        } catch (\Exception $e) {
+            // Ignore error so it doesn't block letter generation
+        }
+    }
+
+    /**
+     * Ensure xml:space="preserve" is added to the <w:t> element containing the placeholder.
+     *
+     * @param TemplateProcessor $templateProcessor
+     * @param string $placeholder
+     */
+    private static function preservePlaceholderSpaces(TemplateProcessor $templateProcessor, string $placeholder): void
+    {
+        try {
+            $ref = new \ReflectionProperty('PhpOffice\PhpWord\TemplateProcessor', 'tempDocumentMainPart');
+            $ref->setAccessible(true);
+            $xml = $ref->getValue($templateProcessor);
+
+            $escapedPlaceholder = preg_quote($placeholder, '/');
+            $pattern = '/(<w:t\b[^>]*>(?:(?!<\/w:t>).)*\$\{' . $escapedPlaceholder . '\}(?:(?!<\/w:t>).)*<\/w:t>)/s';
+
+            $xml = preg_replace_callback($pattern, function ($matches) {
+                $tContent = $matches[1];
+                if (!str_contains($tContent, 'xml:space="preserve"')) {
+                    $tContent = preg_replace('/^<w:t\b/', '<w:t xml:space="preserve"', $tContent);
+                }
+                return $tContent;
             }, $xml);
 
             $ref->setValue($templateProcessor, $xml);

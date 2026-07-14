@@ -120,16 +120,16 @@ if (isset($submission)) {
 
         <!-- Result Card -->
         @if(isset($submission))
-            <div class="bg-white rounded-base shadow-md border-2 border-border-default overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden animate-fade-up" style="animation-delay: 0.2s;">
                 <!-- Status Header -->
-                <div class="p-[28px] sm:p-[36px] border-b-2 border-border-default relative overflow-hidden bg-neutral-primary-medium">
+                <div class="p-[32px] sm:p-[40px] border-b border-slate-100 relative overflow-hidden text-white" style="background-color: #0A2240;">
                     <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[20px]">
                         <div>
-                            <p class="text-[11px] text-fg-body-subtle font-extrabold mb-[6px] uppercase tracking-widest">Nomor Registrasi Anda</p>
-                            <p class="font-mono font-black text-[28px] sm:text-[32px] text-fg-heading tracking-tight leading-none">{{ $submission->registration_number }}</p>
+                            <p class="text-[11px] text-slate-300 font-extrabold mb-[6px] uppercase tracking-widest leading-none">Nomor Registrasi Anda</p>
+                            <p class="font-mono font-black text-[28px] sm:text-[34px] text-white tracking-tight leading-none">{{ $submission->registration_number }}</p>
                         </div>
-                        <div class="flex items-center gap-[10px] px-[20px] py-[10px] rounded-lg border-2 font-black text-[15px] shadow-2xs {{ $cfg['color'] }}">
-                            <div class="w-[10px] h-[10px] rounded-full {{ $cfg['dot'] }} animate-ping"></div>
+                        <div class="flex items-center gap-[10px] px-[20px] py-[10px] rounded-xl bg-white font-extrabold text-[14px] shadow-sm border border-slate-100" style="color: #0A2240;">
+                            <div class="w-[8px] h-[8px] rounded-full {{ $cfg['dot'] }} animate-ping"></div>
                             {{ $submission->current_status }}
                         </div>
                     </div>
@@ -137,34 +137,34 @@ if (isset($submission)) {
 
                 <!-- Timeline Progress Stepper -->
                 @if($submission->current_status !== 'Ditolak')
-                <div class="px-[28px] sm:px-[36px] pt-[36px] pb-[16px] border-b border-border-default bg-neutral-primary-soft/50">
-                    <h3 class="font-heading font-black text-[16px] text-fg-heading mb-[28px] uppercase tracking-wider">Progress Permohonan</h3>
-                    <div class="relative flex justify-between items-center w-full max-w-[560px] mx-auto mb-[20px]">
+                <div class="px-[32px] sm:px-[40px] pt-[40px] pb-[44px] border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="font-heading font-black text-[16px] text-fg-heading mb-[24px] uppercase tracking-wider">Progress Permohonan</h3>
+                    <div class="relative flex justify-between items-start w-full max-w-[560px] mx-auto mb-[8px]">
                         <!-- Connecting Line Background -->
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[4px] bg-border-default rounded-full -z-10"></div>
+                        <div class="absolute left-0 top-[24px] -translate-y-1/2 w-full h-[4px] bg-slate-200 rounded-full -z-10"></div>
                         <!-- Connecting Line Active -->
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-[4px] bg-brand-alt rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ $currentStepIndex === 0 ? '0%' : ($currentStepIndex === 1 ? '50%' : '100%') }}"></div>
+                        <div class="absolute left-0 top-[24px] -translate-y-1/2 h-[4px] bg-gradient-to-r from-brand to-brand-alt rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ $currentStepIndex === 0 ? '0%' : ($currentStepIndex === 1 ? '50%' : '100%') }}"></div>
 
                         @foreach($steps as $index => $stepName)
-                            <div class="flex flex-col items-center gap-[10px] bg-white relative z-0 rounded-full p-0.5">
+                            <div class="flex flex-col items-center gap-[8px] relative text-center">
                                 @if($index < $currentStepIndex)
                                     <!-- Completed Step -->
-                                    <div class="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center shadow-xs border-[3px] border-white">
+                                    <div class="w-[48px] h-[48px] rounded-full bg-brand text-white flex items-center justify-center shadow-md border-[4px] border-white z-10 animate-fade-in">
                                         <i data-lucide="check" class="w-[20px] h-[20px]"></i>
                                     </div>
-                                    <span class="text-[11px] font-extrabold text-fg-body-subtle absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[12px] font-bold text-slate-500 whitespace-nowrap">{{ $stepName }}</span>
                                 @elseif($index === $currentStepIndex)
                                     <!-- Current Active Step -->
-                                    <div class="w-[44px] h-[44px] rounded-full bg-white text-brand border-[3px] border-brand flex items-center justify-center shadow-md animate-pulse">
+                                    <div class="w-[48px] h-[48px] rounded-full bg-white text-brand border-[4px] border-brand flex items-center justify-center shadow-lg z-10">
                                         <i data-lucide="{{ $index === 0 ? 'clock' : ($index === 1 ? 'loader-2' : 'check-circle-2') }}" class="w-[20px] h-[20px] {{ $index === 1 ? 'animate-spin' : '' }}"></i>
                                     </div>
-                                    <span class="text-[11px] font-black text-brand absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[12px] font-black text-brand whitespace-nowrap">{{ $stepName }}</span>
                                 @else
                                     <!-- Future Step -->
-                                    <div class="w-[44px] h-[44px] rounded-full bg-neutral-primary-medium text-neutral-tertiary-medium border-[3px] border-white flex items-center justify-center shadow-2xs">
+                                    <div class="w-[48px] h-[48px] rounded-full bg-slate-100 text-slate-400 border-[4px] border-white flex items-center justify-center shadow-sm z-10">
                                         <span class="font-extrabold text-[14px]">{{ $index + 1 }}</span>
                                     </div>
-                                    <span class="text-[11px] font-extrabold text-fg-disabled absolute -bottom-[26px] whitespace-nowrap">{{ $stepName }}</span>
+                                    <span class="text-[12px] font-semibold text-slate-400 whitespace-nowrap">{{ $stepName }}</span>
                                 @endif
                             </div>
                         @endforeach
@@ -176,41 +176,41 @@ if (isset($submission)) {
                 <div class="p-[32px] sm:p-[40px] space-y-[32px]">
                     <div>
                         <h3 class="font-heading font-bold text-[18px] text-fg-heading flex items-center gap-[12px] mb-[24px]">
-                            <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
-                                <i data-lucide="file-text" class="w-[16px] h-[16px] text-brand"></i>
+                            <div class="w-[36px] h-[36px] bg-brand-softer rounded-xl flex items-center justify-center border border-brand-subtle">
+                                <i data-lucide="file-text" class="w-[18px] h-[18px] text-brand"></i>
                             </div>
                             Detail Permohonan
                         </h3>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                            <div class="bg-neutral-primary-soft rounded-[16px] p-[24px] border border-border-default">
-                                <p class="text-[12px] text-fg-body-subtle font-bold uppercase tracking-wider mb-[4px]">Nama Pemohon</p>
-                                <p class="text-[15px] text-fg-heading font-bold">{{ $submission->name ?? '-' }}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
+                            <div class="bg-white rounded-xl p-[24px] border border-slate-100 shadow-soft hover:shadow-md transition-all duration-300">
+                                <p class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider mb-[6px]">Nama Pemohon</p>
+                                <p class="text-[16px] text-fg-heading font-bold">{{ $submission->name ?? '-' }}</p>
                             </div>
-                            <div class="bg-neutral-primary-soft rounded-[16px] p-[24px] border border-border-default">
-                                <p class="text-[12px] text-fg-body-subtle font-bold uppercase tracking-wider mb-[4px]">Institusi</p>
-                                <p class="text-[15px] text-fg-heading font-bold">{{ $submission->university ?? '-' }}</p>
+                            <div class="bg-white rounded-xl p-[24px] border border-slate-100 shadow-soft hover:shadow-md transition-all duration-300">
+                                <p class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider mb-[6px]">Institusi</p>
+                                <p class="text-[16px] text-fg-heading font-bold">{{ $submission->university ?? '-' }}</p>
                             </div>
-                            <div class="bg-neutral-primary-soft rounded-[16px] p-[24px] border border-border-default sm:col-span-2">
-                                <p class="text-[12px] text-fg-body-subtle font-bold uppercase tracking-wider mb-[4px]">Judul Penelitian</p>
-                                <p class="text-[15px] text-fg-heading font-medium leading-[1.6]">{{ $submission->title ?? '-' }}</p>
+                            <div class="bg-white rounded-xl p-[24px] border border-slate-100 shadow-soft hover:shadow-md transition-all duration-300 sm:col-span-2">
+                                <p class="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider mb-[6px]">Judul Penelitian</p>
+                                <p class="text-[16px] text-fg-heading font-semibold leading-[1.6]">{{ $submission->title ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Surat Izin (Jika Disetujui) -->
                     @if($submission->current_status === 'Disetujui')
-                        <div class="bg-success-soft border border-border-success-subtle rounded-[16px] p-[32px] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-[24px] shadow-sm">
+                        <div class="bg-emerald-50/80 border border-emerald-100 rounded-xl p-[32px] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-[24px] shadow-sm">
                             <div>
-                                <h3 class="text-[18px] font-bold text-success-strong mb-[8px] flex items-center justify-center sm:justify-start gap-[8px]">
+                                <h3 class="text-[18px] font-bold text-emerald-800 mb-[8px] flex items-center justify-center sm:justify-start gap-[10px]">
                                     <i data-lucide="check-circle-2" class="w-[24px] h-[24px]"></i> Surat Izin Tersedia
                                 </h3>
-                                <p class="text-[14px] text-success-strong opacity-90 font-medium leading-[1.6]">
+                                <p class="text-[14px] text-emerald-700 font-medium leading-[1.6]">
                                     Permohonan izin Anda telah disetujui. Unduh surat izin elektronik resmi ber-TTD sekarang.
                                 </p>
                             </div>
                             <a href="/api/public/submissions/{{ $submission->registration_number }}/download-permit" target="_blank"
-                               class="btn-success btn-lg shadow-md hover:shadow-lg">
+                               class="btn-success btn-lg shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                                 <i data-lucide="download" class="w-[20px] h-[20px]"></i>
                                 Unduh (PDF)
                             </a>
@@ -219,40 +219,40 @@ if (isset($submission)) {
 
                     <!-- Admin Notes -->
                     @if($submission->admin_notes)
-                        <div class="bg-warning-soft border border-border-warning-subtle rounded-[16px] p-[24px] flex gap-[16px]">
-                            <i data-lucide="info" class="w-[24px] h-[24px] text-warning-strong shrink-0"></i>
+                        <div class="bg-amber-50/80 border border-amber-100 rounded-xl p-[24px] flex gap-[16px] shadow-sm">
+                            <i data-lucide="info" class="w-[24px] h-[24px] text-amber-600 shrink-0"></i>
                             <div>
-                                <p class="font-bold mb-[4px] uppercase tracking-wider text-[12px] text-warning-strong">Catatan dari Petugas</p>
-                                <p class="text-[15px] text-fg-heading leading-[1.6]">{{ $submission->admin_notes }}</p>
+                                <p class="font-bold mb-[4px] uppercase tracking-wider text-[11px] text-amber-800">Catatan dari Petugas</p>
+                                <p class="text-[15px] text-slate-700 leading-[1.6]">{{ $submission->admin_notes }}</p>
                             </div>
                         </div>
                     @endif
 
                     <!-- Status History -->
                     @if($submission->statusLogs && $submission->statusLogs->count() > 0)
-                        <div x-data="{ open: false }" class="pt-[24px] border-t border-border-default">
-                            <button @click="open = !open" class="flex items-center justify-between w-full p-[16px] rounded-[12px] bg-neutral-primary hover:bg-neutral-primary-soft transition-colors focus:outline-none">
-                                <span class="text-[14px] font-bold text-fg-heading uppercase tracking-wider">Riwayat Status</span>
-                                <div class="w-[32px] h-[32px] rounded-full bg-white border border-border-default flex items-center justify-center">
+                        <div x-data="{ open: false }" class="pt-[32px] border-t border-slate-100">
+                            <button @click="open = !open" class="flex items-center justify-between w-full p-[20px] rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100/50 transition-colors focus:outline-none">
+                                <span class="text-[13px] font-bold text-fg-heading uppercase tracking-wider">Riwayat Status</span>
+                                <div class="w-[32px] h-[32px] rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-2xs">
                                     <i x-show="!open" data-lucide="chevron-down" class="w-[16px] h-[16px] text-fg-body"></i>
                                     <i x-show="open" x-cloak data-lucide="chevron-up" class="w-[16px] h-[16px] text-fg-body"></i>
                                 </div>
                             </button>
-                            <div x-show="open" x-collapse x-cloak class="mt-[24px] px-[16px]">
-                                <div class="space-y-[24px] relative before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[2px] before:bg-border-default">
+                            <div x-show="open" x-collapse x-cloak class="mt-[32px] px-[20px]">
+                                <div class="space-y-[32px] relative before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[2px] before:bg-slate-200">
                                     @foreach($submission->statusLogs as $log)
                                         @php
                                             $logCfg = $statusConfig[$log->status] ?? $statusConfig['Menunggu Verifikasi'];
                                         @endphp
                                         <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                                             <div class="flex items-center justify-center w-[24px] h-[24px] rounded-full border-[4px] border-white {{ $logCfg['dot'] }} shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10"></div>
-                                            <div class="w-[calc(100%-32px)] md:w-[calc(50%-40px)] bg-neutral-primary-soft p-[16px] rounded-[12px] border border-border-default shadow-xs">
-                                                <div class="flex items-center justify-between mb-[4px]">
+                                            <div class="w-[calc(100%-32px)] md:w-[calc(50%-40px)] bg-slate-50 p-[20px] rounded-xl border border-slate-100 shadow-2xs">
+                                                <div class="flex items-center justify-between mb-[6px] gap-4">
                                                     <p class="font-bold text-[14px] text-fg-heading">{{ $log->status }}</p>
-                                                    <span class="text-[11px] text-fg-body-subtle font-medium">{{ $log->created_at->translatedFormat('d M Y, H:i') }} WIB</span>
+                                                    <span class="text-[11px] text-slate-400 font-medium shrink-0">{{ $log->created_at->translatedFormat('d M Y, H:i') }} WIB</span>
                                                 </div>
                                                 @if($log->notes)
-                                                    <p class="text-[13px] text-fg-body mt-[8px] leading-[1.5]">{{ $log->notes }}</p>
+                                                    <p class="text-[13px] text-slate-600 mt-[8px] leading-[1.6] bg-white p-3 rounded-lg border border-slate-100">{{ $log->notes }}</p>
                                                 @endif
                                             </div>
                                         </div>
@@ -266,19 +266,19 @@ if (isset($submission)) {
         @endif
 
         <!-- Info Box -->
-        <div class="mt-[48px] bg-neutral-primary-soft rounded-[24px] p-[32px] sm:p-[40px] text-[15px] text-fg-body border border-border-default shadow-sm animate-fade-up" style="animation-delay: 0.3s;">
-            <p class="font-heading font-bold mb-[16px] flex items-center gap-[12px] text-fg-heading text-[18px]">
-                <div class="w-[32px] h-[32px] bg-brand-softer rounded-[10px] flex items-center justify-center border border-brand-subtle">
-                    <i data-lucide="info" class="w-[16px] h-[16px] text-brand"></i>
+        <div class="mt-[48px] bg-slate-50 rounded-xl p-[32px] sm:p-[40px] text-[15px] text-slate-800 border border-slate-200/80 shadow-sm animate-fade-up" style="animation-delay: 0.3s;">
+            <p class="font-heading font-bold mb-[20px] flex items-center gap-[12px] text-brand text-[18px]">
+                <div class="w-[36px] h-[36px] bg-brand-softer rounded-xl flex items-center justify-center border border-brand-subtle">
+                    <i data-lucide="info" class="w-[18px] h-[18px] text-brand"></i>
                 </div>
                 Informasi Layanan
             </p>
             <div class="pl-[44px]">
-                <ul class="list-disc space-y-[12px] opacity-90 leading-[1.6]">
-                    <li>Nomor registrasi dikirimkan melalui halaman konfirmasi dan email saat Anda selesai mengisi formulir.</li>
-                    <li>Format registrasi: <code class="font-mono bg-white border border-border-default px-[8px] py-[2px] rounded-[6px] text-fg-heading shadow-xs text-[13px] font-bold">ERS-YYYY-XXXXX</code></li>
-                    <li>Proses verifikasi dan penerbitan izin memakan waktu estimasi <strong>3–5 hari kerja</strong>.</li>
-                    <li>Jika permohonan Anda <span class="text-danger font-bold">Ditolak</span>, perbaiki dokumen sesuai catatan petugas dan ajukan permohonan baru.</li>
+                <ul class="list-disc space-y-[12px] leading-[1.6]">
+                    <li class="text-slate-700 font-medium">Nomor registrasi dikirimkan melalui halaman konfirmasi dan email saat Anda selesai mengisi formulir.</li>
+                    <li class="text-slate-700 font-medium">Format registrasi: <code class="font-mono bg-white border border-slate-100 px-[8px] py-[2px] rounded-[6px] text-fg-heading shadow-xs text-[13px] font-bold">ERS-YYYY-XXXXX</code></li>
+                    <li class="text-slate-700 font-medium">Proses verifikasi dan penerbitan izin memakan waktu estimasi <strong>3–5 hari kerja</strong>.</li>
+                    <li class="text-slate-700 font-medium">Jika permohonan Anda <span class="text-danger font-bold">Ditolak</span>, perbaiki dokumen sesuai catatan petugas dan ajukan permohonan baru.</li>
                 </ul>
             </div>
         </div>

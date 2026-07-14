@@ -175,16 +175,17 @@
         <!-- Glowing Pulse (Only active when admin is online) -->
         <span x-show="isAdminOnline" class="absolute inline-flex h-full w-full rounded-full bg-brand-alt opacity-75 animate-ping group-hover:hidden"></span>
         
-        <span class="relative">
+        <!-- Centered Icons Wrapper -->
+        <div class="relative w-full h-full flex items-center justify-center">
             <!-- Chat Icon -->
-            <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.3.025-.602.048-.905.069m0 0c-.056.14-.15.263-.275.354l-3.235 2.36c-.457.333-1.11-.004-1.11-.57v-2.147m4.62-1.004a48.205 48.205 0 0 1-9.28 0m9.28 0a48.66 48.66 0 0 0-9.28 0m0 0c-1.133-.093-1.98-.957-1.98-2.093V10.6c0-.969.616-1.813 1.5-2.097a48.11 48.11 0 0 1 12.02 0z" />
-            </svg>
+            <div x-show="!isOpen" class="flex items-center justify-center">
+                <i data-lucide="message-circle" class="w-[22px] h-[22px] text-white"></i>
+            </div>
             <!-- Close Icon -->
-            <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6" x-cloak>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </span>
+            <div x-show="isOpen" class="flex items-center justify-center" x-cloak>
+                <i data-lucide="x" class="w-[20px] h-[20px] text-white"></i>
+            </div>
+        </div>
 
         <!-- Small Online/Offline Indicator Badge on floating button -->
         <span class="absolute top-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white"

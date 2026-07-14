@@ -26,7 +26,7 @@
         <i data-lucide="construction" class="w-12 h-12 text-brand-alt animate-bounce"></i>
     </div>
 
-    <h1 class="text-3xl font-black tracking-tight text-fg-heading">EDVOKAT</h1>
+    <h1 class="text-3xl font-black tracking-tight text-fg-heading">EVOKAT</h1>
     <p class="text-sm text-brand-medium font-bold uppercase tracking-widest mt-1">Sistem Administrasi Advokat</p>
     
     <div class="h-[2px] w-16 bg-border-default my-6 mx-auto"></div>

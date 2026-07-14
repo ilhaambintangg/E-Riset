@@ -28,8 +28,35 @@ class UpdateSubmissionStatusRequest extends FormRequest
             $permitFileRule = ['required', 'file', 'mimes:pdf', 'max:5120'];
         }
 
+        $statusRule = [
+            'required',
+            'string',
+            'in:Menunggu Verifikasi,Sedang Diproses,Disetujui,Ditolak',
+        ];
+
+        if ($submission) {
+            $statusRule[] = function ($attribute, $value, $fail) use ($submission) {
+                $currentStatus = $submission->current_status;
+
+                $allowed = [];
+                if ($currentStatus === 'Menunggu Verifikasi') {
+                    $allowed = ['Sedang Diproses', 'Ditolak'];
+                } elseif ($currentStatus === 'Sedang Diproses') {
+                    $allowed = ['Disetujui', 'Ditolak'];
+                } elseif ($currentStatus === 'Disetujui') {
+                    $allowed = ['Disetujui'];
+                } elseif ($currentStatus === 'Ditolak') {
+                    $allowed = ['Ditolak'];
+                }
+
+                if (!in_array($value, $allowed)) {
+                    $fail('Status permohonan tidak dapat dikembalikan ke tahap sebelumnya.');
+                }
+            };
+        }
+
         return [
-            'status' => ['required', 'string', 'in:Menunggu Verifikasi,Sedang Diproses,Disetujui,Ditolak'],
+            'status' => $statusRule,
             'notes' => [$this->status === 'Ditolak' ? 'required' : 'nullable', 'string'],
             'panitera_id' => [$this->status === 'Sedang Diproses' ? 'required' : 'nullable', 'exists:panitera,id'],
             'letter_date' => [$this->status === 'Sedang Diproses' ? 'required' : 'nullable', 'date'],

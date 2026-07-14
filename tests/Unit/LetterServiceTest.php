@@ -104,7 +104,7 @@ class LetterServiceTest extends TestCase
         $date = Carbon::parse('2027-10-02');
         $nomorSurat = LetterService::generateLetterNumber($submission->registration_number, $date);
         
-        $this->assertEquals('   /PAN.04/SKET.HM2.1.4/X/2027', $nomorSurat);
+        $this->assertEquals('         /PAN.04/SKET.HM2.1.4/X/2027', $nomorSurat);
     }
 
     public function test_generate_letter_for_individual()

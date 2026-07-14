@@ -38,10 +38,10 @@
             E-RISET
         </a>
 
-        <!-- Edvokat -->
+        <!-- Evokat -->
         <a href="{{ route('admin.edvokat') }}" 
            class="flex-1 py-1.5 px-2 rounded-md text-center text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {{ $activeSystem === 'edvokat' ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/20' : 'text-slate-600 hover:text-slate-800' }}">
-            EDVOKAT
+            EVOKAT
         </a>
     </div>
 </div>
@@ -204,7 +204,9 @@
     <div class="flex items-center gap-3">
         <!-- Avatar with green status dot -->
         <div class="relative shrink-0">
-            <img src="{{ asset('images/admin_avatar.png') }}" class="w-9 h-9 rounded-full object-cover shadow-inner border border-slate-200">
+            <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-500 shadow-inner">
+                <i data-lucide="user" class="w-4 h-4"></i>
+            </div>
             <span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-50"></span>
         </div>
         <!-- Profile info -->

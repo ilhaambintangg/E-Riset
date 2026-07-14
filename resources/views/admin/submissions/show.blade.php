@@ -270,7 +270,7 @@
     <div class="space-y-6">
         
         <!-- Status Update Card -->
-        <div class="card-static overflow-hidden" x-data="{ status: '{{ $submission->current_status }}' }">
+        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses']) ? '' : $submission->current_status }}' }">
             <div class="px-6 py-5 border-b border-border-default bg-neutral-primary-soft">
                 <h3 class="text-sm font-bold text-fg-heading flex items-center gap-2 m-0">
                     <i data-lucide="settings" class="w-4 h-4 text-brand-alt"></i> Proses Permohonan
@@ -292,16 +292,33 @@
                     
                     <div>
                         <label class="input-label text-xs">Ubah Status</label>
-                        <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
-                            <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                            <option value="Sedang Diproses">Sedang Diproses (Buat Surat)</option>
-                            <option value="Disetujui">Disetujui</option>
-                            <option value="Ditolak">Ditolak</option>
-                        </select>
+                        @if($submission->current_status === 'Menunggu Verifikasi')
+                            <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                <option value="Sedang Diproses">Sedang Diproses (Buat Surat)</option>
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+                        @elseif($submission->current_status === 'Sedang Diproses')
+                            <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                <option value="Disetujui">Disetujui</option>
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+                        @elseif($submission->current_status === 'Disetujui')
+                            <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
+                                <option value="Disetujui">Disetujui</option>
+                            </select>
+                            <input type="hidden" name="status" value="Disetujui">
+                        @elseif($submission->current_status === 'Ditolak')
+                            <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+                            <input type="hidden" name="status" value="Ditolak">
+                        @endif
                     </div>
 
                     <!-- Required for 'Sedang Diproses' -->
-                    <div x-show="status === 'Sedang Diproses'" x-collapse x-cloak>
+                    <div x-show="status === 'Sedang Diproses' && '{{ $submission->current_status }}' !== 'Sedang Diproses'" x-collapse x-cloak>
                         <div class="p-4 bg-brand-softer border border-border-brand-subtle rounded-default space-y-4">
                             <p class="text-xs font-bold text-fg-brand flex items-start gap-2">
                                 <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5 text-brand-alt"></i>
@@ -324,7 +341,7 @@
                     </div>
 
                     <!-- Required for 'Disetujui' -->
-                    <div x-show="status === 'Disetujui'" x-collapse x-cloak>
+                    <div x-show="status === 'Disetujui' && '{{ $submission->current_status }}' !== 'Disetujui'" x-collapse x-cloak>
                         <div class="p-4 bg-success-soft border border-border-success-subtle rounded-default space-y-4">
                             <p class="text-xs font-bold text-fg-success-strong flex items-start gap-2">
                                 <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
@@ -343,13 +360,20 @@
                             <span x-show="status === 'Ditolak'" class="text-fg-danger font-bold">* (Wajib diisi jika menolak)</span>
                             <span x-show="status !== 'Ditolak'">(Opsional)</span>
                         </label>
-                        <textarea name="notes" rows="3" :required="status === 'Ditolak'" placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
+                        <textarea name="notes" rows="3" :required="status === 'Ditolak'" @if(in_array($submission->current_status, ['Disetujui', 'Ditolak'])) readonly @endif placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3.5 rounded-default shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-xs">
-                        Simpan Perubahan
-                        <i data-lucide="save" class="w-4 h-4"></i>
-                    </button>
+                    @if(in_array($submission->current_status, ['Disetujui', 'Ditolak']))
+                        <button type="submit" disabled class="w-full bg-neutral-tertiary text-white/50 cursor-not-allowed font-bold py-3.5 rounded-default shadow-md flex items-center justify-center gap-2 text-xs">
+                            Status Final
+                            <i data-lucide="lock" class="w-4 h-4"></i>
+                        </button>
+                    @else
+                        <button type="submit" class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3.5 rounded-default shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-xs">
+                            Simpan Perubahan
+                            <i data-lucide="save" class="w-4 h-4"></i>
+                        </button>
+                    @endif
                 </form>
 
                 <!-- Download/Generate Letter Box -->
