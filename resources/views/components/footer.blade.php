@@ -106,7 +106,7 @@
                 
                 <div class="space-y-[16px]">
                     <!-- Address Card -->
-                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-brand-alt/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-brand-alt/60 group">
+                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-blue-400/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-blue-300/60 group">
                         <div class="flex items-start gap-3">
                             <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center shrink-0 border border-brand-alt/30">
                                 <i data-lucide="map-pin" class="w-4 h-4 text-brand-alt"></i>
@@ -119,7 +119,7 @@
                     </div>
 
                     <!-- Phone & Email Card -->
-                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-brand-alt/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-brand-alt/60 group">
+                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-blue-400/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-blue-300/60 group">
                         <div class="flex items-start gap-3">
                             <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center shrink-0 border border-brand-alt/30">
                                 <i data-lucide="phone" class="w-4 h-4 text-brand-alt"></i>
@@ -133,7 +133,7 @@
                     </div>
 
                     <!-- Hours Card -->
-                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-brand-alt/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-brand-alt/60 group">
+                    <div class="border rounded-default p-4 transition-all duration-300 bg-white/10 border-blue-400/30 backdrop-blur-md hover:bg-white/[0.15] hover:border-blue-300/60 group">
                         <div class="flex items-start gap-3">
                             <div class="w-9 h-9 rounded-full bg-brand flex items-center justify-center shrink-0 border border-brand-alt/30">
                                 <i data-lucide="clock" class="w-4 h-4 text-brand-alt"></i>
@@ -153,7 +153,7 @@
                     <i data-lucide="map" class="w-4 h-4 text-brand-alt"></i> Lokasi Kantor
                 </h3>
                 
-                <div class="border rounded-default p-4 bg-white/10 border-brand-alt/30 backdrop-blur-md flex flex-col gap-4">
+                <div class="border rounded-default p-4 bg-white/10 border-blue-400/30 backdrop-blur-md flex flex-col gap-4">
                     <!-- Responsive Google Maps Embed -->
                     <div class="relative w-full rounded-[14px] overflow-hidden border-2 border-brand-medium h-[180px]">
                         @if($setting && $setting->google_maps)

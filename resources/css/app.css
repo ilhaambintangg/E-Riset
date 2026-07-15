@@ -9,17 +9,26 @@
    ========================================================================== */
 :root {
   /* Clean Backgrounds & Cards (Restored Original Colors) */
-  --color-neutral-primary-soft: #FFFDF6;
-  /* Warm Ivory Paper Background */
-  --color-neutral-primary: #FFFFFF;
+  --color-white: #FAF5E8;
+  /* Soft Parchment-White to prevent glare */
+  --color-neutral-primary-soft: #F3ECE0;
+  /* Warm Matte Paper Background */
+  --color-neutral-primary: var(--color-white);
   /* Clean Card Background */
-  --color-neutral-primary-medium: #FBF7EC;
+  --color-neutral-primary-medium: #EBE4D5;
   /* Bubbly Soft Cream Backdrop */
-  --color-neutral-primary-strong: #F2ECDC;
+  --color-neutral-primary-strong: #DECFAF;
   /* Card borders & dividers strong */
 
+  /* Soften slate palette for public warm ivory theme */
+  --color-slate-50: #F3ECE0;
+  --color-slate-100: #FAF5E8;
+  --color-slate-200: #DECFAF;
+  --color-slate-300: #D0C0A0;
+  --color-slate-400: #A89878;
+
   /* Borders & Dividers */
-  --color-neutral-secondary-soft: #FFFFFF;
+  --color-neutral-secondary-soft: var(--color-white);
   --color-neutral-secondary: #FFFDF6;
   --color-neutral-secondary-medium: #F9F4E3;
   --color-neutral-secondary-strong: #EFE8D3;
@@ -107,7 +116,12 @@
   --font-sans: 'Quicksand', 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: 'Outfit', 'Quicksand', var(--font-sans);
 
-  /* Map Background Colors */
+  --color-white: var(--color-white);
+  --color-slate-50: var(--color-slate-50);
+  --color-slate-100: var(--color-slate-100);
+  --color-slate-200: var(--color-slate-200);
+  --color-slate-300: var(--color-slate-300);
+  --color-slate-400: var(--color-slate-400);
   --color-neutral-primary-soft: var(--color-neutral-primary-soft);
   --color-neutral-primary: var(--color-neutral-primary);
   --color-neutral-primary-medium: var(--color-neutral-primary-medium);
@@ -235,29 +249,38 @@
   --text-5xl: 40px;
 
   /* Modern SaaS Color Palette */
-  --color-neutral-primary-soft: #F8FAFC;
-  /* Slate 50 background */
-  --color-neutral-primary: #FFFFFF;
+  --color-white: #E2E7F0;
+  /* Very soft dusk blue-gray cards/inputs to prevent glare */
+  --color-neutral-primary-soft: #CCD5E2;
+  /* Soothing matte background instead of bright white */
+  --color-neutral-primary: var(--color-white);
   /* Solid white cards */
-  --color-neutral-primary-medium: #F1F5F9;
+  --color-neutral-primary-medium: #B8C3D2;
   /* Slate 100 panels/footer */
-  --color-neutral-primary-strong: #E5E7EB;
+  --color-neutral-primary-strong: #A4B2C3;
   /* Slate 200 borders/dividers */
 
+  /* Soften slate palette for admin to prevent glare */
+  --color-slate-50: #CCD5E2;
+  --color-slate-100: #E2E7F0;
+  --color-slate-200: #A4B2C3;
+  --color-slate-300: #8B9BB0;
+  --color-slate-400: #6E7E94;
+
   /* Borders & Dividers */
-  --border-default-subtle: #F1F5F9;
-  --border-default: #E5E7EB;
-  --border-default-medium: #D1D5DB;
-  --border-default-strong: #9CA3AF;
-  --color-neutral-secondary-soft: #FFFFFF;
-  --color-neutral-secondary: #F8FAFC;
-  --color-neutral-secondary-medium: #F1F5F9;
-  --color-neutral-secondary-strong: #E5E7EB;
-  --color-neutral-tertiary-soft: #F8FAFC;
-  --color-neutral-tertiary: #E5E7EB;
-  --color-neutral-tertiary-medium: #D1D5DB;
-  --color-neutral-quaternary: #9CA3AF;
-  --color-gray: #6B7280;
+  --border-default-subtle: var(--color-slate-100);
+  --border-default: var(--color-slate-200);
+  --border-default-medium: var(--color-slate-300);
+  --border-default-strong: var(--color-slate-400);
+  --color-neutral-secondary-soft: var(--color-white);
+  --color-neutral-secondary: var(--color-slate-50);
+  --color-neutral-secondary-medium: var(--color-slate-100);
+  --color-neutral-secondary-strong: var(--color-slate-200);
+  --color-neutral-tertiary-soft: var(--color-slate-50);
+  --color-neutral-tertiary: var(--color-slate-200);
+  --color-neutral-tertiary-medium: var(--color-slate-300);
+  --color-neutral-quaternary: var(--color-slate-400);
+  --color-gray: #64748B;
 
   /* SaaS Rounded Corner (18px for cards, 12-14px for elements) */
   --radius-sm: 8px;
@@ -324,7 +347,7 @@
 }
 
 .admin-theme .btn-secondary {
-  background-color: #FFFFFF !important;
+  background-color: var(--color-white) !important;
   color: #111827 !important;
   border: 1px solid #E5E7EB !important;
   border-radius: 14px !important;
@@ -378,7 +401,7 @@
   font-size: 14px !important;
   padding-left: 16px !important;
   padding-right: 16px !important;
-  background-color: #FFFFFF !important;
+  background-color: var(--color-white) !important;
   transition: all 0.2s ease !important;
 }
 
@@ -389,7 +412,7 @@
 }
 
 .admin-theme .card-static {
-  background-color: #FFFFFF !important;
+  background-color: var(--color-white) !important;
   border: 1px solid #E5E7EB !important;
   border-radius: 18px !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
@@ -397,7 +420,7 @@
 }
 
 .admin-theme .card-interactive {
-  background-color: #FFFFFF !important;
+  background-color: var(--color-white) !important;
   border: 1px solid #E5E7EB !important;
   border-radius: 18px !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
@@ -836,16 +859,16 @@ html {
 /* Premium Admin Background Gradient with Dot Grid */
 .admin-bg-gradient {
   background:
-    linear-gradient(180deg, #0a2240 0%, #143a66 120px, #f8fafc 400px),
+    linear-gradient(180deg, #0a2240 0%, #143a66 120px, var(--color-neutral-primary-soft) 400px),
     radial-gradient(rgba(255, 255, 255, 0.15) 1.2px, transparent 1.2px);
   background-size: 100% 100%, 24px 24px;
 }
 
-/* Premium Public (Pemohon) Background - Navy to White Gradient with Dot Grid */
+/* Premium Public (Pemohon) Background - Navy to Soft Warm Ivory Gradient with Dot Grid */
 .public-bg-gradient {
-  background-color: #ffffff;
+  background-color: var(--color-neutral-primary-soft);
   background-image:
-    linear-gradient(180deg, #0a2240 0%, #143a66 500px, #ffffff 900px),
+    linear-gradient(180deg, #0a2240 0%, #143a66 500px, var(--color-neutral-primary-soft) 900px),
     radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px);
   background-size: 100% 900px, 24px 24px;
   background-repeat: no-repeat, repeat;

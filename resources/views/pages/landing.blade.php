@@ -141,86 +141,122 @@
             <span class="text-brand-alt font-extrabold uppercase tracking-widest text-[12px] mb-[8px] block">Prosedur Layanan</span>
             <h2 class="text-h2 text-fg-heading mb-[16px] font-black">4 Langkah Mudah Pengajuan</h2>
             <p class="text-lead text-fg-body max-w-2xl mx-auto opacity-95">
-                Ikuti alur jalan setapak penelitian berikut bersama Si Risi sampai surat izin terbit otomatis.
+                Ikuti langkah-langkah pengisian formulir terintegrasi berikut bersama Si Risi untuk mengajukan izin penelitian Anda.
             </p>
         </div>
 
         <!-- Custom Roadmap Layout (Organic path connection) -->
-        <div class="relative max-w-[1000px] mx-auto px-4">
+        <div class="relative max-w-[1100px] mx-auto px-4">
             
-            <!-- Connect Line (Only visible on large screen) -->
-            <div class="absolute top-[90px] left-[10%] right-[10%] h-[6px] border-t-4 border-dashed border-brand-alt/40 doodle-path hidden lg:block z-0"></div>
+            <!-- Connect Line (Aligned exactly with the circle centers on large screen) -->
+            <div class="absolute top-[64px] left-[15%] right-[15%] h-[2px] border-t-2 border-dashed border-brand-alt/30 hidden lg:block z-0"></div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[32px] relative z-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[28px] relative z-10">
                 
-                <!-- Step 1: Isi Data -->
-                <div class="card-interactive p-[28px] text-center border-3 border-border-default group hover:border-brand-alt">
-                    <div class="w-[84px] h-[84px] mx-auto rounded-full bg-brand-softer border-3 border-brand flex items-center justify-center mb-[20px] group-hover:scale-110 duration-300 relative">
-                        <!-- Mascot icon SVG (Si Risi Writing) -->
-                        <svg class="w-14 h-14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="50" cy="50" r="40" fill="#FFFDF6" stroke="#0A2240" stroke-width="2"/>
-                          <rect x="35" y="30" width="30" height="40" rx="4" fill="#D3E0F7" stroke="#0A2240" stroke-width="2"/>
-                          <!-- Quill pencil -->
-                          <path d="M65 25 L50 45 L45 55 L55 50 L75 30 Z" fill="#F4A261" stroke="#0A2240" stroke-width="2" />
-                          <circle cx="45" cy="40" r="6" fill="#0A2240" />
-                          <path d="M41 40 L49 40" stroke="white" stroke-width="1.5"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-7 h-7 bg-brand-alt text-white rounded-full flex items-center justify-center font-black text-[14px] border-2 border-white">1</span>
+                <!-- Step 1: Identitas & Anggota -->
+                <div class="card-interactive bg-white/80 border border-border-default/40 backdrop-blur-md rounded-3xl p-[28px] text-center group transition-all duration-300 relative shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.15)] hover:-translate-y-2 hover:border-blue-400 overflow-hidden">
+                    
+                    <div class="w-[64px] h-[64px] mx-auto rounded-full bg-linear-to-tr from-[#1E3A8A] to-[#3B82F6] text-white flex items-center justify-center mb-[20px] shadow-[0_8px_20px_-6px_rgba(59,130,246,0.5)] group-hover:scale-110 group-hover:rotate-3 duration-300 relative shrink-0">
+                        <i data-lucide="users" class="w-7 h-7"></i>
                     </div>
-                    <h3 class="font-heading font-black text-[18px] text-fg-heading mb-[8px]">Isi Data Diri</h3>
-                    <p class="text-[14px] text-fg-body-subtle leading-[1.6]">Lengkapi formulir pendaftaran, data pemohon, institusi, dan rencana riset secara terperinci.</p>
+                    
+                    <div class="mb-4">
+                        <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-black bg-blue-500/10 text-blue-600 uppercase tracking-widest">01 · DATA DIRI</span>
+                    </div>
+                    
+                    <h3 class="font-heading font-black text-[19px] text-fg-heading mb-[10px] group-hover:text-blue-600 transition-colors">Identitas & Anggota</h3>
+                    <p class="text-[13px] text-fg-body-subtle leading-[1.6]">Isi identitas diri berupa Nama, NIM/NPM, kontak WhatsApp, dan Email. Tambahkan anggota tim jika riset berkelompok.</p>
                 </div>
 
-                <!-- Step 2: Upload Dokumen -->
-                <div class="card-interactive p-[28px] text-center border-3 border-border-default group hover:border-brand-alt" style="animation-delay: 0.15s;">
-                    <div class="w-[84px] h-[84px] mx-auto rounded-full bg-brand-alt-soft border-3 border-brand-alt flex items-center justify-center mb-[20px] group-hover:scale-110 duration-300 relative">
-                        <!-- Mascot icon SVG (Si Risi Uploading) -->
-                        <svg class="w-14 h-14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="50" cy="50" r="40" fill="#FFFDF6" stroke="#F4A261" stroke-width="2"/>
-                          <!-- Cloud -->
-                          <path d="M35 55 C30 55 28 48 34 44 C34 35 48 32 54 38 C62 34 70 42 66 50 C72 52 70 60 62 60 L38 60 Z" fill="#D3E0F7" stroke="#0A2240" stroke-width="2"/>
-                          <!-- Arrow Up -->
-                          <path d="M50 62 L50 48 M50 48 L46 52 M50 48 L54 52" stroke="#E76F51" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-7 h-7 bg-brand-alt text-white rounded-full flex items-center justify-center font-black text-[14px] border-2 border-white">2</span>
+                <!-- Step 2: Detail Riset & Akademik -->
+                <div class="card-interactive bg-white/80 border border-border-default/40 backdrop-blur-md rounded-3xl p-[28px] text-center group transition-all duration-300 relative shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(249,115,22,0.15)] hover:-translate-y-2 hover:border-orange-400 overflow-hidden" style="animation-delay: 0.1s;">
+                    
+                    <div class="w-[64px] h-[64px] mx-auto rounded-full bg-linear-to-tr from-[#EA580C] to-[#F97316] text-white flex items-center justify-center mb-[20px] shadow-[0_8px_20px_-6px_rgba(249,115,22,0.5)] group-hover:scale-110 group-hover:rotate-3 duration-300 relative shrink-0">
+                        <i data-lucide="graduation-cap" class="w-7 h-7"></i>
                     </div>
-                    <h3 class="font-heading font-black text-[18px] text-fg-heading mb-[8px]">Upload Berkas</h3>
-                    <p class="text-[14px] text-fg-body-subtle leading-[1.6]">Unggah berkas PDF wajib seperti Surat Pengantar dari Kampus/Instansi dan Proposal Penelitian.</p>
+                    
+                    <div class="mb-4">
+                        <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-black bg-orange-500/10 text-orange-600 uppercase tracking-widest">02 · DETAIL RISET</span>
+                    </div>
+                    
+                    <h3 class="font-heading font-black text-[19px] text-fg-heading mb-[10px] group-hover:text-orange-600 transition-colors">Riset & Akademik</h3>
+                    <p class="text-[13px] text-fg-body-subtle leading-[1.6]">Lengkapi data universitas/prodi, nomor & tanggal surat pengantar kampus, serta detail judul, lokasi, dan jenis riset.</p>
                 </div>
 
-                <!-- Step 3: Verifikasi -->
-                <div class="card-interactive p-[28px] text-center border-3 border-border-default group hover:border-brand-alt" style="animation-delay: 0.3s;">
-                    <div class="w-[84px] h-[84px] mx-auto rounded-full bg-info-soft border-3 border-info flex items-center justify-center mb-[20px] group-hover:scale-110 duration-300 relative">
-                        <!-- Mascot icon SVG (Si Risi Verifying) -->
-                        <svg class="w-14 h-14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="50" cy="50" r="40" fill="#FFFDF6" stroke="#00796B" stroke-width="2"/>
-                          <circle cx="45" cy="45" r="14" stroke="#0A2240" stroke-width="3" fill="none"/>
-                          <path d="M55 55 L70 70" stroke="#0A2240" stroke-width="4" stroke-linecap="round"/>
-                          <circle cx="45" cy="45" r="5" fill="#E76F51"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-7 h-7 bg-brand-alt text-white rounded-full flex items-center justify-center font-black text-[14px] border-2 border-white">3</span>
+                <!-- Step 3: Unggah Berkas -->
+                <div class="card-interactive bg-white/80 border border-border-default/40 backdrop-blur-md rounded-3xl p-[28px] text-center group transition-all duration-300 relative shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.15)] hover:-translate-y-2 hover:border-amber-400 overflow-hidden" style="animation-delay: 0.2s;">
+                    
+                    <div class="w-[64px] h-[64px] mx-auto rounded-full bg-linear-to-tr from-[#D97706] to-[#F59E0B] text-white flex items-center justify-center mb-[20px] shadow-[0_8px_20px_-6px_rgba(245,158,11,0.5)] group-hover:scale-110 group-hover:rotate-3 duration-300 relative shrink-0">
+                        <i data-lucide="upload-cloud" class="w-7 h-7"></i>
                     </div>
-                    <h3 class="font-heading font-black text-[18px] text-fg-heading mb-[8px]">Verifikasi Admin</h3>
-                    <p class="text-[14px] text-fg-body-subtle leading-[1.6]">Petugas Pengadilan Tinggi akan mengecek kelengkapan data. Pantau status berkala di menu Lacak.</p>
+                    
+                    <div class="mb-4">
+                        <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-black bg-amber-500/10 text-amber-600 uppercase tracking-widest">03 · DOKUMEN</span>
+                    </div>
+                    
+                    <h3 class="font-heading font-black text-[19px] text-fg-heading mb-[10px] group-hover:text-amber-600 transition-colors">Unggah Berkas</h3>
+                    <p class="text-[13px] text-fg-body-subtle leading-[1.6]">Unggah dokumen wajib berformat PDF (Maks. 2 MB) yaitu Surat Pengantar Kampus serta berkas Proposal Penelitian.</p>
                 </div>
 
-                <!-- Step 4: Surat Terbit -->
-                <div class="card-interactive p-[28px] text-center border-3 border-border-default group hover:border-brand-alt" style="animation-delay: 0.45s;">
-                    <div class="w-[84px] h-[84px] mx-auto rounded-full bg-success-soft border-3 border-success flex items-center justify-center mb-[20px] group-hover:scale-110 duration-300 relative">
-                        <!-- Mascot icon SVG (Si Risi Celebrating) -->
-                        <svg class="w-14 h-14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="50" cy="50" r="40" fill="#FFFDF6" stroke="#2E7D32" stroke-width="2"/>
-                          <!-- Ribbon certificate -->
-                          <rect x="36" y="28" width="28" height="38" rx="2" fill="#FEF3C7" stroke="#0A2240" stroke-width="2"/>
-                          <circle cx="50" cy="42" r="5" fill="#E76F51"/>
-                          <path d="M48 45 L45 58 L50 54 L55 58 L52 45 Z" fill="#F4A261" stroke="#0A2240" stroke-width="1.5"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 w-7 h-7 bg-brand-alt text-white rounded-full flex items-center justify-center font-black text-[14px] border-2 border-white">4</span>
+                <!-- Step 4: Tinjau & Kirim -->
+                <div class="card-interactive bg-white/80 border border-border-default/40 backdrop-blur-md rounded-3xl p-[28px] text-center group transition-all duration-300 relative shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(20,184,166,0.15)] hover:-translate-y-2 hover:border-teal-400 overflow-hidden" style="animation-delay: 0.3s;">
+                    
+                    <div class="w-[64px] h-[64px] mx-auto rounded-full bg-linear-to-tr from-[#0D9488] to-[#14B8A6] text-white flex items-center justify-center mb-[20px] shadow-[0_8px_20px_-6px_rgba(20,184,166,0.5)] group-hover:scale-110 group-hover:rotate-3 duration-300 relative shrink-0">
+                        <i data-lucide="send" class="w-7 h-7"></i>
                     </div>
-                    <h3 class="font-heading font-black text-[18px] text-fg-heading mb-[8px]">Izin Penelitian Terbit</h3>
-                    <p class="text-[14px] text-fg-body-subtle leading-[1.6]">Surat Izin Penelitian elektronik resmi ber-TTD QR-Code sah diterbitkan dan langsung dapat diunduh.</p>
+                    
+                    <div class="mb-4">
+                        <span class="inline-flex px-3 py-1 rounded-full text-[10px] font-black bg-teal-500/10 text-teal-600 uppercase tracking-widest">04 · SUBMIT</span>
+                    </div>
+                    
+                    <h3 class="font-heading font-black text-[19px] text-fg-heading mb-[10px] group-hover:text-teal-600 transition-colors">Tinjau & Kirim</h3>
+                    <p class="text-[13px] text-fg-body-subtle leading-[1.6]">Periksa ringkasan seluruh data riset Anda, centang pernyataan kebenaran berkas, lalu kirim untuk memperoleh Nomor Registrasi.</p>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- Pasca Pengajuan Section -->
+        <div class="mt-[100px] pt-[80px] animate-fade-up">
+            <div class="text-center mb-[48px]">
+                <h3 class="font-heading font-black text-[24px] text-fg-heading mb-[10px]">Apa yang Terjadi Setelah Permohonan Dikirim?</h3>
+                <p class="text-[14px] text-fg-body-subtle max-w-xl mx-auto font-medium opacity-90">
+                    Formulir pengajuan Anda selesai dalam 4 langkah mudah di atas. Setelah dikirim, alur dilanjutkan secara internal oleh Pengadilan Tinggi melalui 2 tahap berikut:
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-[32px] max-w-[900px] mx-auto">
+                <!-- Tahap A: Verifikasi Dokumen -->
+                <div class="card-interactive bg-white/90 border border-border-default/50 hover:border-brand rounded-3xl p-[32px] flex items-start gap-6 group transition-all duration-300 relative shadow-sm hover:shadow-md hover:-translate-y-1 overflow-hidden">
+                    
+                    <div class="w-[56px] h-[56px] rounded-2xl bg-linear-to-tr from-brand to-brand-medium text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    
+                    <div>
+                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[9px] font-black bg-brand/10 text-brand uppercase tracking-wider mb-2">TAHAP A</span>
+                        <h4 class="font-heading font-black text-[18px] text-fg-heading mb-[8px] group-hover:text-brand transition-colors">Validasi & Verifikasi Berkas</h4>
+                        <p class="text-[13px] text-fg-body-subtle leading-[1.6] font-medium">
+                            Petugas Pengadilan Tinggi akan memverifikasi kesesuaian data formulir dan berkas PDF Anda. Proses verifikasi dapat dipantau di menu Lacak Permohonan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tahap B: Izin Penelitian Terbit -->
+                <div class="card-interactive bg-white/90 border border-border-default/50 hover:border-success rounded-3xl p-[32px] flex items-start gap-6 group transition-all duration-300 relative shadow-sm hover:shadow-md hover:-translate-y-1 overflow-hidden">
+                    
+                    <div class="w-[56px] h-[56px] rounded-2xl bg-linear-to-tr from-success to-success-strong text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    
+                    <div>
+                        <span class="inline-flex px-2.5 py-0.5 rounded-full text-[9px] font-black bg-success-soft text-success-strong uppercase tracking-wider mb-2">TAHAP B</span>
+                        <h4 class="font-heading font-black text-[18px] text-fg-heading mb-[8px] group-hover:text-success-strong transition-colors">Penerbitan Surat Izin Resmi</h4>
+                        <p class="text-[13px] text-fg-body-subtle leading-[1.6] font-medium">
+                            Setelah disetujui, Surat Izin Penelitian elektronik resmi ber-TTD QR Code sah akan diterbitkan secara otomatis dan dapat Anda unduh langsung secara gratis.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -237,7 +273,7 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[32px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-[32px] max-w-[900px] mx-auto">
             @forelse($requirements as $req)
                 <!-- Memo Style Card with custom pin accent -->
                 <div class="bg-white border-2 border-border-default rounded-base p-[32px] relative shadow-2xs hover:shadow-xs transition-all duration-300 hover:-rotate-1">
@@ -312,7 +348,7 @@
 </section>
 
 <!-- ── CTA BANNER (Playful Court Banner) ── -->
-<section class="pt-[100px] pb-[160px] relative overflow-hidden bg-neutral-primary-soft text-center">
+<section class="pt-[100px] pb-[160px] relative overflow-hidden bg-gradient-to-b from-white to-neutral-primary-soft text-center">
     <!-- Bubble Pattern -->
     <div class="absolute inset-0 opacity-[0.4] pointer-events-none" style="background-image: radial-gradient(var(--color-border-default) 1.5px, transparent 1.5px); background-size: 24px 24px;"></div>
     
@@ -350,9 +386,3 @@
 </section>
 
 @endsection
-
-@push('styles')
-<style>
-    [x-cloak] { display: none !important; }
-</style>
-@endpush

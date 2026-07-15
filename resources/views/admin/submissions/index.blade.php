@@ -37,7 +37,7 @@
                             <option value="Menunggu Verifikasi" {{ request('status') === 'Menunggu Verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi (Review)</option>
                             <option value="Sedang Diproses" {{ request('status') === 'Sedang Diproses' ? 'selected' : '' }}>Sedang Diproses (Revisi)</option>
                             <option value="Disetujui" {{ request('status') === 'Disetujui' ? 'selected' : '' }}>Disetujui (Lolos Verifikasi)</option>
-                            <option value="Ditolak" {{ request('status') === 'Ditolak' ? 'selected' : '' }}>Ditolak (Dokumen Kurang)</option>
+                            <option value="Ditolak" {{ request('status') === 'Ditolak' ? 'selected' : '' }}>Ditolak (Ditolak)</option>
                         </select>
                         <i data-lucide="chevron-down" class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
                     </div>
@@ -93,7 +93,7 @@
                                     'dot' => 'bg-amber-500'
                                 ],
                                 'Ditolak' => [
-                                    'label' => 'Dokumen Kurang',
+                                    'label' => 'Ditolak',
                                     'bg' => 'bg-red-50 text-red-700 border-red-100',
                                     'dot' => 'bg-red-500'
                                 ],
