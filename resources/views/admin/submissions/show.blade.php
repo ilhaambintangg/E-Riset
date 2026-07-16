@@ -59,7 +59,7 @@
                     <div>
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Nama Lengkap Pemohon</p>
                         <p class="text-base font-bold text-fg-heading">{{ $submission->name }}</p>
-                        <p class="text-sm text-fg-body-subtle mt-0.5 font-mono">NIM/NIDN: {{ $submission->nim }}</p>
+                        <p class="text-sm text-fg-body-subtle mt-0.5 font-mono">NIM/NPM: {{ $submission->nim }}</p>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Hubungi Pemohon</p>
@@ -94,42 +94,48 @@
                         </div>
                     </div>
 
+                    @php
+                        $recipientPosition = $submission->recipient_position === 'Ditentukan oleh Admin' ? null : $submission->recipient_position;
+                        $destinationCity = in_array($submission->destination_city, ['Ditentukan oleh Admin', 'Default']) ? null : $submission->destination_city;
+                    @endphp
+
+                    @if($recipientPosition || $destinationCity)
                     <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Tujuan Surat</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            @if($recipientPosition)
                             <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
                                 <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Jabatan Penerima</p>
-                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->recipient_position ?? '-' }}</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $recipientPosition }}</p>
                             </div>
+                            @endif
+                            @if($destinationCity)
                             <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default">
                                 <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Kota Tujuan</p>
-                                <p class="text-xs font-semibold text-fg-heading">{{ $submission->destination_city ?? '-' }}</p>
+                                <p class="text-xs font-semibold text-fg-heading">{{ $destinationCity }}</p>
                             </div>
+                            @endif
                         </div>
                     </div>
+                    @endif
 
                     <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
                         <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Judul & Tujuan Penelitian</p>
                         <p class="text-sm font-bold text-fg-heading">{{ $submission->research_title ?? $submission->title }}</p>
-                        <p class="text-xs text-fg-body-subtle mt-1">Jenis Penelitian: <span class="font-bold text-fg-heading">{{ $submission->research_type ?? 'Skripsi' }}</span></p>
+                        <p class="text-xs text-fg-body-subtle mt-1">Tujuan Penelitian: <span class="font-bold text-fg-heading">{{ $submission->research_type ?? 'Skripsi' }}</span></p>
+                        @if($submission->purpose && trim($submission->purpose) !== trim($submission->research_type ?? 'Skripsi'))
                         <div class="mt-2 bg-neutral-primary-soft p-4 rounded-default border border-border-default text-xs text-fg-body leading-relaxed whitespace-pre-line">
                             {{ $submission->purpose }}
                         </div>
+                        @endif
                     </div>
 
                     <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
-                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Lokasi & Waktu Penelitian</p>
+                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Lokasi Penelitian</p>
                         <div class="flex flex-col sm:flex-row gap-4 mt-2">
                             <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default flex-1">
                                 <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Tempat Penelitian</p>
                                 <p class="text-xs font-semibold text-fg-heading">{{ $submission->research_location ?? $submission->location }}</p>
-                            </div>
-                            <div class="bg-neutral-primary-soft px-4 py-3 rounded-default border border-border-default flex-1">
-                                <p class="text-[10px] text-fg-body-subtle font-bold uppercase mb-1">Rentang Tanggal</p>
-                                <p class="text-xs font-semibold text-fg-heading">
-                                    {{ \Carbon\Carbon::parse($submission->start_date)->translatedFormat('d M Y') }} - 
-                                    {{ \Carbon\Carbon::parse($submission->end_date)->translatedFormat('d M Y') }}
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -270,7 +276,7 @@
     <div class="space-y-6">
         
         <!-- Status Update Card -->
-        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses']) ? '' : $submission->current_status }}' }">
+        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses']) ? '' : $submission->current_status }}', recipient_position: '' }">
             <div class="px-6 py-5 border-b border-border-default bg-neutral-primary-soft">
                 <h3 class="text-sm font-bold text-fg-heading flex items-center gap-2 m-0">
                     <i data-lucide="settings" class="w-4 h-4 text-brand-alt"></i> Proses Permohonan
@@ -325,6 +331,29 @@
                                 Memilih status ini akan otomatis menghasilkan draf Surat Izin (Word) menggunakan template.
                             </p>
                             <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Jabatan Tujuan Surat</label>
+                                <select name="recipient_position" x-model="recipient_position" :required="status === 'Sedang Diproses'" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                    <option value="" disabled selected>-- Pilih Jabatan --</option>
+                                    <option value="Ketua Pengadilan Negeri">Ketua Pengadilan Negeri</option>
+                                    <option value="Ketua Pengadilan Tinggi">Ketua Pengadilan Tinggi</option>
+                                    <option value="Sekretaris">Sekretaris</option>
+                                    <option value="Panitera">Panitera</option>
+                                    <option value="Rektor">Rektor</option>
+                                    <option value="Dekan">Dekan</option>
+                                    <option value="Ketua Program Studi">Ketua Program Studi</option>
+                                    <option value="Direktur Program Pascasarjana">Direktur Program Pascasarjana</option>
+                                    <option value="Lainnya">Lainnya (Input Manual)</option>
+                                </select>
+                            </div>
+                            <div x-show="recipient_position === 'Lainnya'" x-collapse x-cloak>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Masukkan Jabatan Tujuan Surat</label>
+                                <input type="text" name="custom_recipient_position" placeholder="Contoh: Kepala Biro Akademik" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Kota Tujuan Surat</label>
+                                <input type="text" name="destination_city" :required="status === 'Sedang Diproses'" placeholder="Contoh: Bandar Lampung" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                            <div>
                                 <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Pilih Panitera / Penandatangan</label>
                                 <select name="panitera_id" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                                     <option value="">-- Pilih --</option>
@@ -340,16 +369,17 @@
                         </div>
                     </div>
 
-                    <!-- Required for 'Disetujui' -->
-                    <div x-show="status === 'Disetujui' && '{{ $submission->current_status }}' !== 'Disetujui'" x-collapse x-cloak>
+                    <!-- Required for 'Disetujui' or 'Ditolak' -->
+                    <div x-show="(status === 'Disetujui' || status === 'Ditolak') && '{{ $submission->current_status }}' !== status" x-collapse x-cloak>
                         <div class="p-4 bg-success-soft border border-border-success-subtle rounded-default space-y-4">
                             <p class="text-xs font-bold text-fg-success-strong flex items-start gap-2">
                                 <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
-                                Upload file PDF surat izin resmi yang telah ditandatangani dan dicap.
+                                Upload file PDF surat balasan / izin resmi yang telah ditandatangani dan dicap.
                             </p>
                             <div>
-                                <label class="block text-xs font-bold text-fg-success-strong mb-1.5">Upload Surat Izin (PDF)</label>
-                                <input type="file" name="permit_file" accept=".pdf" class="w-full text-xs text-fg-body file:mr-3 file:py-1.5 file:px-3 file:rounded-sm file:border-0 file:text-[10px] file:font-bold file:bg-success file:text-white hover:file:bg-success-strong cursor-pointer">
+                                <label class="block text-xs font-bold text-fg-success-strong mb-1.5">Upload Surat Balasan (PDF)</label>
+                                <input type="file" name="permit_file" accept=".pdf" class="w-full text-xs text-fg-body file:mr-3 file:py-1.5 file:px-3 file:rounded-sm file:border-0 file:text-[10px] file:font-bold file:bg-success file:text-white hover:file:bg-success-strong cursor-pointer" :required="status === 'Disetujui'">
+                                <p class="text-[10px] text-fg-body-subtle mt-1.5">Format File: PDF | Ukuran Maksimal: 2 MB</p>
                             </div>
                         </div>
                     </div>

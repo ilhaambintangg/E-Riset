@@ -163,6 +163,49 @@
             </div>
         </div>
     </div>
+
+    <!-- Survey Modal -->
+    <div x-show="showSurveyModal" class="fixed inset-0 z-[60] overflow-y-auto" style="display: none;" x-transition>
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+            <div x-show="showSurveyModal" 
+                 x-transition:enter="transition-opacity ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 transition-opacity bg-slate-900/40 backdrop-blur-sm" @click="showSurveyModal = false"></div>
+
+            <div x-show="showSurveyModal" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+                 class="relative w-full max-w-md bg-white shadow-xl rounded-2xl border border-border-default my-8 text-left transition-all transform flex flex-col overflow-hidden p-6 text-center">
+                
+                <div class="w-16 h-16 bg-brand-softer text-brand rounded-full flex items-center justify-center mx-auto mb-4 border border-brand/20 shadow-inner">
+                    <i data-lucide="clipboard-check" class="w-8 h-8 text-brand"></i>
+                </div>
+                
+                <h3 class="text-lg font-black text-fg-heading mb-2">Terima kasih.</h3>
+                <p class="text-sm text-fg-body-subtle leading-relaxed mb-6">
+                    Sebelum permohonan dikirim,<br>silakan mengisi Survey Kepuasan Masyarakat terlebih dahulu.
+                </p>
+                
+                <div class="flex flex-col gap-2">
+                    <button type="button" @click="confirmSurveyAndSubmit()" class="btn-brand btn-base w-full py-3 flex items-center justify-center gap-2 rounded-xl">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        Isi Survey
+                    </button>
+                    <button type="button" @click="showSurveyModal = false" class="btn-secondary btn-base w-full py-3 rounded-xl">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -176,14 +219,15 @@ function submissionForm() {
             email: '', 
             phone: '', 
             university: '', 
+            custom_university: '', 
             faculty: '', 
             study_program: '', 
             nim: '', 
             
             // New fields
-            recipient_position: '',
+            recipient_position: 'Ditentukan oleh Admin',
             custom_recipient_position: '',
-            destination_city: '',
+            destination_city: 'Ditentukan oleh Admin',
             target_institution: '',
             reference_letter_number: '',
             reference_letter_date: '',
@@ -205,6 +249,7 @@ function submissionForm() {
         loading: false,
         success: false,
         registrationNumber: '',
+        showSurveyModal: false,
         
         init() {
             // Keep first member synchronized with applicant's name and nim if group
@@ -347,28 +392,26 @@ function submissionForm() {
                 }
             }
             else if (stepNumber === 2) {
-                if (!f.university.trim()) errs.university = 'Universitas wajib diisi.';
+                if (!f.university.trim()) {
+                    errs.university = 'Universitas wajib diisi.';
+                } else if (f.university === 'Lainnya' && !f.custom_university.trim()) {
+                    errs.custom_university = 'Nama Universitas / Instansi wajib diisi.';
+                }
                 if (!f.faculty.trim()) errs.faculty = 'Fakultas wajib diisi.';
                 if (!f.study_program.trim()) errs.study_program = 'Program Studi wajib diisi.';
 
-                if (!f.recipient_position) errs.recipient_position = 'Jabatan tujuan surat wajib dipilih.';
-                if (f.recipient_position === 'Lainnya' && !f.custom_recipient_position.trim()) {
-                    errs.custom_recipient_position = 'Jabatan custom wajib diisi.';
-                }
-                if (!f.destination_city.trim()) errs.destination_city = 'Kota tujuan wajib diisi.';
                 if (!f.reference_letter_number.trim()) errs.reference_letter_number = 'Nomor surat pengantar wajib diisi.';
                 if (!f.reference_letter_date) errs.reference_letter_date = 'Tanggal surat pengantar wajib diisi.';
                 
                 if (!f.research_title.trim()) errs.research_title = 'Judul Penelitian wajib diisi.';
-                if (!f.purpose.trim()) errs.purpose = 'Tujuan Penelitian wajib diisi.';
                 if (!f.research_location) errs.research_location = 'Lokasi Penelitian wajib dipilih.';
                 if (f.research_location === 'Lainnya' && !f.custom_research_location.trim()) {
                     errs.custom_research_location = 'Lokasi custom wajib diisi.';
                 }
-                if (!f.research_type) errs.research_type = 'Jenis Penelitian wajib dipilih.';
+                if (!f.research_type) errs.research_type = 'Tujuan Penelitian wajib dipilih.';
                 // Jika "Lainnya" dipilih, wajib isi custom_research_type
                 if (f.research_type === 'Lainnya' && !f.custom_research_type.trim()) {
-                    errs.custom_research_type = 'Jenis Penelitian wajib diisi.';
+                    errs.custom_research_type = 'Tujuan Penelitian wajib diisi.';
                 }
             }
             else if (stepNumber === 3) {
@@ -396,7 +439,7 @@ function submissionForm() {
                 // Focus/navigate to the step with error
                 if (errs.name || errs.email || errs.phone || errs.nim) {
                     this.step = 1;
-                } else if (errs.university || errs.faculty || errs.study_program || errs.recipient_position || errs.destination_city || errs.reference_letter_number || errs.reference_letter_date || errs.research_title || errs.research_location || errs.research_type || errs.members || errs.purpose) {
+                } else if (errs.university || errs.faculty || errs.study_program || errs.reference_letter_number || errs.reference_letter_date || errs.research_title || errs.research_location || errs.research_type || errs.members || errs.custom_university) {
                     this.step = 2;
                 } else {
                     this.step = 3;
@@ -404,14 +447,22 @@ function submissionForm() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 return;
             }
+
+            this.showSurveyModal = true;
+        },
+
+        confirmSurveyAndSubmit() {
+            // Buka tab survei ke URL yang benar di tab baru
+            const surveyTab = window.open('https://esurvey.badilum.mahkamahagung.go.id/index.php/kontrol_ikm_surveillance', '_blank');
+            
+            // Tutup popup modal otomatis
+            this.showSurveyModal = false;
             
             this.loading = true;
             this.errors = {};
 
-            // Buka tab survei LANGSUNG ke URL-nya secara sinkron (masih dalam user gesture klik submit),
-            // sehingga browser mengizinkannya tanpa popup blocker dan tanpa menampilkan tab kosong.
-            // Jika fetch gagal, tab akan ditutup otomatis.
-            const surveyTab = window.open('http://esurvey.badilum.mahkamahagung.go.id/pengadilan/400364', '_blank');
+            // Auto-fill purpose with selected research_type or its custom counterpart to satisfy backend validation
+            this.form.purpose = this.form.research_type === 'Lainnya' ? this.form.custom_research_type : this.form.research_type;
             
             const fd = new FormData();
             
@@ -423,6 +474,10 @@ function submissionForm() {
                         fd.append(`members[${index}][name]`, m.name);
                         fd.append(`members[${index}][npm]`, m.npm);
                     });
+                } else if (k === 'university' && this.form.university === 'Lainnya') {
+                    fd.append('university', this.form.custom_university);
+                } else if (k === 'custom_university') {
+                    // Skip - handled above
                 } else if (k === 'recipient_position' && this.form.recipient_position === 'Lainnya') {
                     fd.append('recipient_position', this.form.custom_recipient_position);
                 } else if (k === 'research_location' && this.form.research_location === 'Lainnya') {
@@ -451,11 +506,10 @@ function submissionForm() {
             .then(res => {
                 if (res.status >= 200 && res.status < 300) {
                     this.success = true;
-                    // Tab survei sudah terbuka langsung ke URL yang benar — tidak perlu redirect lagi
                     // Redirect halaman utama ke halaman sukses
                     window.location.href = `/success/${res.body.registration_number}`;
                 } else {
-                    // Submit gagal — tutup tab survei yang sudah terbuka
+                    // Submit gagal — tutup tab survei yang sudah terbuka jika ada
                     if (surveyTab) surveyTab.close();
                     if (res.body.errors) {
                         let mapped = {};
@@ -466,7 +520,7 @@ function submissionForm() {
                         // Determine step navigation on validation failure
                         if (mapped.name || mapped.email || mapped.phone || mapped.nim) {
                             this.step = 1;
-                        } else if (mapped.university || mapped.faculty || mapped.study_program || mapped.recipient_position || mapped.destination_city || mapped.reference_letter_number || mapped.reference_letter_date || mapped.research_title || mapped.research_location || mapped.research_type || mapped.members || mapped.purpose) {
+                        } else if (mapped.university || mapped.faculty || mapped.study_program || mapped.destination_city || mapped.reference_letter_number || mapped.reference_letter_date || mapped.research_title || mapped.research_location || mapped.research_type || mapped.members) {
                             this.step = 2;
                         } else {
                             this.step = 3;
@@ -478,7 +532,7 @@ function submissionForm() {
                 }
             })
             .catch(err => {
-                // Error jaringan — tutup tab survei
+                // Error jaringan — tutup tab survei jika ada
                 if (surveyTab) surveyTab.close();
                 this.errors = { _global: 'Terjadi kesalahan jaringan. Silakan coba lagi.' };
                 window.scrollTo({ top: 0, behavior: 'smooth' });

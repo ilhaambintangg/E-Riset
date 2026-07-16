@@ -22,9 +22,6 @@ class AdminDashboardController extends Controller
         $this->submissionService = $submissionService;
     }
 
-    /**
-     * Show admin dashboard.
-     */
     public function dashboard()
     {
         $stats = [

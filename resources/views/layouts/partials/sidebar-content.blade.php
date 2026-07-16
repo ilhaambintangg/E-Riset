@@ -106,6 +106,12 @@
             <i data-lucide="users" class="w-4 h-4"></i>
             <span class="flex-1">Data Panitera</span>
         </a>
+        <!-- Data Universitas -->
+        <a href="{{ route('universities.index') }}" 
+           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('universities.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+            <span class="flex-1">Data Universitas</span>
+        </a>
         <!-- Template Surat -->
         <a href="{{ route('templates.index') }}" 
            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('templates.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">

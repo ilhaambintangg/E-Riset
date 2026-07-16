@@ -53,6 +53,7 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLast
     Route::resource('faqs', FaqController::class);
     Route::resource('announcements', AnnouncementController::class);
     Route::resource('panitera', PaniteraController::class);
+    Route::resource('universities', \App\Http\Controllers\Admin\UniversityController::class);
     
     // Template Surat
     Route::get('templates', [TemplateSuratController::class, 'index'])->name('templates.index');

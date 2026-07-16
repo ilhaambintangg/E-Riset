@@ -13,10 +13,24 @@
             <!-- Universitas -->
             <div class="md:col-span-2">
                 <label class="input-label">Universitas / Instansi <span class="text-fg-danger">*</span></label>
-                <input type="text" x-model="form.university" @input="clearError('university')" placeholder="Masukkan nama universitas atau instansi secara lengkap" 
-                       class="input-standard"
-                       :class="errors.university ? '!border-border-danger focus:!ring-danger' : ''">
+                <select x-model="form.university" @change="clearError('university')" 
+                        class="input-standard bg-white"
+                        :class="errors.university ? '!border-border-danger focus:!ring-danger' : ''">
+                    <option value="" disabled selected>Pilih Universitas...</option>
+                    @foreach($universities as $uni)
+                        <option value="{{ $uni->name }}">{{ $uni->name }}</option>
+                    @endforeach
+                    <option value="Lainnya">Lainnya (Tulis Manual)</option>
+                </select>
                 <p x-show="errors.university" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.university"></p>
+            </div>
+
+            <!-- Custom Universitas (Shown when "Lainnya" is selected) -->
+            <div class="md:col-span-2" x-show="form.university === 'Lainnya'" x-transition x-cloak>
+                <label class="input-label">Nama Universitas / Instansi <span class="text-fg-danger">*</span></label>
+                <input type="text" x-model="form.custom_university" @input="clearError('custom_university')" placeholder="Masukkan nama universitas atau instansi secara lengkap" 
+                       class="input-standard" :class="errors.custom_university ? '!border-border-danger' : ''">
+                <p x-show="errors.custom_university" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_university"></p>
             </div>
 
             <!-- Fakultas -->
@@ -49,35 +63,9 @@
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-[24px]">
-            <!-- Jabatan Tujuan Surat -->
-            <div class="md:col-span-2">
-                <label class="input-label">Jabatan Tujuan Surat <span class="text-fg-danger">*</span></label>
-                <select x-model="form.recipient_position" @change="clearError('recipient_position')" class="input-standard" :class="errors.recipient_position ? '!border-border-danger' : ''">
-                    <option value="" disabled selected>Pilih Jabatan...</option>
-                    <option value="Rektor">Rektor</option>
-                    <option value="Dekan">Dekan</option>
-                    <option value="Ketua Program Studi">Ketua Program Studi</option>
-                    <option value="Direktur Program Pascasarjana">Direktur Program Pascasarjana</option>
-                    <option value="Lainnya">Lainnya</option>
-                </select>
-                <p x-show="errors.recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.recipient_position"></p>
-            </div>
 
-            <!-- Custom Jabatan (Shown when "Lainnya" is selected) -->
-            <div class="md:col-span-2" x-show="form.recipient_position === 'Lainnya'" x-transition x-cloak>
-                <label class="input-label">Masukkan Jabatan <span class="text-fg-danger">*</span></label>
-                <input type="text" x-model="form.custom_recipient_position" @input="clearError('custom_recipient_position')" placeholder="Contoh: Kepala Program Magister Hukum" 
-                       class="input-standard" :class="errors.custom_recipient_position ? '!border-border-danger' : ''">
-                <p x-show="errors.custom_recipient_position" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_recipient_position"></p>
-            </div>
 
-            <!-- Kota Tujuan Surat -->
-            <div class="md:col-span-2">
-                <label class="input-label">Kota Tujuan Surat <span class="text-fg-danger">*</span></label>
-                <input type="text" x-model="form.destination_city" @input="clearError('destination_city')" placeholder="Contoh: Bandar Lampung" 
-                       class="input-standard" :class="errors.destination_city ? '!border-border-danger' : ''">
-                <p x-show="errors.destination_city" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.destination_city"></p>
-            </div>
+
 
             <!-- Nomor Surat Pengantar Kampus -->
             <div>
@@ -115,13 +103,7 @@
                 <p x-show="errors.research_title" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_title"></p>
             </div>
 
-            <!-- Tujuan Penelitian -->
-            <div class="md:col-span-2">
-                <label class="input-label">Tujuan Penelitian <span class="text-fg-danger">*</span></label>
-                <textarea rows="2" x-model="form.purpose" @input="clearError('purpose')" placeholder="Jelaskan tujuan utama penelitian dilakukan di instansi ini secara ringkas dan jelas" 
-                          class="input-standard resize-none" :class="errors.purpose ? '!border-border-danger' : ''"></textarea>
-                <p x-show="errors.purpose" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.purpose"></p>
-            </div>
+
 
             <!-- Lokasi Penelitian -->
             <div>
@@ -138,16 +120,18 @@
                     <option value="Pengadilan Negeri Blambangan Umpu">Pengadilan Negeri Blambangan Umpu</option>
                     <option value="Pengadilan Negeri Liwa">Pengadilan Negeri Liwa</option>
                     <option value="Pengadilan Negeri Sukadana">Pengadilan Negeri Sukadana</option>
+                    <option value="Pengadilan Negeri Kota Agung">Pengadilan Negeri Kota Agung</option>
+                    <option value="Pengadilan Negeri Gedong Tataan">Pengadilan Negeri Gedong Tataan</option>
                     <option value="Lainnya">Lainnya (Tulis Custom)</option>
                 </select>
                 <p x-show="errors.research_location" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_location"></p>
             </div>
 
-            <!-- Jenis Penelitian -->
+            <!-- Tujuan Penelitian -->
             <div>
-                <label class="input-label">Jenis Penelitian <span class="text-fg-danger">*</span></label>
+                <label class="input-label">Tujuan Penelitian <span class="text-fg-danger">*</span></label>
                 <select x-model="form.research_type" @change="clearError('research_type'); clearError('custom_research_type')" class="input-standard" :class="errors.research_type ? '!border-border-danger' : ''">
-                    <option value="" disabled selected>Pilih Jenis Penelitian...</option>
+                    <option value="" disabled selected>Pilih Tujuan Penelitian...</option>
                     <option value="Skripsi">Skripsi</option>
                     <option value="Tesis">Tesis</option>
                     <option value="Disertasi">Disertasi</option>
@@ -157,9 +141,9 @@
                 <p x-show="errors.research_type" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.research_type"></p>
             </div>
 
-            <!-- Custom Jenis Penelitian (Shown when "Lainnya" is selected) -->
+            <!-- Custom Tujuan Penelitian (Shown when "Lainnya" is selected) -->
             <div class="md:col-span-2" x-show="form.research_type === 'Lainnya'" x-transition x-cloak>
-                <label class="input-label">Masukkan Jenis Penelitian <span class="text-fg-danger">*</span></label>
+                <label class="input-label">Masukkan Tujuan Penelitian <span class="text-fg-danger">*</span></label>
                 <input type="text" x-model="form.custom_research_type" @input="clearError('custom_research_type')" placeholder="Contoh: Laporan Magang, PKL, Tugas Akhir" 
                        class="input-standard" :class="errors.custom_research_type ? '!border-border-danger' : ''">
                 <p x-show="errors.custom_research_type" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_research_type"></p>

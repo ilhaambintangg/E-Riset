@@ -48,7 +48,10 @@
 
                             <!-- Intro Message -->
                             <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; color: #4a5568;">
-                                Terima kasih telah mengajukan permohonan izin penelitian di Pengadilan Tinggi Tanjungkarang. Permohonan Anda (<strong>{{ $submission->registration_number }}</strong>) telah berhasil didaftarkan di sistem kami.
+                                Terima kasih telah mengajukan permohonan penelitian.<br><br>
+                                Nomor Register Anda:<br>
+                                <strong style="font-size: 18px; color: #0A2240; font-family: monospace;">{{ $submission->registration_number }}</strong><br><br>
+                                Silakan simpan nomor register tersebut untuk melakukan pelacakan status permohonan.
                             </p>
 
                             <!-- Status Box (Highlight Card) -->
@@ -70,7 +73,7 @@
                                             Judul Penelitian
                                         </p>
                                         <p style="margin: 0 0 20px 0; font-size: 15px; font-weight: 500; color: #0d1b2a; line-height: 1.5;">
-                                            {{ $submission->title }}
+                                            {{ $submission->research_title ?? $submission->title }}
                                         </p>
 
                                         <!-- Tanggal Pengajuan -->

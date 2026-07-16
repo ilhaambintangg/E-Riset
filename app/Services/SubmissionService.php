@@ -206,11 +206,27 @@ class SubmissionService
             
             // Generate letter automatically if status is Sedang Diproses
             if ($validated['status'] === 'Sedang Diproses') {
+                $recipientPosition = $validated['recipient_position'] ?? null;
+                if ($recipientPosition === 'Lainnya') {
+                    $recipientPosition = $validated['custom_recipient_position'] ?? null;
+                }
+                if ($recipientPosition) {
+                    $submission->recipient_position = $recipientPosition;
+                }
+
+                $destinationCity = $validated['destination_city'] ?? null;
+                if ($destinationCity) {
+                    $submission->destination_city = $destinationCity;
+                }
+
+                if ($recipientPosition || $destinationCity) {
+                    $submission->save();
+                }
                 $this->letterService->generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
             }
 
-            // Save the uploaded permit file if status is Disetujui
-            if ($validated['status'] === 'Disetujui' && $permitFile) {
+            // Save the uploaded permit file if status is Disetujui or Ditolak
+            if (in_array($validated['status'], ['Disetujui', 'Ditolak']) && $permitFile) {
                 $fileName = "Izin_Penelitian_{$submission->registration_number}." . $permitFile->getClientOriginalExtension();
                 $path = $permitFile->storeAs('permits/' . $submission->registration_number, $fileName, 'public');
                 $submission->permit_file_path = $path;

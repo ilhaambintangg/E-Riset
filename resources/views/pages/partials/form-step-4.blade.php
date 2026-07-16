@@ -55,14 +55,8 @@
                     <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Asal Kampus / Fakultas / Prodi</span>
                     <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.university + ' · ' + form.faculty + ' · ' + form.study_program"></strong>
                 </div>
-                <div>
-                    <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Ditujukan Kepada</span>
-                    <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.recipient_position === 'Lainnya' ? form.custom_recipient_position : form.recipient_position"></strong>
-                </div>
-                <div>
-                    <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Kota Tujuan</span>
-                    <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.destination_city || '-'"></strong>
-                </div>
+
+
                 <div>
                     <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Nomor Surat Pengantar</span>
                     <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.reference_letter_number || '-'"></strong>
@@ -75,17 +69,13 @@
                     <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Judul Penelitian</span>
                     <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.research_title || '-'"></strong>
                 </div>
-                <div class="sm:col-span-2">
+                <div>
                     <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Tujuan Penelitian</span>
-                    <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.purpose || '-'"></strong>
+                    <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.research_type === 'Lainnya' ? form.custom_research_type : form.research_type"></strong>
                 </div>
                 <div>
                     <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Lokasi Penelitian</span>
                     <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.research_location === 'Lainnya' ? form.custom_research_location : form.research_location"></strong>
-                </div>
-                <div>
-                    <span class="text-[11px] text-fg-body-subtle/80 uppercase tracking-wider font-semibold block mb-[2px]">Jenis Penelitian</span>
-                    <strong class="text-fg-heading text-[14px] font-bold block" x-text="form.research_type === 'Lainnya' ? form.custom_research_type : form.research_type"></strong>
                 </div>
 
             </div>

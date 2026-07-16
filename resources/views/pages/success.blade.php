@@ -18,21 +18,19 @@
                 <i data-lucide="check-circle-2" class="w-12 h-12 text-white"></i>
             </div>
 
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Permohonan Terkirim!</h2>
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Permohonan Berhasil Dikirim</h2>
             
             <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 mb-8 text-left shadow-sm">
-                <p class="text-sm text-slate-800 leading-relaxed mb-4">
-                    <strong>Permohonan izin penelitian berhasil dikirim.</strong><br />
-                    Silakan menunggu proses verifikasi dari petugas Pengadilan Tinggi Tanjungkarang.
-                </p>
-                
                 @if(isset($registration_number) && $registration_number)
-                <div class="bg-white rounded-xl p-4 border border-amber-200 text-center shadow-sm">
-                    <p class="text-xs text-amber-600 font-bold mb-1.5 uppercase tracking-widest">Nomor Registrasi Anda</p>
+                <div class="bg-white rounded-xl p-4 border border-amber-200 text-center shadow-sm mb-4">
+                    <p class="text-xs text-amber-600 font-bold mb-1.5 uppercase tracking-widest">Nomor Register</p>
                     <p class="text-2xl font-mono font-black text-slate-900 tracking-tight">{{ $registration_number }}</p>
-                    <p class="text-xs text-slate-500 mt-2 font-medium">Simpan nomor ini untuk mengecek status permohonan Anda.</p>
                 </div>
                 @endif
+                <p class="text-sm text-slate-800 leading-relaxed text-center font-medium">
+                    Silakan simpan nomor register ini untuk melakukan pelacakan status permohonan.<br>
+                    Nomor register juga telah dikirim ke Email Anda.
+                </p>
             </div>
 
             <div class="flex flex-col gap-3">

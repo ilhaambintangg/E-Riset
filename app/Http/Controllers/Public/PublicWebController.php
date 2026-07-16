@@ -30,7 +30,8 @@ class PublicWebController extends Controller
     public function form()
     {
         $setting = WebSetting::first();
-        return view('pages.form', compact('setting'));
+        $universities = \App\Models\University::orderBy('name', 'asc')->get();
+        return view('pages.form', compact('setting', 'universities'));
     }
 
     public function track(Request $request)

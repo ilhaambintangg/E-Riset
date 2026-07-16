@@ -23,9 +23,9 @@ class UpdateSubmissionStatusRequest extends FormRequest
         $submissionId = $this->route('id');
         $submission = Submission::find($submissionId);
         
-        $permitFileRule = ['nullable', 'file', 'mimes:pdf', 'max:5120'];
+        $permitFileRule = ['nullable', 'file', 'mimes:pdf', 'max:2048'];
         if ($this->status === 'Disetujui' && (!$submission || !$submission->permit_file_path)) {
-            $permitFileRule = ['required', 'file', 'mimes:pdf', 'max:5120'];
+            $permitFileRule = ['required', 'file', 'mimes:pdf', 'max:2048'];
         }
 
         $statusRule = [
@@ -60,6 +60,9 @@ class UpdateSubmissionStatusRequest extends FormRequest
             'notes' => [$this->status === 'Ditolak' ? 'required' : 'nullable', 'string'],
             'panitera_id' => [$this->status === 'Sedang Diproses' ? 'required' : 'nullable', 'exists:panitera,id'],
             'letter_date' => [$this->status === 'Sedang Diproses' ? 'required' : 'nullable', 'date'],
+            'recipient_position' => ['nullable', 'string', 'max:255'],
+            'custom_recipient_position' => ['nullable', 'string', 'max:255'],
+            'destination_city' => ['nullable', 'string', 'max:255'],
             'permit_file' => $permitFileRule,
         ];
     }
@@ -73,7 +76,9 @@ class UpdateSubmissionStatusRequest extends FormRequest
             'notes.required' => 'Catatan wajib diisi saat menolak permohonan.',
             'panitera_id.required' => 'Panitera harus dipilih saat memproses permohonan untuk generate surat izin.',
             'letter_date.required' => 'Tanggal surat harus diisi saat memproses permohonan untuk generate surat izin.',
-            'permit_file.required' => 'Surat izin (PDF yang sudah ditandatangani) harus diunggah saat menyetujui permohonan.',
+            'permit_file.required' => 'File harus berformat PDF dengan ukuran maksimal 2 MB.',
+            'permit_file.mimes' => 'File harus berformat PDF dengan ukuran maksimal 2 MB.',
+            'permit_file.max' => 'File harus berformat PDF dengan ukuran maksimal 2 MB.',
         ];
     }
 }

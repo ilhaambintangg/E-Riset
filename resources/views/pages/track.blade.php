@@ -266,13 +266,13 @@ if (isset($submission)) {
         @endif
 
         <!-- Info Box -->
-        <div class="mt-[48px] bg-slate-50 rounded-xl p-[32px] sm:p-[40px] text-[15px] text-slate-800 border border-slate-200/80 shadow-sm animate-fade-up" style="animation-delay: 0.3s;">
-            <p class="font-heading font-bold mb-[20px] flex items-center gap-[12px] text-brand text-[18px]">
+        <div class="mt-[48px] bg-white rounded-xl p-[32px] sm:p-[40px] text-[15px] text-slate-800 border-2 border-border-default shadow-md animate-fade-up" style="animation-delay: 0.3s;">
+            <div class="font-heading font-bold mb-[20px] flex items-center gap-[12px] text-brand text-[18px]">
                 <div class="w-[36px] h-[36px] bg-brand-softer rounded-xl flex items-center justify-center border border-brand-subtle">
                     <i data-lucide="info" class="w-[18px] h-[18px] text-brand"></i>
                 </div>
-                Informasi Layanan
-            </p>
+                <span>Informasi Layanan</span>
+            </div>
             <div class="pl-[44px]">
                 <ul class="list-disc space-y-[12px] leading-[1.6]">
                     <li class="text-slate-700 font-medium">Nomor registrasi dikirimkan melalui halaman konfirmasi dan email saat Anda selesai mengisi formulir.</li>

@@ -8,35 +8,35 @@
    Design System Tokens (E-RISET Premium Modern Theme)
    ========================================================================== */
 :root {
-  /* Clean Backgrounds & Cards (Restored Original Colors) */
-  --color-white: #FAF5E8;
-  /* Soft Parchment-White to prevent glare */
-  --color-neutral-primary-soft: #F3ECE0;
-  /* Warm Matte Paper Background */
+  /* Clean Backgrounds & Cards (Matched to Admin Colors) */
+  --color-white: #FFFFFF;
+  /* Pure white cards for high contrast and modern look */
+  --color-neutral-primary-soft: #CCD5E2;
+  /* Soothing matte background instead of bright white */
   --color-neutral-primary: var(--color-white);
   /* Clean Card Background */
-  --color-neutral-primary-medium: #EBE4D5;
-  /* Bubbly Soft Cream Backdrop */
-  --color-neutral-primary-strong: #DECFAF;
+  --color-neutral-primary-medium: #B8C3D2;
+  /* Slate 100 panels/footer */
+  --color-neutral-primary-strong: #A4B2C3;
   /* Card borders & dividers strong */
 
-  /* Soften slate palette for public warm ivory theme */
-  --color-slate-50: #F3ECE0;
-  --color-slate-100: #FAF5E8;
-  --color-slate-200: #DECFAF;
-  --color-slate-300: #D0C0A0;
-  --color-slate-400: #A89878;
+  /* Soften slate palette for public cool gray/slate theme */
+  --color-slate-50: #CCD5E2;
+  --color-slate-100: #E2E7F0;
+  --color-slate-200: #A4B2C3;
+  --color-slate-300: #8B9BB0;
+  --color-slate-400: #6E7E94;
 
   /* Borders & Dividers */
   --color-neutral-secondary-soft: var(--color-white);
-  --color-neutral-secondary: #FFFDF6;
-  --color-neutral-secondary-medium: #F9F4E3;
-  --color-neutral-secondary-strong: #EFE8D3;
-  --color-neutral-tertiary-soft: #FAF4E5;
-  --color-neutral-tertiary: #EAE2CF;
-  --color-neutral-tertiary-medium: #D5CBAC;
-  --color-neutral-quaternary: #A39673;
-  --color-gray: #7F7457;
+  --color-neutral-secondary: var(--color-slate-50);
+  --color-neutral-secondary-medium: var(--color-slate-100);
+  --color-neutral-secondary-strong: var(--color-slate-200);
+  --color-neutral-tertiary-soft: var(--color-slate-50);
+  --color-neutral-tertiary: var(--color-slate-200);
+  --color-neutral-tertiary-medium: var(--color-slate-300);
+  --color-neutral-quaternary: var(--color-slate-400);
+  --color-gray: #64748B;
 
   /* Brand Colors (Restored Deep Royal Navy) */
   --color-brand-softer: #F0F4FC;
@@ -249,8 +249,8 @@
   --text-5xl: 40px;
 
   /* Modern SaaS Color Palette */
-  --color-white: #E2E7F0;
-  /* Very soft dusk blue-gray cards/inputs to prevent glare */
+  --color-white: #FFFFFF;
+  /* Pure white cards for high contrast and modern look */
   --color-neutral-primary-soft: #CCD5E2;
   /* Soothing matte background instead of bright white */
   --color-neutral-primary: var(--color-white);

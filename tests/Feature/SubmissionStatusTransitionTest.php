@@ -184,4 +184,35 @@ class SubmissionStatusTransitionTest extends TestCase
         $response->assertSessionHasErrors(['status']);
         $this->assertEquals('Ditolak', $submission->fresh()->current_status);
     }
+
+    public function test_transition_from_processing_to_rejected_with_file_saves_file_and_status()
+    {
+        $submission = $this->createSubmission('Sedang Diproses');
+        $file = \Illuminate\Http\UploadedFile::fake()->create('rejection.pdf', 100, 'application/pdf');
+
+        $response = $this->actingAs($this->admin)->post(route('admin.submissions.status', $submission->id), [
+            'status' => 'Ditolak',
+            'notes' => 'Tolak dengan surat balasan penolakan resmi.',
+            'permit_file' => $file,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $this->assertEquals('Ditolak', $submission->fresh()->current_status);
+        $this->assertNotNull($submission->fresh()->permit_file_path);
+    }
+
+    public function test_permit_file_size_validation_limit()
+    {
+        $submission = $this->createSubmission('Sedang Diproses');
+        // 3 MB file is above 2 MB limit (2048 KB)
+        $file = \Illuminate\Http\UploadedFile::fake()->create('large.pdf', 3000, 'application/pdf');
+
+        $response = $this->actingAs($this->admin)->post(route('admin.submissions.status', $submission->id), [
+            'status' => 'Disetujui',
+            'permit_file' => $file,
+        ]);
+
+        $response->assertSessionHasErrors(['permit_file']);
+        $this->assertEquals('Sedang Diproses', $submission->fresh()->current_status);
+    }
 }

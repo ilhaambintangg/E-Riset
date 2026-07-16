@@ -47,7 +47,64 @@ class ReportController extends Controller
             $availableYears = collect([date('Y')]);
         }
 
-        return view('admin.reports.index', compact('year', 'monthlyStats', 'statusStats', 'availableYears'));
+        // Submissions filter query
+        $query = \App\Models\Submission::query();
+
+        if ($request->filled('university')) {
+            $uni = $request->input('university');
+            if ($uni === 'Lainnya') {
+                $mainUnis = [
+                    'Universitas Lampung',
+                    'Universitas Bandar Lampung',
+                    'Universitas Teknokrat Indonesia',
+                    'Institut Informatika dan Bisnis Darmajaya',
+                    'Universitas Mitra Indonesia'
+                ];
+                $query->whereNotIn('university', $mainUnis);
+            } else {
+                $query->where('university', $uni);
+            }
+        }
+
+        if ($request->filled('status')) {
+            $query->where('current_status', $request->input('status'));
+        }
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->input('start_date'));
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->input('end_date'));
+        }
+
+        $submissions = $query->orderBy('created_at', 'desc')->get();
+
+        // Calculate Ringkasan Laporan based on filtered submissions
+        $summary = [
+            'total' => $submissions->count(),
+            'unila' => $submissions->where('university', 'Universitas Lampung')->count(),
+            'ubl' => $submissions->where('university', 'Universitas Bandar Lampung')->count(),
+            'teknokrat' => $submissions->where('university', 'Universitas Teknokrat Indonesia')->count(),
+            'darmajaya' => $submissions->where('university', 'Institut Informatika dan Bisnis Darmajaya')->count(),
+            'mitra' => $submissions->where('university', 'Universitas Mitra Indonesia')->count(),
+            'lainnya' => $submissions->reject(function ($s) {
+                return in_array($s->university, [
+                    'Universitas Lampung',
+                    'Universitas Bandar Lampung',
+                    'Universitas Teknokrat Indonesia',
+                    'Institut Informatika dan Bisnis Darmajaya',
+                    'Universitas Mitra Indonesia'
+                ]);
+            })->count()
+        ];
+
+        $universities = \App\Models\University::orderBy('name')->get();
+
+        return view('admin.reports.index', compact(
+            'year', 'monthlyStats', 'statusStats', 'availableYears', 
+            'submissions', 'summary', 'universities'
+        ));
     }
 
     public function exportMonthly(Request $request)
@@ -55,8 +112,26 @@ class ReportController extends Controller
         $month = (int) $request->input('month', date('n'));
         $year = (int) $request->input('year', date('Y'));
         $format = $request->input('format', 'excel');
+        $university = $request->input('university');
 
         $submissions = $this->submissionRepository->getSubmissionsByMonthAndYear($month, $year);
+
+        if ($university) {
+            if ($university === 'Lainnya') {
+                $mainUnis = [
+                    'Universitas Lampung',
+                    'Universitas Bandar Lampung',
+                    'Universitas Teknokrat Indonesia',
+                    'Institut Informatika dan Bisnis Darmajaya',
+                    'Universitas Mitra Indonesia'
+                ];
+                $submissions = $submissions->reject(function ($sub) use ($mainUnis) {
+                    return in_array($sub->university, $mainUnis);
+                });
+            } else {
+                $submissions = $submissions->where('university', $university);
+            }
+        }
 
         $monthsIndo = [
             1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
@@ -121,6 +196,7 @@ class ReportController extends Controller
     {
         $year = (int) $request->input('year', date('Y'));
         $format = $request->input('format', 'excel');
+        $university = $request->input('university');
 
         $monthsIndo = [
             1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
@@ -140,6 +216,24 @@ class ReportController extends Controller
 
         for ($i = 1; $i <= 12; $i++) {
             $subs = $this->submissionRepository->getSubmissionsByMonthAndYear($i, $year);
+
+            if ($university) {
+                if ($university === 'Lainnya') {
+                    $mainUnis = [
+                        'Universitas Lampung',
+                        'Universitas Bandar Lampung',
+                        'Universitas Teknokrat Indonesia',
+                        'Institut Informatika dan Bisnis Darmajaya',
+                        'Universitas Mitra Indonesia'
+                    ];
+                    $subs = $subs->reject(function ($sub) use ($mainUnis) {
+                        return in_array($sub->university, $mainUnis);
+                    });
+                } else {
+                    $subs = $subs->where('university', $university);
+                }
+            }
+
             $count = $subs->count();
             $approved = $subs->where('current_status', 'Disetujui')->count();
             $rejected = $subs->where('current_status', 'Ditolak')->count();

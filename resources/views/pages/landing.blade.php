@@ -105,23 +105,7 @@
 
                     <div class="text-center">
                         <p class="font-heading font-black text-[18px] text-fg-heading mb-1">"Hai! Aku Si Risi"</p>
-                        <p class="text-[13px] text-fg-body-subtle font-bold mb-4 bg-brand-softer px-3 py-1 rounded-full border border-brand/10">Asisten Elektronik Izin Penelitianmu</p>
-                    </div>
-
-                    <!-- Live Stats Widget -->
-                    <div class="w-full grid grid-cols-3 gap-2.5 mt-2 border-t-2 border-border-default pt-4">
-                        <div class="bg-neutral-primary-medium p-2.5 rounded-sm text-center border-2 border-border-default hover:scale-105 transition-transform duration-300">
-                            <p class="text-[10px] font-extrabold text-fg-body-subtle uppercase tracking-wider mb-1">Masuk</p>
-                            <p class="font-heading font-black text-[22px] text-brand leading-none">{{ $stats['total'] ?? 0 }}</p>
-                        </div>
-                        <div class="bg-success-soft p-2.5 rounded-sm text-center border-2 border-border-success/30 hover:scale-105 transition-transform duration-300">
-                            <p class="text-[10px] font-extrabold text-success-strong uppercase tracking-wider mb-1">Setuju</p>
-                            <p class="font-heading font-black text-[22px] text-success-strong leading-none">{{ $stats['approved'] ?? 0 }}</p>
-                        </div>
-                        <div class="bg-warning-soft p-2.5 rounded-sm text-center border-2 border-border-warning/30 hover:scale-105 transition-transform duration-300">
-                            <p class="text-[10px] font-extrabold text-warning-strong uppercase tracking-wider mb-1">Proses</p>
-                            <p class="font-heading font-black text-[22px] text-warning-strong leading-none">{{ $stats['processing'] ?? 0 }}</p>
-                        </div>
+                        <p class="text-[13px] text-fg-body-subtle font-bold mb-0 bg-brand-softer px-3 py-1 rounded-full border border-brand/10">Asisten Elektronik Izin Penelitianmu</p>
                     </div>
                 </div>
 
