@@ -110,9 +110,15 @@ class PublicChatController extends Controller
      */
     public function status()
     {
-        $isAdminOnline = Admin::whereNotNull('last_seen_at')
-            ->where('last_seen_at', '>=', now()->subMinutes(5))
-            ->exists();
+        $manualStatus = cache('admin_chat_status', 'online');
+
+        if ($manualStatus === 'offline') {
+            $isAdminOnline = false;
+        } else {
+            $isAdminOnline = Admin::whereNotNull('last_seen_at')
+                ->where('last_seen_at', '>=', now()->subMinutes(5))
+                ->exists();
+        }
 
         return response()->json([
             'status' => 'success',

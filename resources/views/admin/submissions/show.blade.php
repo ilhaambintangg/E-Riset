@@ -333,11 +333,6 @@
                             <div>
                                 <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Jabatan Tujuan Surat</label>
                                 <select name="recipient_position" x-model="recipient_position" :required="status === 'Sedang Diproses'" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
-                                    <option value="" disabled selected>-- Pilih Jabatan --</option>
-                                    <option value="Ketua Pengadilan Negeri">Ketua Pengadilan Negeri</option>
-                                    <option value="Ketua Pengadilan Tinggi">Ketua Pengadilan Tinggi</option>
-                                    <option value="Sekretaris">Sekretaris</option>
-                                    <option value="Panitera">Panitera</option>
                                     <option value="Rektor">Rektor</option>
                                     <option value="Dekan">Dekan</option>
                                     <option value="Ketua Program Studi">Ketua Program Studi</option>

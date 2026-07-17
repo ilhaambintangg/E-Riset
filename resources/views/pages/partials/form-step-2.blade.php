@@ -45,7 +45,7 @@
             <!-- Program Studi -->
             <div>
                 <label class="input-label">Program Studi <span class="text-fg-danger">*</span></label>
-                <input type="text" x-model="form.study_program" @input="clearError('study_program')" placeholder="Contoh: S1 Ilmu Hukum" 
+                <input type="text" x-model="form.study_program" @input="clearError('study_program')" placeholder="Contoh: Ilmu Hukum" 
                        class="input-standard"
                        :class="errors.study_program ? '!border-border-danger focus:!ring-danger' : ''">
                 <p x-show="errors.study_program" class="text-[12px] text-fg-danger mt-[6px] font-medium animate-fade-in" x-text="errors.study_program"></p>

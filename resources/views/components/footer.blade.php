@@ -13,10 +13,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[48px] mb-[64px]">
             <!-- Column 1: Identitas Sistem -->
             <div class="space-y-[24px]">
-                <div class="inline-flex items-center gap-1.5 border-2 border-brand-medium rounded-full px-4 py-1.5 shadow-inner bg-brand-medium/50">
+                <a href="https://www.beta.pt-tanjungkarang.go.id/beranda"
+                   target="_blank"
+                   class="inline-flex items-center gap-1.5 border-2 border-brand-medium rounded-full px-4 py-1.5 shadow-inner bg-brand-medium/50 transition-all duration-300 hover:bg-brand-medium hover:border-brand-alt/50 hover:scale-105">
                     <div class="w-2.5 h-2.5 rounded-full bg-brand-alt animate-ping"></div>
                     <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-100">{{ $setting->nama_instansi ?? 'Pengadilan Tinggi Tanjungkarang' }}</span>
-                </div>
+                </a>
 
                 <div class="flex items-center gap-[16px]">
                     <!-- Waving Risi Mascot -->
@@ -140,7 +142,8 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-extrabold uppercase tracking-wider mb-1 text-brand-alt">Jam Operasional</p>
-                                <p class="text-[13px] leading-relaxed text-slate-100">Senin - Jumat: 08:00 - 16:30 WIB</p>
+                                <p class="text-[13px] leading-relaxed text-slate-100">Senin - Kamis: 08:00 - 16:30 WIB</p>
+                                <p class="text-[13px] leading-relaxed text-slate-100">Jumat        : 08:00 - 17:00 WIB</p>
                             </div>
                         </div>
                     </div>

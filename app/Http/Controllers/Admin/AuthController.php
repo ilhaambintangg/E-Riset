@@ -31,6 +31,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            // Set chat status to online upon successful login
+            cache()->forever('admin_chat_status', 'online');
+            
             return redirect()->intended('/admin/portal');
         }
 
@@ -49,6 +53,9 @@ class AuthController extends Controller
             $admin->last_seen_at = null;
             $admin->saveQuietly();
         }
+
+        // Set chat status to offline upon logout
+        cache()->forever('admin_chat_status', 'offline');
 
         Auth::logout();
 

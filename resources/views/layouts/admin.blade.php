@@ -1,4 +1,19 @@
 @php
+    if (request()->has('change_chat_status') && auth()->check()) {
+        $status = request()->input('change_chat_status') === 'online' ? 'online' : 'offline';
+        cache()->forever('admin_chat_status', $status);
+        session()->flash('success', 'Status chat admin berhasil diubah menjadi ' . strtoupper($status));
+        
+        $redirectUrl = request()->url();
+        $query = request()->except('change_chat_status');
+        if (count($query)) {
+            $redirectUrl .= '?' . http_build_query($query);
+        }
+        
+        redirect()->to($redirectUrl)->send();
+        exit;
+    }
+
     $activeSystem = str_contains(request()->path(), 'admin/edvokat') ? 'edvokat' : 'eriset';
 @endphp
 <!DOCTYPE html>
@@ -240,6 +255,14 @@
     <!-- Initialize Lucide Icons -->
     <script>
         lucide.createIcons();
+    </script>
+    
+    <!-- Automatic Admin Chat Online/Offline Status Handlers -->
+    <script>
+        window.addEventListener('beforeunload', function () {
+            // Send keepalive fetch request to set status to offline when browser/tab is closed
+            fetch('?change_chat_status=offline', { keepalive: true });
+        });
     </script>
     
     @stack('scripts')

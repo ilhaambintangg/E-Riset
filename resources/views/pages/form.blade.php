@@ -183,24 +183,49 @@
                  x-transition:leave="transition ease-in duration-200"
                  x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                  x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-                 class="relative w-full max-w-md bg-white shadow-xl rounded-2xl border border-border-default my-8 text-left transition-all transform flex flex-col overflow-hidden p-6 text-center">
+                 class="relative w-full max-w-[360px] bg-gradient-to-b from-white to-neutral-primary-soft/10 shadow-xl rounded-2xl border border-border-default my-8 text-left transition-all transform flex flex-col overflow-hidden p-5 text-center">
                 
-                <div class="w-16 h-16 bg-brand-softer text-brand rounded-full flex items-center justify-center mx-auto mb-4 border border-brand/20 shadow-inner">
-                    <i data-lucide="clipboard-check" class="w-8 h-8 text-brand"></i>
+                <!-- Close Button -->
+                <button type="button" @click="showSurveyModal = false" class="absolute top-3.5 right-3.5 text-fg-body-subtle hover:text-fg-heading transition-colors p-1.5 rounded-full hover:bg-neutral-primary-soft/50 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+
+                <!-- Si Risi Mascot Head Avatar -->
+                <div class="w-14 h-14 bg-brand rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    <!-- Mini Owl Head SVG -->
+                    <svg class="w-12 h-12 animate-head-bob" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="42" fill="#143A66" stroke="#0A2240" stroke-width="3"/>
+                        <circle cx="35" cy="50" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                        <circle cx="65" cy="50" r="11" fill="white" stroke="#F4A261" stroke-width="3"/>
+                        <path d="M44 50 L56 50" stroke="#F4A261" stroke-width="3"/>
+                        <g class="animate-risi-blink">
+                            <circle cx="35" cy="50" r="4.5" fill="#0A2240"/>
+                            <circle cx="65" cy="50" r="4.5" fill="#0A2240"/>
+                        </g>
+                        <polygon points="50,54 45,61 55,61" fill="#E76F51" stroke="#0A2240" stroke-width="2"/>
+                    </svg>
+                </div>
+
+                <h3 class="text-lg font-heading font-black text-brand mb-1">Satu Langkah Lagi! 🎓</h3>
+                <p class="text-[13px] text-fg-body leading-relaxed mb-4">
+                    Sebelum permohonan dikirim, silakan mengisi <span class="text-brand font-black underline decoration-brand-alt decoration-2">Survei Kepuasan Masyarakat</span> terlebih dahulu.
+                </p>
+
+                <!-- Compact guidance banner -->
+                <div class="bg-brand-softer border border-brand-soft rounded-lg p-2.5 mb-4 text-center">
+                    <p class="text-[11px] text-fg-body-subtle leading-relaxed font-semibold">
+                        <i data-lucide="info" class="w-3.5 h-3.5 text-brand inline-block mr-1 align-text-bottom"></i>
+                        Survei akan dibuka pada tab baru.
+                    </p>
                 </div>
                 
-                <h3 class="text-lg font-black text-fg-heading mb-2">Terima kasih.</h3>
-                <p class="text-sm text-fg-body-subtle leading-relaxed mb-6">
-                    Sebelum permohonan dikirim,<br>silakan mengisi Survey Kepuasan Masyarakat terlebih dahulu.
-                </p>
-                
                 <div class="flex flex-col gap-2">
-                    <button type="button" @click="confirmSurveyAndSubmit()" class="btn-brand btn-base w-full py-3 flex items-center justify-center gap-2 rounded-xl">
+                    <button type="button" @click="confirmSurveyAndSubmit()" class="btn-brand btn-base w-full py-2.5 flex items-center justify-center gap-2 rounded-xl text-[14px] bg-gradient-to-r from-brand to-brand-medium text-white hover:from-brand-medium hover:to-brand-strong shadow-md hover:shadow-lg transition-all duration-300 transform active:scale-[0.98]">
                         <i data-lucide="external-link" class="w-4 h-4"></i>
-                        Isi Survey
+                        Isi Survei & Kirim
                     </button>
-                    <button type="button" @click="showSurveyModal = false" class="btn-secondary btn-base w-full py-3 rounded-xl">
-                        Batal
+                    <button type="button" @click="showSurveyModal = false" class="btn-secondary btn-base w-full py-2 rounded-xl text-[13px] font-bold text-fg-body-subtle hover:text-fg-heading hover:bg-neutral-primary-soft/10 border border-border-default shadow-2xs transition-all duration-300">
+                        Kembali ke Formulir
                     </button>
                 </div>
             </div>
@@ -449,6 +474,7 @@ function submissionForm() {
             }
 
             this.showSurveyModal = true;
+            setTimeout(() => lucide.createIcons(), 50);
         },
 
         confirmSurveyAndSubmit() {

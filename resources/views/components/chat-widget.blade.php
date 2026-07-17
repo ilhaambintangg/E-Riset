@@ -11,6 +11,15 @@
     isAdminOnline: false,
     statusPollInterval: null,
     
+    // Offline Form state
+    offlineName: '',
+    offlineEmail: '',
+    offlinePhone: '',
+    offlineMessage: '',
+    isSendingOffline: false,
+    offlineSuccess: false,
+    offlineSuccessMsg: '',
+    
     init() {
         this.checkAdminStatus();
         this.startStatusPolling();
@@ -165,6 +174,46 @@
             }
             this.checkAdminStatus();
         }
+    },
+    
+    sendOfflineMessage() {
+        if (!this.offlineName.trim() || !this.offlineEmail.trim() || !this.offlinePhone.trim() || !this.offlineMessage.trim()) return;
+        this.isSendingOffline = true;
+        
+        fetch('/api/public/livechat/offline-message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: this.offlineName,
+                email: this.offlineEmail,
+                phone: this.offlinePhone,
+                message: this.offlineMessage
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                this.offlineSuccess = true;
+                this.offlineSuccessMsg = data.message;
+                // Clear fields
+                this.offlineName = '';
+                this.offlineEmail = '';
+                this.offlinePhone = '';
+                this.offlineMessage = '';
+            } else {
+                alert(data.message || 'Gagal mengirim pesan.');
+            }
+        })
+        .catch(err => {
+            console.error('Gagal mengirim pesan offline:', err);
+            alert('Terjadi kesalahan saat mengirim pesan.');
+        })
+        .finally(() => {
+            this.isSendingOffline = false;
+        });
     }
 }" class="relative">
 
@@ -240,94 +289,187 @@
         <!-- Body -->
         <div class="flex-1 overflow-hidden flex flex-col bg-neutral-primary-soft">
             
-            <!-- Registration Form (Before Chat session started) -->
-            <template x-if="!token">
-                <div class="p-6 my-auto flex flex-col gap-5">
-                    <div class="text-center">
-                        <span class="text-4xl">👋</span>
-                        <h4 class="text-sm font-bold text-fg-heading mt-3 mb-1">Ada yang bisa kami bantu?</h4>
-                        <p class="text-xs text-fg-body-subtle">Silakan isi nama Anda untuk memulai percakapan langsung dengan administrator kami.</p>
-                    </div>
+            <!-- WHEN ADMIN ONLINE -->
+            <template x-if="isAdminOnline">
+                <div class="flex-1 flex flex-col overflow-hidden">
+                    <!-- Registration Form (Before Chat session started) -->
+                    <template x-if="!token">
+                        <div class="p-6 my-auto flex flex-col gap-5">
+                            <div class="text-center">
+                                <span class="text-4xl">👋</span>
+                                <h4 class="text-sm font-bold text-fg-heading mt-3 mb-1">Ada yang bisa kami bantu?</h4>
+                                <p class="text-xs text-fg-body-subtle">Silakan isi nama Anda untuk memulai percakapan langsung dengan administrator kami.</p>
+                            </div>
 
-                    <form @submit.prevent="startChat()" class="space-y-4">
-                        <div>
-                            <label class="input-label text-xs">Nama Anda <span class="text-danger">*</span></label>
-                            <input type="text" x-model="name" required placeholder="Masukkan nama lengkap" 
-                                   class="w-full px-4 py-2.5 bg-white border border-border-default rounded-default text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-2 focus:ring-brand-alt-soft transition-all">
+                            <form @submit.prevent="startChat()" class="space-y-4">
+                                <div>
+                                    <label class="input-label text-xs">Nama Anda <span class="text-danger">*</span></label>
+                                    <input type="text" x-model="name" required placeholder="Masukkan nama lengkap" 
+                                           class="w-full px-4 py-2.5 bg-white border border-border-default rounded-default text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-2 focus:ring-brand-alt-soft transition-all">
+                                </div>
+                                <div>
+                                    <label class="input-label text-xs">Email (Opsional)</label>
+                                    <input type="email" x-model="email" placeholder="contoh@email.com" 
+                                           class="w-full px-4 py-2.5 bg-white border border-border-default rounded-default text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-2 focus:ring-brand-alt-soft transition-all">
+                                </div>
+                                
+                                <button type="submit" :disabled="isRegistering || !name.trim()" 
+                                        class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3 rounded-default transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs disabled:opacity-50">
+                                    <span x-show="!isRegistering">Mulai Chat</span>
+                                    <span x-show="isRegistering" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                </button>
+                            </form>
                         </div>
-                        <div>
-                            <label class="input-label text-xs">Email (Opsional)</label>
-                            <input type="email" x-model="email" placeholder="contoh@email.com" 
-                                   class="w-full px-4 py-2.5 bg-white border border-border-default rounded-default text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-2 focus:ring-brand-alt-soft transition-all">
+                    </template>
+
+                    <!-- Chat Room Area -->
+                    <template x-if="token">
+                        <div class="flex-1 flex flex-col overflow-hidden">
+                            <!-- Message Log -->
+                            <div x-ref="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                                <template x-for="msg in messages" :key="msg.id">
+                                    <div class="flex flex-col" :class="msg.sender === 'visitor' ? 'items-end' : 'items-start'">
+                                        <div class="max-w-[80%] rounded-default px-4 py-2.5 text-xs shadow-2xs" 
+                                             :class="msg.sender === 'visitor' ? 'bg-gradient-to-br from-brand-alt to-amber-500 text-white rounded-br-none' : 'bg-white border border-border-default text-fg-body rounded-bl-none'">
+                                            <p class="m-0 leading-relaxed break-words whitespace-pre-line" x-text="msg.message"></p>
+                                        </div>
+                                        <span class="text-[9px] text-fg-body-subtle mt-1 px-1" x-text="new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></span>
+                                    </div>
+                                </template>
+                                
+                                <!-- Empty Chat State -->
+                                <template x-if="messages.length === 0">
+                                    <div class="h-full flex flex-col items-center justify-center text-center p-6 text-fg-body-subtle my-auto">
+                                        <i data-lucide="message-square" class="w-8 h-8 text-neutral-tertiary mb-2"></i>
+                                        <p class="text-xs font-semibold">Memuat riwayat percakapan...</p>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Suggestions Chips (Only if session is active and user has sent few messages) -->
+                            <template x-if="isActive && messages.length <= 2">
+                                <div class="px-4 py-2 flex flex-wrap gap-2 shrink-0 border-t border-border-default-subtle bg-white/50">
+                                    <button @click="sendSuggestion('Bagaimana cara daftar izin penelitian?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
+                                        Cara daftar?
+                                    </button>
+                                    <button @click="sendSuggestion('Apa saja syarat dokumen yang diperlukan?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
+                                        Syarat dokumen?
+                                    </button>
+                                    <button @click="sendSuggestion('Bagaimana cara melacak permohonan saya?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
+                                        Lacak permohonan?
+                                    </button>
+                                </div>
+                            </template>
+
+                            <!-- Closed Chat Indicator -->
+                            <template x-if="!isActive">
+                                <div class="px-4 py-3 bg-neutral-primary-strong text-center text-xs text-fg-body-subtle border-t border-border-default">
+                                    Sesi percakapan ini telah diakhiri.
+                                </div>
+                            </template>
+
+                            <!-- Input Reply Form -->
+                            <template x-if="isActive">
+                                <form @submit.prevent="sendMessage()" class="p-3 bg-white border-t border-border-default flex items-center gap-2 shrink-0">
+                                    <input type="text" x-model="newMessage" placeholder="Tulis pesan Anda..." 
+                                           class="flex-1 px-4 py-2 bg-neutral-primary-soft border border-border-default-medium rounded-full text-xs text-fg-heading focus:outline-none focus:border-brand-alt transition-all">
+                                    <button type="submit" :disabled="!newMessage.trim()" 
+                                            class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:scale-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </template>
                         </div>
-                        
-                        <button type="submit" :disabled="isRegistering || !name.trim()" 
-                                class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3 rounded-default transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs disabled:opacity-50">
-                            <span x-show="!isRegistering">Mulai Chat</span>
-                            <span x-show="isRegistering" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                        </button>
-                    </form>
+                    </template>
                 </div>
             </template>
 
-            <!-- Chat Room Area -->
-            <template x-if="token">
-                <div class="flex-1 flex flex-col overflow-hidden">
-                    <!-- Message Log -->
-                    <div x-ref="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-                        <template x-for="msg in messages" :key="msg.id">
-                            <div class="flex flex-col" :class="msg.sender === 'visitor' ? 'items-end' : 'items-start'">
-                                <div class="max-w-[80%] rounded-default px-4 py-2.5 text-xs shadow-2xs" 
-                                     :class="msg.sender === 'visitor' ? 'bg-gradient-to-br from-brand-alt to-amber-500 text-white rounded-br-none' : 'bg-white border border-border-default text-fg-body rounded-bl-none'">
-                                    <p class="m-0 leading-relaxed break-words whitespace-pre-line" x-text="msg.message"></p>
+            <!-- WHEN ADMIN OFFLINE -->
+            <template x-if="!isAdminOnline">
+                <div class="flex-1 flex flex-col overflow-y-auto p-5 bg-white">
+                    <template x-if="!offlineSuccess">
+                        <div class="flex flex-col gap-4">
+                            <!-- Alert/Information Card -->
+                            <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-amber-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                    </svg>
                                 </div>
-                                <span class="text-[9px] text-fg-body-subtle mt-1 px-1" x-text="new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></span>
+                                <div class="text-xs text-amber-800 leading-relaxed">
+                                    <p class="font-bold mb-0.5">Admin sedang Offline</p>
+                                    <p class="mb-1">Saat ini Admin belum dapat membalas pesan secara langsung.</p>
+                                    <p class="font-semibold mb-0">Silakan tinggalkan pesan Anda. Pesan akan dikirim ke Email Admin dan akan segera ditindaklanjuti.</p>
+                                </div>
                             </div>
-                        </template>
-                        
-                        <!-- Empty Chat State -->
-                        <template x-if="messages.length === 0">
-                            <div class="h-full flex flex-col items-center justify-center text-center p-6 text-fg-body-subtle my-auto">
-                                <i data-lucide="message-square" class="w-8 h-8 text-neutral-tertiary mb-2"></i>
-                                <p class="text-xs font-semibold">Memuat riwayat percakapan...</p>
-                            </div>
-                        </template>
-                    </div>
 
-                    <!-- Suggestions Chips (Only if session is active and user has sent few messages) -->
-                    <template x-if="isActive && messages.length <= 2">
-                        <div class="px-4 py-2 flex flex-wrap gap-2 shrink-0 border-t border-border-default-subtle bg-white/50">
-                            <button @click="sendSuggestion('Bagaimana cara daftar izin penelitian?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
-                                Cara daftar?
-                            </button>
-                            <button @click="sendSuggestion('Apa saja syarat dokumen yang diperlukan?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
-                                Syarat dokumen?
-                            </button>
-                            <button @click="sendSuggestion('Bagaimana cara melacak permohonan saya?')" class="text-[10px] bg-white border border-border-default hover:border-brand-alt text-fg-body hover:text-brand-alt px-2.5 py-1 rounded-full shadow-2xs transition-all cursor-pointer">
-                                Lacak permohonan?
-                            </button>
+                            <!-- Form -->
+                            <form @submit.prevent="sendOfflineMessage()" class="space-y-3">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama <span class="text-danger">*</span></label>
+                                    <input type="text" x-model="offlineName" required placeholder="Nama lengkap Anda" 
+                                           class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-1 focus:ring-brand-alt-soft transition-all">
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Email <span class="text-danger">*</span></label>
+                                        <input type="email" x-model="offlineEmail" required placeholder="alamat@email.com" 
+                                               class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-1 focus:ring-brand-alt-soft transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Nomor HP <span class="text-danger">*</span></label>
+                                        <input type="text" x-model="offlinePhone" required placeholder="08xxxxxxxxxx" 
+                                               class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-1 focus:ring-brand-alt-soft transition-all">
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-700 mb-1">Pesan <span class="text-danger">*</span></label>
+                                    <textarea x-model="offlineMessage" required rows="3" placeholder="Tuliskan pesan atau pertanyaan Anda di sini..." 
+                                              class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-fg-heading focus:outline-none focus:border-brand-alt focus:ring-1 focus:ring-brand-alt-soft transition-all resize-none"></textarea>
+                                </div>
+
+                                <button type="submit" :disabled="isSendingOffline" 
+                                        class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-2.5 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs disabled:opacity-50">
+                                    <span x-show="!isSendingOffline">Kirim Pesan</span>
+                                    <span x-show="isSendingOffline" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                </button>
+                            </form>
                         </div>
                     </template>
 
-                    <!-- Closed Chat Indicator -->
-                    <template x-if="!isActive">
-                        <div class="px-4 py-3 bg-neutral-primary-strong text-center text-xs text-fg-body-subtle border-t border-border-default">
-                            Sesi percakapan ini telah diakhiri.
-                        </div>
-                    </template>
-
-                    <!-- Input Reply Form -->
-                    <template x-if="isActive">
-                        <form @submit.prevent="sendMessage()" class="p-3 bg-white border-t border-border-default flex items-center gap-2 shrink-0">
-                            <input type="text" x-model="newMessage" placeholder="Tulis pesan Anda..." 
-                                   class="flex-1 px-4 py-2 bg-neutral-primary-soft border border-border-default-medium rounded-full text-xs text-fg-heading focus:outline-none focus:border-brand-alt transition-all">
-                            <button type="submit" :disabled="!newMessage.trim()" 
-                                    class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:scale-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
+                    <!-- Success State Popup / Alert inside Widget -->
+                    <template x-if="offlineSuccess">
+                        <div class="my-auto flex flex-col items-center text-center p-8 bg-slate-50 border border-border-default rounded-default shadow-md max-w-[90%] mx-auto relative overflow-hidden">
+                            <!-- Background accent glow -->
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-success/5 rounded-full blur-xl pointer-events-none"></div>
+                            
+                            <!-- Glowing Success Checkmark Circle -->
+                            <div class="relative w-16 h-16 rounded-full bg-success/10 flex items-center justify-center text-success mb-6 shadow-xs border border-success/20">
+                                <span class="absolute inline-flex h-full w-full rounded-full bg-success/10 animate-ping opacity-75"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8 relative z-10 text-success">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                 </svg>
+                            </div>
+                            
+                            <h4 class="text-sm font-extrabold text-slate-800 tracking-tight mb-3">Pesan Berhasil Dikirim</h4>
+                            
+                            <div class="text-xs text-slate-600 font-medium space-y-2.5 leading-relaxed mb-8 px-2">
+                                <p>Terima kasih telah menghubungi kami.</p>
+                                <p>Pesan Anda telah diteruskan ke Email Admin.</p>
+                                <p>Admin akan segera menghubungi Anda.</p>
+                            </div>
+                            
+                            <button @click="offlineSuccess = false; isOpen = false" 
+                                    style="background-color: #0a2240;"
+                                    class="w-full text-white font-bold py-3 px-6 rounded-default hover:opacity-90 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg text-xs cursor-pointer tracking-wider uppercase">
+                                Tutup
                             </button>
-                        </form>
+                        </div>
                     </template>
                 </div>
             </template>
