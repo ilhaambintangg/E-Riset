@@ -109,10 +109,7 @@
                     </div>
                 </div>
 
-                <!-- Mascot Dialog Bubble -->
-                <div class="absolute -top-[30px] -left-[40px] bg-brand-alt-soft border-[3px] border-brand-alt text-brand-alt-strong px-4 py-2.5 rounded-[20px] rounded-bl-none shadow-md font-bold text-[13px] animate-risi-float max-w-[160px]" style="animation-delay: 1s;">
-                    Cepat & 100% Gratis lho! ✨
-                </div>
+
             </div>
         </div>
     </div>

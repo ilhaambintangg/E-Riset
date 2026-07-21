@@ -20,7 +20,7 @@
 
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex items-center gap-[28px]">
-                <a href="/#tentang" class="text-[13px] text-fg-body hover:text-brand-alt font-extrabold transition-all uppercase tracking-wider hover:scale-105">Tentang</a>
+                <a href="/#tentang" class="text-[13px] text-fg-body hover:text-brand-alt font-extrabold transition-all uppercase tracking-wider hover:scale-105">Beranda</a>
                 <a href="/#alur" class="text-[13px] text-fg-body hover:text-brand-alt font-extrabold transition-all uppercase tracking-wider hover:scale-105">Prosedur</a>
                 <a href="/#persyaratan" class="text-[13px] text-fg-body hover:text-brand-alt font-extrabold transition-all uppercase tracking-wider hover:scale-105">Persyaratan</a>
                 <a href="/#faq" class="text-[13px] text-fg-body hover:text-brand-alt font-extrabold transition-all uppercase tracking-wider hover:scale-105">FAQ</a>
@@ -56,7 +56,7 @@
              x-cloak
              class="md:hidden mt-[16px] bg-white border-[3px] border-brand rounded-[24px] px-[20px] pb-[24px] pt-[12px] shadow-lg">
             <div class="flex flex-col gap-[8px]">
-                <a href="/#tentang" @click="menuOpen = false" class="text-fg-heading font-extrabold hover:text-brand-alt hover:bg-neutral-primary-medium py-[10px] px-[16px] rounded-full transition-all">Tentang Sistem</a>
+                <a href="/#tentang" @click="menuOpen = false" class="text-fg-heading font-extrabold hover:text-brand-alt hover:bg-neutral-primary-medium py-[10px] px-[16px] rounded-full transition-all">Beranda</a>
                 <a href="/#alur" @click="menuOpen = false" class="text-fg-heading font-extrabold hover:text-brand-alt hover:bg-neutral-primary-medium py-[10px] px-[16px] rounded-full transition-all">Prosedur</a>
                 <a href="/#persyaratan" @click="menuOpen = false" class="text-fg-heading font-extrabold hover:text-brand-alt hover:bg-neutral-primary-medium py-[10px] px-[16px] rounded-full transition-all">Persyaratan</a>
                 <a href="/#faq" @click="menuOpen = false" class="text-fg-heading font-extrabold hover:text-brand-alt hover:bg-neutral-primary-medium py-[10px] px-[16px] rounded-full transition-all">FAQ</a>
