@@ -17,6 +17,9 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
+            if (Auth::user()->role === 'hukum') {
+                return redirect()->route('admin.dashboard');
+            }
             return redirect()->route('admin.portal');
         }
         return view('admin.login');
@@ -32,9 +35,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             
-            // Set chat status to online upon successful login
-            cache()->forever('admin_chat_status', 'online');
-            
+            if (Auth::user()->role === 'hukum') {
+                return redirect()->intended('/admin/dashboard');
+            }
             return redirect()->intended('/admin/portal');
         }
 
@@ -53,9 +56,6 @@ class AuthController extends Controller
             $admin->last_seen_at = null;
             $admin->saveQuietly();
         }
-
-        // Set chat status to offline upon logout
-        cache()->forever('admin_chat_status', 'offline');
 
         Auth::logout();
 

@@ -24,10 +24,6 @@ class AdminDashboardController extends Controller
 
     public function dashboard()
     {
-        if (auth()->check() && auth()->user()->role === 'admin') {
-            return redirect()->route('requirements.index');
-        }
-
         $stats = [
             'total' => $this->submissionRepository->countAll(),
             'pending' => $this->submissionRepository->countByStatus('Menunggu Verifikasi'),
@@ -35,6 +31,10 @@ class AdminDashboardController extends Controller
             'approved' => $this->submissionRepository->countByStatus('Disetujui'),
             'rejected' => $this->submissionRepository->countByStatus('Ditolak'),
         ];
+
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return view('admin.dashboard', compact('stats'));
+        }
 
         $recentSubmissions = $this->submissionRepository->recent(5);
 

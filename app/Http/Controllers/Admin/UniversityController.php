@@ -10,8 +10,9 @@ class UniversityController extends Controller
 {
     public function index()
     {
-        $universities = University::orderBy('name', 'asc')->get();
-        return view('admin.universities.index', compact('universities'));
+        $universities = University::where('is_approved', true)->orderBy('name', 'asc')->get();
+        $pendingUniversities = University::where('is_approved', false)->orderBy('name', 'asc')->get();
+        return view('admin.universities.index', compact('universities', 'pendingUniversities'));
     }
 
     public function store(Request $request)
@@ -22,6 +23,8 @@ class UniversityController extends Controller
             'name.required' => 'Nama universitas wajib diisi.',
             'name.unique' => 'Nama universitas sudah terdaftar.',
         ]);
+
+        $validated['is_approved'] = true;
 
         University::create($validated);
         return back()->with('success', 'Data universitas berhasil ditambahkan.');
@@ -47,5 +50,12 @@ class UniversityController extends Controller
         $university = University::findOrFail($id);
         $university->delete();
         return back()->with('success', 'Data universitas berhasil dihapus.');
+    }
+
+    public function approve($id)
+    {
+        $university = University::findOrFail($id);
+        $university->update(['is_approved' => true]);
+        return back()->with('success', 'Universitas berhasil disetujui.');
     }
 }

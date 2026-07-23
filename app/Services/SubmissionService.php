@@ -37,6 +37,18 @@ class SubmissionService
             $nextNumber = str_pad($count + 1, 6, '0', STR_PAD_LEFT);
             $registrationNumber = "ERS-{$year}-{$nextNumber}";
 
+            // Register custom university if not exists
+            $universityName = trim($validatedData['university']);
+            if (!empty($universityName)) {
+                $exists = \App\Models\University::where('name', $universityName)->exists();
+                if (!$exists) {
+                    \App\Models\University::create([
+                        'name' => $universityName,
+                        'is_approved' => false,
+                    ]);
+                }
+            }
+
             // Create Submission
             $submission = Submission::create([
                 'registration_number' => $registrationNumber,
@@ -137,6 +149,18 @@ class SubmissionService
             $count = Submission::whereYear('created_at', $year)->count();
             $nextNumber = str_pad($count + 1, 5, '0', STR_PAD_LEFT);
             $registrationNumber = "ERS-{$year}-{$nextNumber}";
+
+            // Register custom university if not exists
+            $universityName = trim($validated['asal_universitas']);
+            if (!empty($universityName)) {
+                $exists = \App\Models\University::where('name', $universityName)->exists();
+                if (!$exists) {
+                    \App\Models\University::create([
+                        'name' => $universityName,
+                        'is_approved' => false,
+                    ]);
+                }
+            }
 
             // Simpan ke database Submission
             $submission = Submission::create([

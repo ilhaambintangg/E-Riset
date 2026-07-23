@@ -16,7 +16,7 @@
     </div>
     <div>
         <p class="font-bold text-sm text-[#0a2240] tracking-tight leading-none">
-            {{ $activeSystem === 'edvokat' ? 'EDVOKAT Admin' : 'E-Riset Admin' }}
+            {{ $activeSystem === 'edvokat' ? 'EDVOKAT Admin' : ($userRole === 'hukum' ? 'E-Riset Hukum' : 'E-Riset Admin') }}
         </p>
         <p class="text-[9px] text-slate-500 font-semibold uppercase tracking-wider mt-1">
             {{ $activeSystem === 'edvokat' ? 'Admin Panel EDVOKAT' : 'Management Portal' }}
@@ -35,7 +35,6 @@
         <!-- E-RISET Menus -->
         
         <!-- Dashboard Section (Shared) -->
-        @if($userRole !== 'admin')
         <div class="pt-2 pb-1">
             <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dashboard</p>
         </div>
@@ -44,7 +43,6 @@
             <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
             <span class="flex-1">Dashboard</span>
         </a>
-        @endif
 
         @if($userRole === 'hukum')
             <!-- HUKUM Role Menus: Manajemen Permohonan Section -->

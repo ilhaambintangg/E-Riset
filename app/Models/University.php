@@ -10,5 +10,10 @@ class University extends Model
 
     protected $fillable = [
         'name',
+        'is_approved',
+    ];
+
+    protected $casts = [
+        'is_approved' => 'boolean',
     ];
 }

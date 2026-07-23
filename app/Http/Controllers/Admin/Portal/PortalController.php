@@ -12,6 +12,9 @@ class PortalController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role === 'hukum') {
+            return redirect()->route('admin.dashboard');
+        }
         return view('admin.portal.index');
     }
 }

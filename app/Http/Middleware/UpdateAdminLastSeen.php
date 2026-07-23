@@ -19,11 +19,6 @@ class UpdateAdminLastSeen
         if (Auth::check()) {
             $admin = Auth::user();
             
-            // Set online automatically when admin is active/navigating
-            if (cache('admin_chat_status', 'online') === 'offline') {
-                cache()->forever('admin_chat_status', 'online');
-            }
-
             // Update last_seen_at if it is null or more than 1 minute ago to reduce DB writes
             if (!$admin->last_seen_at || $admin->last_seen_at->lt(now()->subMinute())) {
                 $admin->last_seen_at = now();

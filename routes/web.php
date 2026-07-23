@@ -38,6 +38,7 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLast
         Route::resource('faqs', FaqController::class);
         Route::resource('announcements', AnnouncementController::class);
         Route::resource('panitera', PaniteraController::class);
+        Route::post('universities/{id}/approve', [\App\Http\Controllers\Admin\UniversityController::class, 'approve'])->name('universities.approve');
         Route::resource('universities', \App\Http\Controllers\Admin\UniversityController::class);
         Route::resource('hakims', \App\Http\Controllers\Admin\HakimController::class);
         

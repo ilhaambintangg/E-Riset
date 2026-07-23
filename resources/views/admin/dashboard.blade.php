@@ -17,7 +17,7 @@
 <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
         <h1 class="text-3xl font-extrabold text-white tracking-tight">Dashboard</h1>
-        <p class="text-base text-white/85 font-normal mt-1">Selamat datang kembali,<br />Administrator</p>
+        <p class="text-base text-white/85 font-normal mt-1">Selamat Datang Kembali</p>
         <p class="text-xs text-white/60 font-medium mt-1">
             {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
         </p>
@@ -72,7 +72,8 @@
     </div>
 </div>
 
-<!-- Table Section Card -->
+@if(auth()->user()->role !== 'admin')
+<!-- Table Section Card (Hukum role only) -->
 <div class="card-static overflow-hidden animate-fade-up bg-white" style="animation-delay: 0.1s;">
     <div class="px-6 py-5 border-b border-border-default flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white">
         <div class="flex items-center gap-3">
@@ -194,5 +195,6 @@
         </div>
     </div>
 </div>
+@endif
 
 @endsection

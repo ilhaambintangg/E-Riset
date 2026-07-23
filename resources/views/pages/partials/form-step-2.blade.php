@@ -28,7 +28,7 @@
             <!-- Custom Universitas (Shown when "Lainnya" is selected) -->
             <div class="md:col-span-2" x-show="form.university === 'Lainnya'" x-transition x-cloak>
                 <label class="input-label">Nama Universitas / Instansi <span class="text-fg-danger">*</span></label>
-                <input type="text" x-model="form.custom_university" @input="clearError('custom_university')" placeholder="Masukkan nama universitas atau instansi secara lengkap" 
+                <input type="text" x-model="form.custom_university" @input="clearError('custom_university')" placeholder="Contoh: Universitas Lampung" 
                        class="input-standard" :class="errors.custom_university ? '!border-border-danger' : ''">
                 <p x-show="errors.custom_university" class="text-[12px] text-fg-danger mt-[6px] font-medium" x-text="errors.custom_university"></p>
             </div>
