@@ -21,7 +21,8 @@ class StoreTemplateSuratRequest extends FormRequest
     {
         return [
             'template' => 'required|file|mimes:docx|max:5120',
-            'type' => 'required|string|in:individu,kelompok',
+            'institution_type' => 'required|string|in:PT,PN',
+            'template_type' => 'required|string|in:individu,kelompok',
         ];
     }
 }

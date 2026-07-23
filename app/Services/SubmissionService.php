@@ -203,9 +203,15 @@ class SubmissionService
     {
         return DB::transaction(function () use ($submission, $validated, $permitFile) {
             $admin = Auth::user();
+            $isPt = $submission->isPt();
+
+            if ($validated['status'] === 'Menentukan Jadwal Wawancara' && $isPt) {
+                $submission->interview_date = $validated['interview_date'] ?? null;
+                $submission->save();
+            }
             
-            // Generate letter automatically if status is Sedang Diproses
-            if ($validated['status'] === 'Sedang Diproses') {
+            // Generate letter automatically if status is Sedang Diproses (PN)
+            if ($validated['status'] === 'Sedang Diproses' && !$isPt) {
                 $recipientPosition = $validated['recipient_position'] ?? null;
                 if ($recipientPosition === 'Lainnya') {
                     $recipientPosition = $validated['custom_recipient_position'] ?? null;
@@ -225,8 +231,35 @@ class SubmissionService
                 $this->letterService->generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
             }
 
-            // Save the uploaded permit file if status is Disetujui or Ditolak
-            if (in_array($validated['status'], ['Disetujui', 'Ditolak']) && $permitFile) {
+            // Generate letter automatically if status is Pembuatan Surat Keterangan Riset (PT)
+            if ($validated['status'] === 'Pembuatan Surat Keterangan Riset' && $isPt) {
+                $konsentrasi = $validated['konsentrasi'] ?? null;
+                if ($konsentrasi === 'Lainnya') {
+                    $konsentrasi = $validated['custom_konsentrasi'] ?? null;
+                }
+                if ($konsentrasi) {
+                    $submission->konsentrasi = $konsentrasi;
+                }
+
+                $submission->start_date = $validated['start_date'] ?? $submission->start_date;
+                $submission->end_date = $validated['end_date'] ?? $submission->end_date;
+                $submission->hakim_id = $validated['hakim_id'] ?? null;
+                $submission->save();
+
+                $this->letterService->generateLetter($submission, $validated['panitera_id'], $validated['letter_date']);
+
+                // Send email to Hakim
+                if ($submission->hakim) {
+                    try {
+                        Mail::to($submission->hakim->email_hakim)->send(new \App\Mail\HakimNotificationMail($submission));
+                    } catch (\Exception $e) {
+                        Log::error('Failed to send HakimNotificationMail: ' . $e->getMessage());
+                    }
+                }
+            }
+
+            // Save the uploaded permit file if status is Disetujui, Pembuatan Surat Keterangan Riset, or Ditolak
+            if (in_array($validated['status'], ['Disetujui', 'Pembuatan Surat Keterangan Riset', 'Ditolak']) && $permitFile) {
                 $fileName = "Izin_Penelitian_{$submission->registration_number}." . $permitFile->getClientOriginalExtension();
                 $path = $permitFile->storeAs('permits/' . $submission->registration_number, $fileName, 'public');
                 $submission->permit_file_path = $path;
@@ -245,7 +278,7 @@ class SubmissionService
                 'changed_by_admin_id' => $admin ? $admin->id : null,
             ]);
 
-            // Send Email Notification
+            // Send Email Notification to Applicant
             try {
                 Mail::to($submission->email)->send(new SubmissionStatusUpdated($submission));
             } catch (\Exception $e) {

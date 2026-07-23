@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- ── HERO SECTION ── -->
-<section id="tentang" class="relative section-padding overflow-hidden pt-[160px] pb-[100px]">
+<section id="beranda" class="relative section-padding overflow-hidden pt-[160px] pb-[100px]">
     <!-- Modern Playful Grid & Shapes -->
     <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div class="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-brand-alt-soft/30 rounded-full blur-[80px] animate-risi-float"></div>

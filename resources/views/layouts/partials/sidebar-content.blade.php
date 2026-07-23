@@ -2,6 +2,7 @@
     $unreadSubmissionsCount = isset($unreadSubmissions) ? $unreadSubmissions->count() : 0;
     $unreadChatsCount = isset($unreadChatMessages) ? $unreadChatMessages->count() : 0;
     $activeSystem = $activeSystem ?? 'eriset';
+    $userRole = auth()->user()->role ?? 'admin';
 @endphp
 
 <!-- Logo Header -->
@@ -28,30 +29,13 @@
     @endif
 </div>
 
-<!-- System Switcher (Tab Style) -->
-<div class="px-4 py-3 border-b border-slate-200/60 bg-transparent">
-    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Sistem Aktif</p>
-    <div class="flex items-center gap-1 p-1 bg-slate-200/60 rounded-lg">
-        <!-- E-Riset -->
-        <a href="{{ route('admin.dashboard') }}" 
-           class="flex-1 py-1.5 px-2 rounded-md text-center text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {{ $activeSystem === 'eriset' ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/20' : 'text-slate-600 hover:text-slate-800' }}">
-            E-RISET
-        </a>
-
-        <!-- Evokat -->
-        <a href="{{ route('admin.edvokat') }}" 
-           class="flex-1 py-1.5 px-2 rounded-md text-center text-[10px] font-bold tracking-wider uppercase transition-all duration-200 {{ $activeSystem === 'edvokat' ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/20' : 'text-slate-600 hover:text-slate-800' }}">
-            EVOKAT
-        </a>
-    </div>
-</div>
-
 <!-- Navigation Menus -->
 <div class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-1 bg-transparent">
     @if($activeSystem === 'eriset')
         <!-- E-RISET Menus -->
         
-        <!-- Dashboard Section -->
+        <!-- Dashboard Section (Shared) -->
+        @if($userRole !== 'admin')
         <div class="pt-2 pb-1">
             <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Dashboard</p>
         </div>
@@ -60,86 +44,97 @@
             <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
             <span class="flex-1">Dashboard</span>
         </a>
+        @endif
 
-        <!-- Manajemen Permohonan Section -->
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manajemen Permohonan</p>
-        </div>
-        <!-- Permohonan Masuk -->
-        <a href="{{ route('admin.submissions.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.submissions.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="inbox" class="w-4 h-4"></i>
-            <span class="flex-1">Permohonan Masuk</span>
-            @if($unreadSubmissionsCount > 0)
-                <span class="bg-brand text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">{{ $unreadSubmissionsCount }}</span>
-            @endif
-        </a>
-        <!-- Laporan -->
-        <a href="{{ route('admin.reports.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.reports.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-            <span class="flex-1">Laporan</span>
-        </a>
-        <!-- Live Chat -->
-        <a href="{{ route('admin.chats.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.chats.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="message-square" class="w-4 h-4"></i>
-            <span class="flex-1">Live Chat</span>
-            @if($unreadChatsCount > 0)
-                <span class="bg-brand text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">{{ $unreadChatsCount }}</span>
-            @endif
-        </a>
+        @if($userRole === 'hukum')
+            <!-- HUKUM Role Menus: Manajemen Permohonan Section -->
+            <div class="pt-4 pb-1">
+                <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manajemen Permohonan</p>
+            </div>
+            <!-- Permohonan Masuk -->
+            <a href="{{ route('admin.submissions.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.submissions.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="inbox" class="w-4 h-4"></i>
+                <span class="flex-1">Permohonan Masuk</span>
+                @if($unreadSubmissionsCount > 0)
+                    <span class="bg-brand text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">{{ $unreadSubmissionsCount }}</span>
+                @endif
+            </a>
+            <!-- Laporan -->
+            <a href="{{ route('admin.reports.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.reports.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                <span class="flex-1">Laporan</span>
+            </a>
+            <!-- Live Chat -->
+            <a href="{{ route('admin.chats.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.chats.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                <span class="flex-1">Live Chat</span>
+                @if($unreadChatsCount > 0)
+                    <span class="bg-brand text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">{{ $unreadChatsCount }}</span>
+                @endif
+            </a>
+        @endif
 
-        <!-- Master Data Section -->
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Master Data</p>
-        </div>
-        <!-- Persyaratan Dokumen -->
-        <a href="{{ route('requirements.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('requirements.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="file-check" class="w-4 h-4"></i>
-            <span class="flex-1">Persyaratan Dokumen</span>
-        </a>
-        <!-- Data Panitera -->
-        <a href="{{ route('panitera.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('panitera.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="users" class="w-4 h-4"></i>
-            <span class="flex-1">Data Panitera</span>
-        </a>
-        <!-- Data Universitas -->
-        <a href="{{ route('universities.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('universities.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
-            <span class="flex-1">Data Universitas</span>
-        </a>
-        <!-- Template Surat -->
-        <a href="{{ route('templates.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('templates.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="file-code" class="w-4 h-4"></i>
-            <span class="flex-1">Template Surat</span>
-        </a>
+        @if($userRole === 'admin')
+            <!-- ADMIN Role Menus: Master Data Section -->
+            <div class="pt-4 pb-1">
+                <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Master Data</p>
+            </div>
+            <!-- Persyaratan Dokumen -->
+            <a href="{{ route('requirements.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('requirements.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="file-check" class="w-4 h-4"></i>
+                <span class="flex-1">Persyaratan Dokumen</span>
+            </a>
+            <!-- Data Panitera -->
+            <a href="{{ route('panitera.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('panitera.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                <span class="flex-1">Data Panitera</span>
+            </a>
+            <!-- Data Hakim -->
+            <a href="{{ route('hakims.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('hakims.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="gavel" class="w-4 h-4"></i>
+                <span class="flex-1">Data Hakim</span>
+            </a>
+            <!-- Data Universitas -->
+            <a href="{{ route('universities.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('universities.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                <span class="flex-1">Data Universitas</span>
+            </a>
+            <!-- Template Surat -->
+            <a href="{{ route('templates.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('templates.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="file-code" class="w-4 h-4"></i>
+                <span class="flex-1">Template Surat</span>
+            </a>
 
-        <!-- Informasi Publik Section -->
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Informasi Publik</p>
-        </div>
-        <!-- Kelola FAQ -->
-        <a href="{{ route('faqs.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('faqs.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="help-circle" class="w-4 h-4"></i>
-            <span class="flex-1">Kelola FAQ</span>
-        </a>
+            <!-- Informasi Publik Section -->
+            <div class="pt-4 pb-1">
+                <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Informasi Publik</p>
+            </div>
+            <!-- Kelola FAQ -->
+            <a href="{{ route('faqs.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('faqs.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="help-circle" class="w-4 h-4"></i>
+                <span class="flex-1">Kelola FAQ</span>
+            </a>
 
-        <!-- System Section -->
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">System</p>
-        </div>
-        <!-- Pengaturan -->
-        <a href="{{ route('admin.settings.index') }}" 
-           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.settings.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
-            <i data-lucide="settings" class="w-4 h-4"></i>
-            <span class="flex-1">Pengaturan</span>
-        </a>
+            <!-- System Section -->
+            <div class="pt-4 pb-1">
+                <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">System</p>
+            </div>
+            <!-- Pengaturan -->
+            <a href="{{ route('admin.settings.index') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.settings.*') ? 'bg-white text-[#0a2240] shadow-sm border border-slate-200/40 font-bold' : 'text-slate-600 hover:text-[#0a2240] hover:bg-slate-200/20' }}">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+                <span class="flex-1">Pengaturan</span>
+            </a>
+        @endif
 
     @elseif($activeSystem === 'edvokat')
         <!-- EDVOKAT Menus -->
@@ -217,8 +212,8 @@
         </div>
         <!-- Profile info -->
         <div class="flex-1 min-w-0">
-            <p class="text-xs font-bold text-slate-800 truncate leading-tight">Admin Pusat</p>
-            <p class="text-[10px] text-slate-500 truncate mt-0.5">Super Administrator</p>
+            <p class="text-xs font-bold text-slate-800 truncate leading-tight">{{ auth()->user()->name ?? 'Pengguna' }}</p>
+            <p class="text-[10px] text-slate-500 truncate mt-0.5">{{ $userRole === 'admin' ? 'Super Administrator' : 'Hukum E-Riset' }}</p>
         </div>
         <!-- Logout Form -->
         <form method="POST" action="{{ route('logout') }}" class="m-0 flex items-center">

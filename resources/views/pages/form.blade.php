@@ -473,17 +473,10 @@ function submissionForm() {
                 return;
             }
 
-            this.showSurveyModal = true;
-            setTimeout(() => lucide.createIcons(), 50);
+            this.submitData();
         },
 
-        confirmSurveyAndSubmit() {
-            // Buka tab survei ke URL yang benar di tab baru
-            const surveyTab = window.open('https://esurvey.badilum.mahkamahagung.go.id/index.php/kontrol_ikm_surveillance', '_blank');
-            
-            // Tutup popup modal otomatis
-            this.showSurveyModal = false;
-            
+        submitData() {
             this.loading = true;
             this.errors = {};
 
@@ -535,8 +528,6 @@ function submissionForm() {
                     // Redirect halaman utama ke halaman sukses
                     window.location.href = `/success/${res.body.registration_number}`;
                 } else {
-                    // Submit gagal — tutup tab survei yang sudah terbuka jika ada
-                    if (surveyTab) surveyTab.close();
                     if (res.body.errors) {
                         let mapped = {};
                         for (let k in res.body.errors) {
@@ -558,8 +549,6 @@ function submissionForm() {
                 }
             })
             .catch(err => {
-                // Error jaringan — tutup tab survei jika ada
-                if (surveyTab) surveyTab.close();
                 this.errors = { _global: 'Terjadi kesalahan jaringan. Silakan coba lagi.' };
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             })

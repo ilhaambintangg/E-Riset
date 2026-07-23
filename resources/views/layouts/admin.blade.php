@@ -38,6 +38,9 @@
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
     @stack('styles')
 </head>
 @php

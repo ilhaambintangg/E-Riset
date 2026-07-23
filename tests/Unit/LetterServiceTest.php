@@ -167,8 +167,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'individu',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'individu',
             'is_active' => true
         ]);
 
@@ -257,8 +259,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'kelompok',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'kelompok',
             'is_active' => true
         ]);
 
@@ -338,8 +342,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'individu',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'individu',
             'is_active' => true
         ]);
 
@@ -427,8 +433,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'kelompok',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'kelompok',
             'is_active' => true
         ]);
 
@@ -517,8 +525,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'kelompok',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'kelompok',
             'is_active' => true
         ]);
 
@@ -677,8 +687,10 @@ class LetterServiceTest extends TestCase
         $objWriter->save($tempPath);
 
         $template = \App\Models\TemplateSurat::create([
+            'name' => $tempFile,
+            'institution_type' => 'PN',
+            'template_type' => 'individu',
             'file_path' => 'templates/' . $tempFile,
-            'type' => 'individu',
             'is_active' => true
         ]);
 

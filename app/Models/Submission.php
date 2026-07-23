@@ -39,7 +39,15 @@ class Submission extends Model
         'reference_letter_date',
         'research_title',
         'research_location',
-        'research_type'
+        'research_type',
+        'konsentrasi',
+        'hakim_id',
+        'waktu_penelitian',
+        'interview_date'
+    ];
+
+    protected $casts = [
+        'interview_date' => 'datetime',
     ];
 
     public function documents(): HasMany
@@ -60,5 +68,21 @@ class Submission extends Model
     public function members(): HasMany
     {
         return $this->hasMany(SubmissionMember::class);
+    }
+
+    public function hakim()
+    {
+        return $this->belongsTo(Hakim::class, 'hakim_id');
+    }
+
+    public function isPt(): bool
+    {
+        $loc = strtolower($this->research_location ?? $this->location ?? '');
+        return str_contains($loc, 'tinggi') || str_contains($loc, 'pt');
+    }
+
+    public function isPn(): bool
+    {
+        return !$this->isPt();
     }
 }

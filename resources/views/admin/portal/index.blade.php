@@ -1,7 +1,3 @@
-@php
-    redirect()->route('admin.dashboard')->send();
-    exit;
-@endphp
 <!DOCTYPE html>
 <html lang="id" class="h-full bg-neutral-primary-soft">
 <head>

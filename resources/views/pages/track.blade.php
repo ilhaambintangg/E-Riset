@@ -6,24 +6,26 @@
 $statusConfig = [
     'Menunggu Verifikasi' => ['color' => 'text-warning-strong bg-warning-soft border-border-warning-subtle', 'icon' => 'clock', 'dot' => 'bg-warning'],
     'Sedang Diproses'     => ['color' => 'text-info-strong bg-info-soft border-border-info-subtle', 'icon' => 'loader-2', 'dot' => 'bg-info'],
+    'Menentukan Jadwal Wawancara' => ['color' => 'text-info-strong bg-info-soft border-border-info-subtle', 'icon' => 'calendar', 'dot' => 'bg-info'],
+    'Pembuatan Surat Keterangan Riset' => ['color' => 'text-success-strong bg-success-soft border-border-success-subtle', 'icon' => 'check-circle-2', 'dot' => 'bg-success'],
     'Disetujui'           => ['color' => 'text-success-strong bg-success-soft border-border-success-subtle', 'icon' => 'check-circle-2', 'dot' => 'bg-success'],
     'Ditolak'             => ['color' => 'text-danger-strong bg-danger-soft border-border-danger-subtle', 'icon' => 'x-circle', 'dot' => 'bg-danger'],
 ];
 
 $cfg = null;
+$isPt = false;
+$steps = [];
+$currentStepIndex = -1;
+
 if (isset($submission)) {
     $cfg = $statusConfig[$submission->current_status] ?? ['color' => 'text-fg-body bg-neutral-secondary-medium border-border-default-medium', 'icon' => 'clock', 'dot' => 'bg-neutral-tertiary'];
-}
+    $isPt = $submission->isPt();
+    
+    // Define stepper logic dynamically based on PT/PN
+    $steps = $isPt
+        ? ['Menunggu Verifikasi', 'Menentukan Jadwal Wawancara', 'Pembuatan Surat Keterangan Riset', 'Disetujui']
+        : ['Menunggu Verifikasi', 'Sedang Diproses', 'Disetujui'];
 
-// Define stepper logic
-$steps = [
-    'Menunggu Verifikasi',
-    'Sedang Diproses',
-    'Disetujui'
-];
-
-$currentStepIndex = -1;
-if (isset($submission)) {
     if ($submission->current_status === 'Ditolak') {
         $currentStepIndex = -1; // Ditolak is an exception state
     } else {
@@ -143,7 +145,7 @@ if (isset($submission)) {
                         <!-- Connecting Line Background -->
                         <div class="absolute left-0 top-[24px] -translate-y-1/2 w-full h-[4px] bg-slate-200 rounded-full -z-10"></div>
                         <!-- Connecting Line Active -->
-                        <div class="absolute left-0 top-[24px] -translate-y-1/2 h-[4px] bg-gradient-to-r from-brand to-brand-alt rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ $currentStepIndex === 0 ? '0%' : ($currentStepIndex === 1 ? '50%' : '100%') }}"></div>
+                        <div class="absolute left-0 top-[24px] -translate-y-1/2 h-[4px] bg-gradient-to-r from-brand to-brand-alt rounded-full -z-10 transition-all duration-700 ease-out" style="width: {{ count($steps) > 1 ? ($currentStepIndex / (count($steps) - 1)) * 100 : 0 }}%"></div>
 
                         @foreach($steps as $index => $stepName)
                             <div class="flex flex-col items-center gap-[8px] relative text-center">
@@ -198,21 +200,35 @@ if (isset($submission)) {
                         </div>
                     </div>
 
-                    <!-- Surat Izin (Jika Disetujui) -->
-                    @if($submission->current_status === 'Disetujui')
+                    <!-- Jadwal Wawancara (Jika ada) -->
+                    @if($submission->interview_date && $submission->current_status === 'Menentukan Jadwal Wawancara')
+                        <div class="bg-blue-50/80 border border-blue-100 rounded-xl p-[32px] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-[24px] shadow-sm mb-4 animate-fade-in">
+                            <div class="flex-1">
+                                <h3 class="text-[18px] font-bold text-blue-800 mb-[8px] flex items-center justify-center sm:justify-start gap-[10px]">
+                                    <i data-lucide="calendar" class="w-[24px] h-[24px]"></i> Jadwal Wawancara Dijadwalkan
+                                </h3>
+                                <p class="text-[14px] text-blue-700 font-medium leading-[1.6]">
+                                    Wawancara penelitian Anda telah dijadwalkan pada hari <strong class="text-blue-900">{{ $submission->interview_date->locale('id')->translatedFormat('l, d F Y - H:i') }} WIB</strong>. Silakan hadir tepat waktu di lokasi penelitian.
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Surat Izin / Keterangan (Jika Disetujui / Pembuatan Surat Keterangan Riset) -->
+                    @if($submission->current_status === 'Disetujui' || ($submission->isPt() && $submission->current_status === 'Pembuatan Surat Keterangan Riset'))
                         <div class="bg-emerald-50/80 border border-emerald-100 rounded-xl p-[32px] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-[24px] shadow-sm">
                             <div>
                                 <h3 class="text-[18px] font-bold text-emerald-800 mb-[8px] flex items-center justify-center sm:justify-start gap-[10px]">
-                                    <i data-lucide="check-circle-2" class="w-[24px] h-[24px]"></i> Surat Izin Tersedia
+                                    <i data-lucide="check-circle-2" class="w-[24px] h-[24px]"></i> Surat Resmi Tersedia
                                 </h3>
                                 <p class="text-[14px] text-emerald-700 font-medium leading-[1.6]">
-                                    Permohonan izin Anda telah disetujui. Unduh surat izin elektronik resmi ber-TTD sekarang.
+                                    Permohonan Anda telah disetujui / diproses. Unduh dokumen surat resmi elektronik Anda sekarang.
                                 </p>
                             </div>
                             <a href="/api/public/submissions/{{ $submission->registration_number }}/download-permit" target="_blank"
                                class="btn-success btn-lg shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                                 <i data-lucide="download" class="w-[20px] h-[20px]"></i>
-                                Unduh (PDF)
+                                Unduh Dokumen
                             </a>
                         </div>
                     @endif

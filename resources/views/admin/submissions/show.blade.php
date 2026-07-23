@@ -16,6 +16,8 @@
     $statusConfig = [
         'Menunggu Verifikasi' => ['color' => 'text-fg-warning bg-warning-soft border-border-warning-subtle', 'icon' => 'clock', 'dot' => 'bg-warning'],
         'Sedang Diproses'     => ['color' => 'text-fg-info bg-info-soft border-border-info-subtle', 'icon' => 'loader', 'dot' => 'bg-info'],
+        'Menentukan Jadwal Wawancara' => ['color' => 'text-fg-info bg-info-soft border-border-info-subtle', 'icon' => 'calendar', 'dot' => 'bg-info'],
+        'Pembuatan Surat Keterangan Riset' => ['color' => 'text-fg-success-strong bg-success-soft border-border-success-subtle', 'icon' => 'check-circle-2', 'dot' => 'bg-success'],
         'Disetujui'           => ['color' => 'text-fg-success-strong bg-success-soft border-border-success-subtle', 'icon' => 'check-circle-2', 'dot' => 'bg-success'],
         'Ditolak'             => ['color' => 'text-fg-danger-strong bg-danger-soft border-border-danger-subtle', 'icon' => 'x-circle', 'dot' => 'bg-danger'],
     ];
@@ -115,6 +117,18 @@
                                 <p class="text-xs font-semibold text-fg-heading">{{ $destinationCity }}</p>
                             </div>
                             @endif
+                        </div>
+                    </div>
+                    @endif
+
+                    @if($submission->interview_date)
+                    <div class="sm:col-span-2 border-t border-border-default-subtle pt-6">
+                        <p class="text-[10px] font-bold text-fg-body-subtle uppercase tracking-wider mb-1">Jadwal Wawancara</p>
+                        <div class="bg-brand-softer px-4 py-3 rounded-default border border-border-brand-subtle">
+                            <p class="text-xs font-bold text-fg-brand-strong flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-brand-alt"></i>
+                                {{ $submission->interview_date->locale('id')->translatedFormat('l, d F Y - H:i') }} WIB
+                            </p>
                         </div>
                     </div>
                     @endif
@@ -276,7 +290,10 @@
     <div class="space-y-6">
         
         <!-- Status Update Card -->
-        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses']) ? '' : $submission->current_status }}', recipient_position: '' }">
+        @php
+            $isFinalStatus = in_array($submission->current_status, ['Disetujui', 'Ditolak']);
+        @endphp
+        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses', 'Menentukan Jadwal Wawancara', 'Pembuatan Surat Keterangan Riset']) ? '' : $submission->current_status }}', recipient_position: '', konsentrasi: '' }">
             <div class="px-6 py-5 border-b border-border-default bg-neutral-primary-soft">
                 <h3 class="text-sm font-bold text-fg-heading flex items-center gap-2 m-0">
                     <i data-lucide="settings" class="w-4 h-4 text-brand-alt"></i> Proses Permohonan
@@ -298,41 +315,64 @@
                     
                     <div>
                         <label class="input-label text-xs">Ubah Status</label>
-                        @if($submission->current_status === 'Menunggu Verifikasi')
-                            <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
-                                <option value="" disabled selected>-- Pilih Status Baru --</option>
-                                <option value="Sedang Diproses">Sedang Diproses (Buat Surat)</option>
-                                <option value="Ditolak">Ditolak</option>
-                            </select>
-                        @elseif($submission->current_status === 'Sedang Diproses')
-                            <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
-                                <option value="" disabled selected>-- Pilih Status Baru --</option>
-                                <option value="Disetujui">Disetujui</option>
-                                <option value="Ditolak">Ditolak</option>
-                            </select>
-                        @elseif($submission->current_status === 'Disetujui')
-                            <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
-                                <option value="Disetujui">Disetujui</option>
-                            </select>
-                            <input type="hidden" name="status" value="Disetujui">
-                        @elseif($submission->current_status === 'Ditolak')
-                            <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
-                                <option value="Ditolak">Ditolak</option>
-                            </select>
-                            <input type="hidden" name="status" value="Ditolak">
+                        @if($submission->isPt())
+                            @if($submission->current_status === 'Menunggu Verifikasi')
+                                <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                    <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                    <option value="Menentukan Jadwal Wawancara">Menentukan Jadwal Wawancara</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            @elseif($submission->current_status === 'Menentukan Jadwal Wawancara')
+                                <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                    <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                    <option value="Pembuatan Surat Keterangan Riset">Pembuatan Surat Keterangan Riset</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            @elseif($submission->current_status === 'Pembuatan Surat Keterangan Riset')
+                                <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                    <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                    <option value="Disetujui">Disetujui</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            @else
+                                <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
+                                    <option value="{{ $submission->current_status }}">{{ $submission->current_status }}</option>
+                                </select>
+                                <input type="hidden" name="status" value="{{ $submission->current_status }}">
+                            @endif
+                        @else
+                            @if($submission->current_status === 'Menunggu Verifikasi')
+                                <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                    <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                    <option value="Sedang Diproses">Sedang Diproses (Buat Surat)</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            @elseif($submission->current_status === 'Sedang Diproses')
+                                <select name="status" x-model="status" class="input-standard py-2.5 text-xs bg-neutral-primary-soft" required>
+                                    <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                    <option value="Disetujui">Disetujui</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            @else
+                                <select name="status" disabled class="input-standard py-2.5 text-xs bg-neutral-primary-soft">
+                                    <option value="{{ $submission->current_status }}">{{ $submission->current_status }}</option>
+                                </select>
+                                <input type="hidden" name="status" value="{{ $submission->current_status }}">
+                            @endif
                         @endif
                     </div>
 
-                    <!-- Required for 'Sedang Diproses' -->
-                    <div x-show="status === 'Sedang Diproses' && '{{ $submission->current_status }}' !== 'Sedang Diproses'" x-collapse x-cloak>
-                        <div class="p-4 bg-brand-softer border border-border-brand-subtle rounded-default space-y-4">
-                            <p class="text-xs font-bold text-fg-brand flex items-start gap-2">
-                                <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5 text-brand-alt"></i>
-                                Memilih status ini akan otomatis menghasilkan draf Surat Izin (Word) menggunakan template.
+                    @if(!$submission->isPt())
+                    {{-- PN: Section muncul saat memilih "Sedang Diproses" --}}
+                    <div x-show="status === 'Sedang Diproses'" x-collapse x-cloak class="overflow-hidden">
+                        <div class="p-4 bg-brand-softer border border-border-brand-subtle rounded-default space-y-3 mt-0">
+                            <p class="text-xs font-bold text-fg-brand flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5 text-brand-alt"></i>
+                                Surat izin akan otomatis dibuat dari template.
                             </p>
                             <div>
-                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Jabatan Tujuan Surat</label>
-                                <select name="recipient_position" x-model="recipient_position" :required="status === 'Sedang Diproses'" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Jabatan Tujuan</label>
+                                <select name="recipient_position" x-model="recipient_position" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                                     <option value="Rektor">Rektor</option>
                                     <option value="Dekan">Dekan</option>
                                     <option value="Ketua Program Studi">Ketua Program Studi</option>
@@ -340,16 +380,15 @@
                                     <option value="Lainnya">Lainnya (Input Manual)</option>
                                 </select>
                             </div>
-                            <div x-show="recipient_position === 'Lainnya'" x-collapse x-cloak>
-                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Masukkan Jabatan Tujuan Surat</label>
+                             <div x-show="recipient_position === 'Lainnya'" x-collapse x-cloak class="overflow-hidden">
                                 <input type="text" name="custom_recipient_position" placeholder="Contoh: Kepala Biro Akademik" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Kota Tujuan Surat</label>
-                                <input type="text" name="destination_city" :required="status === 'Sedang Diproses'" placeholder="Contoh: Bandar Lampung" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Kota Tujuan</label>
+                                <input type="text" name="destination_city" placeholder="Contoh: Bandar Lampung" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Pilih Panitera / Penandatangan</label>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Panitera / Penandatangan</label>
                                 <select name="panitera_id" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                                     <option value="">-- Pilih --</option>
                                     @foreach($paniteras as $p)
@@ -358,23 +397,87 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-fg-brand-strong mb-1.5">Tanggal Surat</label>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Tanggal Surat</label>
                                 <input type="date" name="letter_date" value="{{ date('Y-m-d') }}" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
                             </div>
                         </div>
                     </div>
+                    @else
+                    {{-- PT: Section muncul saat memilih "Menentukan Jadwal Wawancara" --}}
+                    <div x-show="status === 'Menentukan Jadwal Wawancara'" x-collapse x-cloak class="overflow-hidden">
+                        <div class="p-4 bg-brand-softer border border-border-brand-subtle rounded-default space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Tanggal &amp; Waktu Wawancara</label>
+                                <input type="datetime-local" name="interview_date" value="{{ $submission->interview_date ? $submission->interview_date->format('Y-m-d\TH:i') : '' }}" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                        </div>
+                    </div>
 
-                    <!-- Required for 'Disetujui' or 'Ditolak' -->
-                    <div x-show="(status === 'Disetujui' || status === 'Ditolak') && '{{ $submission->current_status }}' !== status" x-collapse x-cloak>
-                        <div class="p-4 bg-success-soft border border-border-success-subtle rounded-default space-y-4">
-                            <p class="text-xs font-bold text-fg-success-strong flex items-start gap-2">
-                                <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
-                                Upload file PDF surat balasan / izin resmi yang telah ditandatangani dan dicap.
+                    {{-- PT: Section muncul saat memilih "Pembuatan Surat Keterangan Riset" --}}
+                    <div x-show="status === 'Pembuatan Surat Keterangan Riset'" x-collapse x-cloak class="overflow-hidden">
+                        <div class="p-4 bg-brand-softer border border-border-brand-subtle rounded-default space-y-3">
+                            <p class="text-xs font-bold text-fg-brand flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5 text-brand-alt"></i>
+                                Surat Keterangan Riset otomatis dibuat &amp; email ke Hakim terkirim.
                             </p>
                             <div>
-                                <label class="block text-xs font-bold text-fg-success-strong mb-1.5">Upload Surat Balasan (PDF)</label>
-                                <input type="file" name="permit_file" accept=".pdf" class="w-full text-xs text-fg-body file:mr-3 file:py-1.5 file:px-3 file:rounded-sm file:border-0 file:text-[10px] file:font-bold file:bg-success file:text-white hover:file:bg-success-strong cursor-pointer" :required="status === 'Disetujui'">
-                                <p class="text-[10px] text-fg-body-subtle mt-1.5">Format File: PDF | Ukuran Maksimal: 2 MB</p>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Tanggal Surat</label>
+                                <input type="date" name="letter_date" value="{{ date('Y-m-d') }}" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Konsentrasi</label>
+                                <select name="konsentrasi" x-model="konsentrasi" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Hukum Pidana">Hukum Pidana</option>
+                                    <option value="Hukum Perdata">Hukum Perdata</option>
+                                    <option value="Hukum Tata Negara">Hukum Tata Negara</option>
+                                    <option value="Hukum Administrasi Negara">Hukum Administrasi Negara</option>
+                                    <option value="Hukum Bisnis">Hukum Bisnis</option>
+                                    <option value="Hukum Internasional">Hukum Internasional</option>
+                                    <option value="Hukum Acara">Hukum Acara</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+                             <div x-show="konsentrasi === 'Lainnya'" x-collapse x-cloak class="overflow-hidden">
+                                <input type="text" name="custom_konsentrasi" placeholder="Masukkan konsentrasi hukum lainnya" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Mulai Penelitian</label>
+                                <input type="date" name="start_date" value="{{ $submission->start_date ?? date('Y-m-d') }}" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Hakim Pendamping</label>
+                                <select name="hakim_id" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                    <option value="">-- Pilih Hakim --</option>
+                                    @foreach($hakims as $h)
+                                        <option value="{{ $h->id }}">{{ $h->nama_hakim }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-brand-strong mb-1">Panitera / Penandatangan</label>
+                                <select name="panitera_id" class="w-full border border-border-brand-subtle rounded-sm px-3 py-2 text-xs text-fg-heading font-medium focus:ring-2 focus:ring-brand-soft outline-none bg-white">
+                                    <option value="">-- Pilih Panitera --</option>
+                                    @foreach($paniteras as $p)
+                                        <option value="{{ $p->id }}">{{ $p->nama_panitera }} - {{ $p->jabatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- Upload PDF (Disetujui / Ditolak) - untuk PN & PT --}}
+                    <div x-show="status === 'Disetujui' && '{{ $submission->current_status }}' !== status" x-collapse x-cloak class="overflow-hidden">
+                        <div class="p-4 bg-success-soft border border-border-success-subtle rounded-default space-y-3">
+                            <p class="text-xs font-bold text-fg-success-strong flex items-center gap-2">
+                                <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                Upload surat resmi PDF yang sudah ditandatangani.
+                            </p>
+                            <div>
+                                <label class="block text-xs font-bold text-fg-success-strong mb-1">Upload Surat (PDF)</label>
+                                <input type="file" name="permit_file" accept=".pdf" class="w-full text-xs text-fg-body file:mr-3 file:py-1.5 file:px-3 file:rounded-sm file:border-0 file:text-[10px] file:font-bold file:bg-success file:text-white hover:file:bg-success-strong cursor-pointer">
+                                <p class="text-[10px] text-fg-body-subtle mt-1">PDF · Maks. 2 MB</p>
                             </div>
                         </div>
                     </div>
@@ -385,10 +488,10 @@
                             <span x-show="status === 'Ditolak'" class="text-fg-danger font-bold">* (Wajib diisi jika menolak)</span>
                             <span x-show="status !== 'Ditolak'">(Opsional)</span>
                         </label>
-                        <textarea name="notes" rows="3" :required="status === 'Ditolak'" @if(in_array($submission->current_status, ['Disetujui', 'Ditolak'])) readonly @endif placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
+                        <textarea name="notes" rows="3" :required="status === 'Ditolak'" @if($isFinalStatus) readonly @endif placeholder="Tulis catatan atau instruksi revisi untuk pemohon..." class="input-standard text-xs bg-neutral-primary-soft resize-none"></textarea>
                     </div>
 
-                    @if(in_array($submission->current_status, ['Disetujui', 'Ditolak']))
+                    @if($isFinalStatus)
                         <button type="submit" disabled class="w-full bg-neutral-tertiary text-white/50 cursor-not-allowed font-bold py-3.5 rounded-default shadow-md flex items-center justify-center gap-2 text-xs">
                             Status Final
                             <i data-lucide="lock" class="w-4 h-4"></i>
@@ -401,8 +504,34 @@
                     @endif
                 </form>
 
-                <!-- Download/Generate Letter Box -->
-                @if($submission->current_status === 'Sedang Diproses')
+                <!-- Download Generated Letter Box (PN: Sedang Diproses) -->
+                @if($submission->current_status === 'Sedang Diproses' && !$submission->isPt())
+                <div class="mt-6 pt-6 border-t border-border-default">
+                    <div class="p-4 rounded-default bg-brand-softer border border-border-brand-subtle mb-3">
+                        <p class="text-xs font-bold text-fg-brand flex items-center gap-2 mb-1">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            Surat Draf Sudah Dibuat
+                        </p>
+                        <p class="text-[10px] text-fg-brand-soft leading-relaxed">Download draf surat di bawah, cetak & tandatangani, lalu ubah status ke <strong>Disetujui</strong> (upload PDF) atau <strong>Ditolak</strong>.</p>
+                    </div>
+                    <a href="{{ route('admin.submissions.download', $submission->id) }}" target="_blank" class="w-full btn-brand btn-sm text-xs py-3 justify-center">
+                        <i data-lucide="download" class="w-4 h-4"></i> Download Draf Surat (Word)
+                    </a>
+                </div>
+                @endif
+
+                <!-- Download Generated Letter Box (PT: Pembuatan Surat Keterangan Riset) -->
+                @if($submission->current_status === 'Pembuatan Surat Keterangan Riset' || ($submission->isPt() && $submission->current_status === 'Disetujui'))
+                <div class="mt-6 pt-6 border-t border-border-default">
+                    <p class="text-xs font-bold text-fg-heading mb-3">Surat Keterangan Riset (Word)</p>
+                    <a href="{{ route('admin.submissions.download', $submission->id) }}" target="_blank" class="w-full btn-brand btn-sm text-xs py-3 justify-center">
+                        <i data-lucide="download" class="w-4 h-4"></i> Download Surat Keterangan
+                    </a>
+                </div>
+                @endif
+
+                <!-- Download Generated Letter Box (PN: Disetujui) -->
+                @if(!$submission->isPt() && $submission->current_status === 'Disetujui' && $submission->generatedLetter)
                 <div class="mt-6 pt-6 border-t border-border-default">
                     <p class="text-xs font-bold text-fg-heading mb-3">Draf Surat Izin (Word)</p>
                     <a href="{{ route('admin.submissions.download', $submission->id) }}" target="_blank" class="w-full btn-brand btn-sm text-xs py-3 justify-center">
@@ -410,12 +539,13 @@
                     </a>
                 </div>
                 @endif
-                
-                @if($submission->current_status === 'Disetujui' && $submission->permit_file_path)
+
+                <!-- Surat Resmi PDF -->
+                @if($submission->permit_file_path && in_array($submission->current_status, ['Disetujui', 'Pembuatan Surat Keterangan Riset']))
                 <div class="mt-6 pt-6 border-t border-border-default">
-                    <p class="text-xs font-bold text-fg-heading mb-3">Surat Izin Resmi (PDF)</p>
+                    <p class="text-xs font-bold text-fg-heading mb-3">Surat Resmi (PDF)</p>
                     <a href="{{ Storage::url($submission->permit_file_path) }}" target="_blank" class="w-full btn-brand btn-sm text-xs py-3 justify-center bg-success hover:bg-success-strong focus:ring-success-soft">
-                        <i data-lucide="file-check" class="w-4 h-4"></i> Lihat Surat Izin Resmi
+                        <i data-lucide="file-check" class="w-4 h-4"></i> Lihat Surat Resmi
                     </a>
                 </div>
                 @endif
@@ -461,5 +591,18 @@
 
     </div>
 </div>
+
+@if(session('download_letter_url'))
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const link = document.createElement('a');
+        link.href = "{{ session('download_letter_url') }}";
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+</script>
+@endif
 
 @endsection

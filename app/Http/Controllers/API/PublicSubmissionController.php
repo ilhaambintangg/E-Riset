@@ -104,14 +104,33 @@ class PublicSubmissionController extends Controller
             return response()->json(['message' => 'Permohonan tidak ditemukan'], 404);
         }
 
-        if ($submission->current_status !== 'Disetujui' || !$submission->permit_file_path) {
-            return response()->json(['message' => 'Surat izin belum tersedia atau permohonan belum disetujui.'], 400);
-        }
+        if ($submission->isPt()) {
+            if ($submission->current_status !== 'Pembuatan Surat Keterangan Riset') {
+                return response()->json(['message' => 'Surat keterangan riset belum tersedia.'], 400);
+            }
+            
+            // If the Hukum officer uploaded a signed PDF
+            if ($submission->permit_file_path && Storage::disk('public')->exists($submission->permit_file_path)) {
+                return Storage::disk('public')->download($submission->permit_file_path);
+            }
 
-        if (!Storage::disk('public')->exists($submission->permit_file_path)) {
-            return response()->json(['message' => 'File surat izin tidak ditemukan di server.'], 404);
-        }
+            // Otherwise download the generated Word (.docx) letter
+            if ($submission->generatedLetter && Storage::disk('public')->exists($submission->generatedLetter->file_path)) {
+                return Storage::disk('public')->download($submission->generatedLetter->file_path);
+            }
 
-        return Storage::disk('public')->download($submission->permit_file_path);
+            return response()->json(['message' => 'File surat keterangan belum dihasilkan.'], 404);
+        } else {
+            // PN flow
+            if ($submission->current_status !== 'Disetujui' || !$submission->permit_file_path) {
+                return response()->json(['message' => 'Surat izin belum tersedia atau permohonan belum disetujui.'], 400);
+            }
+
+            if (!Storage::disk('public')->exists($submission->permit_file_path)) {
+                return response()->json(['message' => 'File surat izin tidak ditemukan di server.'], 404);
+            }
+
+            return Storage::disk('public')->download($submission->permit_file_path);
+        }
     }
 }

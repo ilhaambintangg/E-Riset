@@ -111,42 +111,60 @@ class LetterService
      * @param TemplateProcessor $templateProcessor
      * @throws \Exception
      */
-    public static function validateTemplate(TemplateProcessor $templateProcessor, bool $isKelompok = false): void
+    public static function validateTemplate(TemplateProcessor $templateProcessor, bool $isKelompok = false, bool $isPt = false): void
     {
         $variables = $templateProcessor->getVariables();
         
-        $requiredPlaceholders = [
-            'nomor_surat',
-            'tanggal_surat',
-            'jabatan_tujuan',
-            'universitas',
-            'kota_tujuan',
-            'fakultas',
-            'program_studi',
-            'judul_penelitian',
-            'lokasi_penelitian',
-            'nama_panitera',
-            'jabatan_panitera'
-        ];
+        if ($isPt) {
+            $requiredPlaceholders = [
+                'nomor_surat',
+                'tanggal_surat',
+                'program_studi',
+                'judul_penelitian',
+                'tujuan_penelitian',
+                'nama_panitera',
+                'jabatan_panitera',
+                'tanggal_penelitian'
+            ];
+            if ($isKelompok) {
+                $requiredPlaceholders[] = 'fakultas';
+            } else {
+                $requiredPlaceholders[] = 'konsentrasi';
+            }
+        } else {
+            $requiredPlaceholders = [
+                'nomor_surat',
+                'tanggal_surat',
+                'jabatan_tujuan',
+                'universitas',
+                'kota_tujuan',
+                'fakultas',
+                'program_studi',
+                'judul_penelitian',
+                'lokasi_penelitian',
+                'nama_panitera',
+                'jabatan_panitera'
+            ];
 
-        if ($isKelompok) {
-            if (in_array('nama_anggota', $variables)) {
-                $requiredPlaceholders[] = 'nama_anggota';
-                $requiredPlaceholders[] = 'npm_anggota';
+            if ($isKelompok) {
+                if (in_array('nama_anggota', $variables)) {
+                    $requiredPlaceholders[] = 'nama_anggota';
+                    $requiredPlaceholders[] = 'npm_anggota';
+                } else {
+                    $requiredPlaceholders[] = 'nama';
+                    $requiredPlaceholders[] = 'npm';
+                }
+
+                if (in_array('tembusan', $variables)) {
+                    $requiredPlaceholders[] = 'tembusan';
+                } else {
+                    $requiredPlaceholders[] = 'tembusan_anggota';
+                    $requiredPlaceholders[] = 'arsip';
+                }
             } else {
                 $requiredPlaceholders[] = 'nama';
                 $requiredPlaceholders[] = 'npm';
             }
-
-            if (in_array('tembusan', $variables)) {
-                $requiredPlaceholders[] = 'tembusan';
-            } else {
-                $requiredPlaceholders[] = 'tembusan_anggota';
-                $requiredPlaceholders[] = 'arsip';
-            }
-        } else {
-            $requiredPlaceholders[] = 'nama';
-            $requiredPlaceholders[] = 'npm';
         }
 
         $missing = [];
@@ -174,38 +192,50 @@ class LetterService
     {
         $panitera = Panitera::findOrFail($paniteraId);
         
+        $isPt = $submission->isPt();
+        $institutionType = $isPt ? 'PT' : 'PN';
+        
         // Determine template type (individu or kelompok)
         $isKelompok = $submission->members()->count() > 0;
         $templateType = $isKelompok ? 'kelompok' : 'individu';
 
-        $template = TemplateSurat::where('type', $templateType)->where('is_active', true)->first();
-        if (!$template) {
-            $template = TemplateSurat::where('is_active', true)->first();
+        $template = TemplateSurat::where('institution_type', $institutionType)
+            ->where('template_type', $templateType)
+            ->where('is_active', true)
+            ->first();
+
+        if (!$template && $templateType === 'kelompok') {
+            $template = TemplateSurat::where('institution_type', $institutionType)
+                ->where('template_type', 'individu')
+                ->where('is_active', true)
+                ->first();
         }
 
         if (!$template) {
-            throw new \Exception("Template surat untuk jenis {$templateType} belum tersedia atau tidak ada yang aktif.");
+            throw new \Exception("Template surat untuk {$institutionType} - " . ucfirst($templateType) . " belum tersedia atau tidak ada yang aktif.");
         }
 
         $templatePath = storage_path('app/public/' . $template->file_path);
+        $isKelompokTemplate = ($template->template_type === 'kelompok');
+
         if (!file_exists($templatePath)) {
-            throw new \Exception('File template tidak ditemukan di server.');
+            throw new \Exception('File template tidak ditemukan di server: ' . $templatePath);
         }
 
         $templateProcessor = new TemplateProcessor($templatePath);
 
         // Fix potential justified paragraph layout stretching and narrow margins for address block placeholders
-        self::fixPlaceholderParagraphAlignment($templateProcessor, 'universitas');
-        self::fixPlaceholderParagraphAlignment($templateProcessor, 'jabatan_tujuan');
-        self::fixPlaceholderParagraphAlignment($templateProcessor, 'kota_tujuan');
+        if (!$isPt) {
+            self::fixPlaceholderParagraphAlignment($templateProcessor, 'universitas');
+            self::fixPlaceholderParagraphAlignment($templateProcessor, 'jabatan_tujuan');
+            self::fixPlaceholderParagraphAlignment($templateProcessor, 'kota_tujuan');
+        }
 
         // Ensure spaces in nomor_surat are preserved in Word
         self::preservePlaceholderSpaces($templateProcessor, 'nomor_surat');
 
-        $isKelompokTemplate = ($template->type === 'kelompok');
-
         // Validate template placeholders
-        self::validateTemplate($templateProcessor, $isKelompokTemplate);
+        self::validateTemplate($templateProcessor, $isKelompokTemplate, $isPt);
 
         // Parse dates using Carbon
         $refDate = $submission->reference_letter_date ? Carbon::parse($submission->reference_letter_date) : null;
@@ -217,102 +247,153 @@ class LetterService
         // Generate dynamic letter number
         $nomorSurat = self::generateLetterNumber($submission->registration_number, $date);
 
-        // Replace placeholders in Word document
-        $templateProcessor->setValue('nomor_surat', $nomorSurat);
-        $templateProcessor->setValue('tanggal_surat', $tanggalSurat);
-        $templateProcessor->setValue('jabatan_tujuan', self::formatRecipientPosition($submission));
-        // Universitas dan kota dalam Title Case sesuai format surat resmi
-        $templateProcessor->setValue('universitas', self::toTitleCase($submission->university) ?: '-');
-        $templateProcessor->setValue('kota_tujuan', self::toTitleCase($submission->destination_city) ?: '-');
-        $templateProcessor->setValue('nomor_surat_pengantar', $submission->reference_letter_number ?? '-');
-        $templateProcessor->setValue('tanggal_surat_pengantar', $tanggalSuratPengantar);
-        
-        if (!$isKelompokTemplate) {
-            // Nama pemohon dalam Title Case
-            $templateProcessor->setValue('nama', self::toTitleCase($submission->name));
-            $templateProcessor->setValue('npm', $submission->nim ?? '-');
+        // Signature formatting
+        $jabatan = $panitera->jabatan ?? 'Panitera';
+        if (strcasecmp(trim($jabatan), 'Panitera') === 0) {
+            $jabatanVal = 'PANITERA';
+        } else {
+            $jabatanVal = "a.n. PANITERA<w:br/>" . mb_strtoupper(trim($jabatan), 'UTF-8');
         }
 
-        $templateProcessor->setValue('semester', $submission->semester ?? '-');
-        // Fakultas dan program studi dalam Title Case
-        $templateProcessor->setValue('fakultas', self::toTitleCase($submission->faculty) ?: '-');
-        $templateProcessor->setValue('program_studi', self::toTitleCase($submission->study_program) ?: '-');
-        // Lokasi penelitian dalam Title Case
-        $templateProcessor->setValue('lokasi_penelitian', self::toTitleCase($submission->research_location) ?: '-');
-        $templateProcessor->setValue('judul_penelitian', $submission->research_title ?? '-');
-        $templateProcessor->setValue('tujuan_penelitian', $submission->research_type ?? '-');
+        if ($isPt) {
+            // Replace PT placeholders
+            $templateProcessor->setValue('nomor_surat', $nomorSurat);
+            $templateProcessor->setValue('tanggal_surat', $tanggalSurat);
+            $templateProcessor->setValue('tujuan_penelitian', $submission->research_type ?? '-');
+            $templateProcessor->setValue('judul_penelitian', $submission->research_title ?? '-');
+            $templateProcessor->setValue('program_studi', self::toTitleCase($submission->study_program) ?: '-');
+            
+            // Format tanggal penelitian: start_date
+            $start = $submission->start_date ? Carbon::parse($submission->start_date)->locale('id')->translatedFormat('d F Y') : '-';
+            $templateProcessor->setValue('tanggal_penelitian', $start);
+            
+            // Signature
+            $templateProcessor->setValue('nama_panitera', $panitera->nama_panitera);
+            $templateProcessor->setValue('jabatan_panitera', $jabatanVal);
 
-        // Replace Panitera Details
-        $templateProcessor->setValue('nama_panitera', $panitera->nama_panitera);
-        $templateProcessor->setValue('jabatan_panitera', $panitera->jabatan ?? 'Panitera');
-        $templateProcessor->setValue('nip_panitera', $panitera->nip ?? '');
+            if (!$isKelompokTemplate) {
+                // Individu
+                $templateProcessor->setValue('nama', self::toTitleCase($submission->name));
+                $templateProcessor->setValue('npm', $submission->nim ?? '-');
+                $templateProcessor->setValue('konsentrasi', $submission->konsentrasi ?? '-');
+            } else {
+                // Kelompok
+                $templateProcessor->setValue('fakultas', self::toTitleCase($submission->faculty) ?: '-');
+                
+                // Clone members table rows (since PT template also has no, nama, npm)
+                $members = $submission->members->reject(function ($member) use ($submission) {
+                    return strcasecmp(trim($member->member_name), trim($submission->name)) === 0
+                        || (!empty($submission->nim) && !empty($member->member_npm) && strcasecmp(trim($member->member_npm), trim($submission->nim)) === 0);
+                })->values();
 
-        // Handle Group Submission (Kelompok) members list & tembusan list
-        if ($isKelompokTemplate) {
-            // Filter out duplicate members whose name or npm matches the Ketua Kelompok
-            $members = $submission->members->reject(function ($member) use ($submission) {
-                return strcasecmp(trim($member->member_name), trim($submission->name)) === 0
-                    || (!empty($submission->nim) && !empty($member->member_npm) && strcasecmp(trim($member->member_npm), trim($submission->nim)) === 0);
-            })->values();
+                $totalCount = 1 + count($members);
+                $templateProcessor->cloneRow('nama', $totalCount);
 
-            $totalCount = 1 + count($members);
+                // Row 1: Ketua
+                $templateProcessor->setValue('no#1', 1);
+                $templateProcessor->setValue('nama#1', self::toTitleCase($submission->name));
+                $templateProcessor->setValue('npm#1', $submission->nim ?? '-');
 
-            // Determine table row placeholders
-            $variables = $templateProcessor->getVariables();
-            $cloneKey = in_array('nama_anggota', $variables) ? 'nama_anggota' : 'nama';
-            $npmKey = in_array('npm_anggota', $variables) ? 'npm_anggota' : 'npm';
-
-            $templateProcessor->cloneRow($cloneKey, $totalCount);
-
-            // Row 1: Ketua Kelompok (from main submission) — nama dalam Title Case
-            $templateProcessor->setValue('no#1', 1);
-            $templateProcessor->setValue($cloneKey . '#1', self::toTitleCase($submission->name));
-            $templateProcessor->setValue($npmKey . '#1', $submission->nim ?? '-');
-
-            // Subsequent rows: Members — nama anggota dalam Title Case
-            foreach ($members as $index => $member) {
-                $rowNumber = $index + 2;
-                $templateProcessor->setValue('no#' . $rowNumber, $rowNumber);
-                $templateProcessor->setValue($cloneKey . '#' . $rowNumber, self::toTitleCase($member->member_name));
-                $templateProcessor->setValue($npmKey . '#' . $rowNumber, $member->member_npm);
+                // Subsequent rows
+                foreach ($members as $index => $member) {
+                    $rowNumber = $index + 2;
+                    $templateProcessor->setValue('no#' . $rowNumber, $rowNumber);
+                    $templateProcessor->setValue('nama#' . $rowNumber, self::toTitleCase($member->member_name));
+                    $templateProcessor->setValue('npm#' . $rowNumber, $member->member_npm);
+                }
+            }
+        } else {
+            // Replace placeholders in Word document for PN
+            $templateProcessor->setValue('nomor_surat', $nomorSurat);
+            $templateProcessor->setValue('tanggal_surat', $tanggalSurat);
+            $templateProcessor->setValue('jabatan_tujuan', self::formatRecipientPosition($submission));
+            // Universitas dan kota dalam Title Case sesuai format surat resmi
+            $templateProcessor->setValue('universitas', self::toTitleCase($submission->university) ?: '-');
+            $templateProcessor->setValue('kota_tujuan', self::toTitleCase($submission->destination_city) ?: '-');
+            $templateProcessor->setValue('nomor_surat_pengantar', $submission->reference_letter_number ?? '-');
+            $templateProcessor->setValue('tanggal_surat_pengantar', $tanggalSuratPengantar);
+            
+            // Nama pemohon dalam Title Case
+            if (!$isKelompokTemplate) {
+                $templateProcessor->setValue('nama', self::toTitleCase($submission->name));
+                $templateProcessor->setValue('npm', $submission->nim ?? '-');
             }
 
-            // Generate automatic tembusan list
-            if (in_array('tembusan', $variables)) {
-                $tembusanItems = [];
-                $tembusanItems[] = "Ketua Pengadilan Tinggi Tanjungkarang\n   (Sebagai laporan)";
+            $templateProcessor->setValue('semester', $submission->semester ?? '-');
+            $templateProcessor->setValue('fakultas', self::toTitleCase($submission->faculty) ?: '-');
+            $templateProcessor->setValue('program_studi', self::toTitleCase($submission->study_program) ?: '-');
+            $templateProcessor->setValue('lokasi_penelitian', self::toTitleCase($submission->research_location) ?: '-');
+            $templateProcessor->setValue('judul_penelitian', $submission->research_title ?? '-');
+            $templateProcessor->setValue('tujuan_penelitian', $submission->research_type ?? '-');
 
-                $targetPn = "Ketua Pengadilan Negeri Tanjungkarang";
-                $location = trim($submission->research_location ?? '');
-                if (!empty($location)) {
-                    if (stripos($location, 'Pengadilan Negeri') !== false) {
-                        $targetPn = "Ketua " . self::toTitleCase($location);
-                    } elseif (stripos($location, 'PN ') === 0 || stripos($location, 'PN. ') === 0) {
-                        $targetPn = "Ketua Pengadilan Negeri " . preg_replace('/^PN\.?\s+/i', '', $location);
+            // Replace Panitera Details
+            $templateProcessor->setValue('nama_panitera', $panitera->nama_panitera);
+            $templateProcessor->setValue('jabatan_panitera', $jabatanVal);
+            $templateProcessor->setValue('nip_panitera', $panitera->nip ?? '');
+
+            // Handle Group Submission (Kelompok) members list & tembusan list
+            if ($isKelompokTemplate) {
+                $members = $submission->members->reject(function ($member) use ($submission) {
+                    return strcasecmp(trim($member->member_name), trim($submission->name)) === 0
+                        || (!empty($submission->nim) && !empty($member->member_npm) && strcasecmp(trim($member->member_npm), trim($submission->nim)) === 0);
+                })->values();
+
+                $totalCount = 1 + count($members);
+
+                // Determine table row placeholders
+                $variables = $templateProcessor->getVariables();
+                $cloneKey = in_array('nama_anggota', $variables) ? 'nama_anggota' : 'nama';
+                $npmKey = in_array('npm_anggota', $variables) ? 'npm_anggota' : 'npm';
+
+                $templateProcessor->cloneRow($cloneKey, $totalCount);
+
+                // Row 1: Ketua Kelompok (from main submission)
+                $templateProcessor->setValue('no#1', 1);
+                $templateProcessor->setValue($cloneKey . '#1', self::toTitleCase($submission->name));
+                $templateProcessor->setValue($npmKey . '#1', $submission->nim ?? '-');
+
+                // Subsequent rows: Members
+                foreach ($members as $index => $member) {
+                    $rowNumber = $index + 2;
+                    $templateProcessor->setValue('no#' . $rowNumber, $rowNumber);
+                    $templateProcessor->setValue($cloneKey . '#' . $rowNumber, self::toTitleCase($member->member_name));
+                    $templateProcessor->setValue($npmKey . '#' . $rowNumber, $member->member_npm);
+                }
+
+                // Generate automatic tembusan list
+                if (in_array('tembusan', $variables)) {
+                    $tembusanItems = [];
+                    $tembusanItems[] = "Ketua Pengadilan Tinggi Tanjungkarang\n   (Sebagai laporan)";
+
+                    $targetPn = "Ketua Pengadilan Negeri Tanjungkarang";
+                    $location = trim($submission->research_location ?? '');
+                    if (!empty($location)) {
+                        if (stripos($location, 'Pengadilan Negeri') !== false) {
+                            $targetPn = "Ketua " . self::toTitleCase($location);
+                        } elseif (stripos($location, 'PN ') === 0 || stripos($location, 'PN. ') === 0) {
+                            $targetPn = "Ketua Pengadilan Negeri " . preg_replace('/^PN\.?\s+/i', '', $location);
+                        }
                     }
-                }
-                $tembusanItems[] = $targetPn;
-                // Nama pemohon dan anggota dalam Title Case di tembusan
-                $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
-                foreach ($members as $member) {
-                    $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
-                }
-                $tembusanItems[] = "Arsip";
+                    $tembusanItems[] = $targetPn;
+                    $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
+                    foreach ($members as $member) {
+                        $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
+                    }
+                    $tembusanItems[] = "Arsip";
 
-                $templateProcessor->replaceXmlBlock('tembusan', self::formatTembusanXml($tembusanItems, 1), 'w:p');
-            } else {
-                // User's custom layout: replace 'tembusan_anggota' and 'arsip'
-                $tembusanItems = [];
-                // Nama pemohon dan anggota dalam Title Case di tembusan
-                $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
-                foreach ($members as $member) {
-                    $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
-                }
+                    $templateProcessor->replaceXmlBlock('tembusan', self::formatTembusanXml($tembusanItems, 1), 'w:p');
+                } else {
+                    $tembusanItems = [];
+                    $tembusanItems[] = "Sdr. " . self::toTitleCase($submission->name);
+                    foreach ($members as $member) {
+                        $tembusanItems[] = "Sdr. " . self::toTitleCase($member->member_name);
+                    }
 
-                $templateProcessor->replaceXmlBlock('tembusan_anggota', self::formatTembusanXml($tembusanItems, 3), 'w:p');
-                
-                $arsipNum = 3 + count($tembusanItems);
-                $templateProcessor->replaceXmlBlock('arsip', self::formatTembusanXml(['Arsip'], $arsipNum), 'w:p');
+                    $templateProcessor->replaceXmlBlock('tembusan_anggota', self::formatTembusanXml($tembusanItems, 3), 'w:p');
+                    
+                    $arsipNum = 3 + count($tembusanItems);
+                    $templateProcessor->replaceXmlBlock('arsip', self::formatTembusanXml(['Arsip'], $arsipNum), 'w:p');
+                }
             }
         }
 

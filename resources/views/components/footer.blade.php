@@ -144,7 +144,7 @@
                                 <p class="text-[10px] font-extrabold uppercase tracking-wider mb-1 text-brand-alt">Jam Operasional</p>
                                 <p class="text-[13px] leading-relaxed text-slate-100">Senin - Kamis: 08:00 - 16:30 WIB</p>
                                 <p class="text-[13px] leading-relaxed text-slate-100">Jumat        : 08:00 - 17:00 WIB</p>
-                            </div>
+                             </div>
                         </div>
                     </div>
                 </div>

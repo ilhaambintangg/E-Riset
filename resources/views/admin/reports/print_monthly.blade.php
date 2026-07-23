@@ -125,11 +125,27 @@
     </div>
 
     <!-- Kop Surat Pengadilan Tinggi -->
-    <div class="header">
-        <h1>PENGADILAN TINGGI TANJUNGKARANG</h1>
-        <h2>SISTEM INFORMASI E-RISET (IZIN PENELITIAN ONLINE)</h2>
-        <div class="address">Jl. Cut Nyak Dien No.125, Durian Payung, Kec. Tanjung Karang Pusat, Kota Bandar Lampung, Lampung 35116</div>
-    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 0; border: none;">
+        <tr>
+            <td style="width: 15%; text-align: center; vertical-align: middle; padding-bottom: 5px; border: none;">
+                <img src="{{ asset('images/logo_pengadilan.jpg') }}" alt="Logo Pengadilan" style="width: 80px; height: auto;">
+            </td>
+            <td style="width: 85%; text-align: center; vertical-align: middle; padding-bottom: 5px; font-family: 'Times New Roman', Times, serif; color: #000000; border: none;">
+                <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 0; line-height: 1.2; letter-spacing: 0.5px;">MAHKAMAH AGUNG REPUBLIK INDONESIA</div>
+                <div style="font-size: 14px; font-weight: bold; text-transform: uppercase; margin: 4px 0 0 0; line-height: 1.2; letter-spacing: 0.5px;">DIREKTORAT JENDERAL BADAN PERADILAN UMUM</div>
+                <div style="font-size: 18px; font-weight: bold; text-transform: uppercase; margin: 4px 0 0 0; line-height: 1.2; letter-spacing: 0.5px;">PENGADILAN TINGGI TANJUNGKARANG</div>
+                <div style="font-size: 11px; margin: 6px 0 0 0; font-weight: 500;">Jalan Cut Mutia No. 42, Teluk Betung Utara Kota Bandar Lampung, (0721) 481286</div>
+                <div style="font-size: 11px; margin: 2px 0 0 0; font-weight: 500;">Provinsi Lampung Kode Pos – 35214</div>
+                <div style="font-size: 11px; margin: 2px 0 0 0; font-weight: 500;">
+                    www.pt-tanjungkarang.go.id, <span style="color: #0000ff; text-decoration: underline;">admin@pt-tanjungkarang.go.id</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <!-- Garis Pembatas Kop Surat -->
+    <div style="border-bottom: 4px solid #000; margin-top: 10px; margin-bottom: 2px;"></div>
+    <div style="border-bottom: 1.5px solid #000; margin-bottom: 25px;"></div>
 
     <div class="title">
         LAPORAN BULANAN PERMOHONAN IZIN PENELITIAN<br>
@@ -195,7 +211,6 @@
             <p><strong>Panitera Pengadilan Tinggi Tanjungkarang,</strong></p>
             <div class="signature-space"></div>
             <p style="text-decoration: underline; font-weight: bold;">(............................................)</p>
-            <p>NIP. ............................................</p>
         </div>
     </div>
 

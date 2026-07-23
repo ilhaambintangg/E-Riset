@@ -24,6 +24,10 @@ class AdminDashboardController extends Controller
 
     public function dashboard()
     {
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('requirements.index');
+        }
+
         $stats = [
             'total' => $this->submissionRepository->countAll(),
             'pending' => $this->submissionRepository->countByStatus('Menunggu Verifikasi'),
@@ -76,8 +80,9 @@ class AdminDashboardController extends Controller
         }
 
         $paniteras = Panitera::where('status_aktif', true)->get();
+        $hakims = \App\Models\Hakim::orderBy('nama_hakim', 'asc')->get();
 
-        return view('admin.submissions.show', compact('submission', 'paniteras'));
+        return view('admin.submissions.show', compact('submission', 'paniteras', 'hakims'));
     }
 
     /**
@@ -91,8 +96,19 @@ class AdminDashboardController extends Controller
 
         try {
             $this->submissionService->updateStatus($submission, $validated, $permitFile);
-            return back()->with('success', 'Status permohonan berhasil diperbarui.');
+            
+            $sessionData = ['success' => 'Status permohonan berhasil diperbarui.'];
+            if (in_array($validated['status'], ['Sedang Diproses', 'Pembuatan Surat Keterangan Riset'])) {
+                $sessionData['download_letter_url'] = route('admin.submissions.download', $submission->id);
+            }
+
+            return back()->with($sessionData);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('updateStatus FAILED: ' . $e->getMessage(), [
+                'submission_id' => $submission->id,
+                'validated' => $validated,
+                'trace' => $e->getTraceAsString(),
+            ]);
             return back()->withErrors(['_global' => $e->getMessage()])->withInput();
         }
     }

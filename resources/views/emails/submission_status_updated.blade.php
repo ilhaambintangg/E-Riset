@@ -65,6 +65,24 @@
                                             </span>
                                         </div>
 
+                                        @if($submission->current_status === 'Menentukan Jadwal Wawancara' && $submission->interview_date)
+                                        <!-- Detail Jadwal Wawancara -->
+                                        <p style="margin: 0 0 6px 0; font-size: 14px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            Jadwal Wawancara
+                                        </p>
+                                        <div style="margin-bottom: 20px; padding: 16px; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px;">
+                                            <p style="margin: 0; font-size: 16px; font-weight: 700; color: #1e40af;">
+                                                📅 {{ $submission->interview_date->locale('id')->translatedFormat('l, d F Y') }}
+                                            </p>
+                                            <p style="margin: 6px 0 0 0; font-size: 15px; font-weight: 700; color: #1e40af;">
+                                                ⏰ {{ $submission->interview_date->format('H:i') }} WIB
+                                            </p>
+                                            <p style="margin: 10px 0 0 0; font-size: 13px; color: #1e3a8a; line-height: 1.5;">
+                                                Wawancara penelitian Anda telah dijadwalkan. Silakan datang ke lokasi penelitian sesuai waktu yang ditentukan dengan membawa berkas pendukung Anda.
+                                            </p>
+                                        </div>
+                                        @endif
+
                                         <!-- Catatan Admin -->
                                         <p style="margin: 0 0 6px 0; font-size: 14px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
                                             Catatan Admin
