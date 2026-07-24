@@ -5,7 +5,7 @@
 
 @section('content')
 
-<div x-data="{ showModal: false, isEdit: false, form: { id: '', nama_hakim: '', email_hakim: '' } }">
+<div x-data="{ showModal: false, isEdit: false, form: { id: '', nama_hakim: '', email_hakim: '' }, loading: false }">
     
     <!-- Action Bar & Table Content (with animation) -->
     <div class="animate-fade-up">
@@ -13,7 +13,7 @@
         <!-- Action Bar -->
         <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <p class="text-xs text-fg-body-subtle">Kelola data hakim pendamping untuk penelitian di Pengadilan Tinggi.</p>
-            <button @click="isEdit = false; form = { id: '', nama_hakim: '', email_hakim: '' }; showModal = true" 
+            <button @click="isEdit = false; form = { id: '', nama_hakim: '', email_hakim: '' }; loading = false; showModal = true" 
                     class="btn-brand btn-sm shrink-0">
                 <i data-lucide="plus" class="w-4 h-4"></i> Tambah Hakim
             </button>
@@ -36,7 +36,7 @@
                                 <td class="px-6 py-4 font-bold text-fg-heading">{{ $h->nama_hakim }}</td>
                                 <td class="px-6 py-4 font-mono text-xs">{{ $h->email_hakim }}</td>
                                 <td class="px-6 py-4 text-right space-x-1">
-                                    <button @click="isEdit = true; form = { id: '{{ $h->id }}', nama_hakim: '{{ addslashes($h->nama_hakim) }}', email_hakim: '{{ addslashes($h->email_hakim) }}' }; showModal = true" 
+                                    <button @click="isEdit = true; form = { id: '{{ $h->id }}', nama_hakim: '{{ addslashes($h->nama_hakim) }}', email_hakim: '{{ addslashes($h->email_hakim) }}' }; loading = false; showModal = true" 
                                             class="inline-flex items-center justify-center w-8 h-8 text-fg-body-subtle hover:text-fg-brand hover:bg-brand-soft rounded-default transition-colors">
                                         <i data-lucide="edit-2" class="w-4 h-4"></i>
                                     </button>
@@ -86,7 +86,7 @@
                  x-transition:leave-end="opacity-0 scale-95 translate-y-4"
                  class="relative w-full max-w-lg bg-white shadow-xl rounded-base border border-border-default my-8 text-left transition-all transform flex flex-col max-h-[90vh] overflow-hidden">
                 
-                <form :action="isEdit ? '{{ url('admin/hakims') }}/' + form.id : '{{ route('hakims.store') }}'" method="POST" class="flex flex-col max-h-[90vh] m-0">
+                <form :action="isEdit ? '{{ url('admin/hakims') }}/' + form.id : '{{ route('hakims.store') }}'" method="POST" @submit="loading = true" class="flex flex-col max-h-[90vh] m-0">
                     @csrf
                     <template x-if="isEdit">
                         <input type="hidden" name="_method" value="PUT">
@@ -116,7 +116,20 @@
                     <!-- Footer -->
                     <div class="px-6 py-5 border-t border-border-default flex justify-end gap-3 shrink-0">
                         <button type="button" @click="showModal = false" class="btn-secondary btn-sm">Batal</button>
-                        <button type="submit" class="btn-brand btn-sm">Simpan</button>
+                        <button type="submit" :disabled="loading" class="btn-brand btn-sm flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <template x-if="loading">
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>Menyimpan...</span>
+                                </div>
+                            </template>
+                            <template x-if="!loading">
+                                <span>Simpan</span>
+                            </template>
+                        </button>
                     </div>
                 </form>
             </div>

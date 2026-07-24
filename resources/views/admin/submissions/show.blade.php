@@ -293,7 +293,7 @@
         @php
             $isFinalStatus = in_array($submission->current_status, ['Disetujui', 'Ditolak']);
         @endphp
-        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses', 'Menentukan Jadwal Wawancara', 'Pembuatan Surat Keterangan Riset']) ? '' : $submission->current_status }}', recipient_position: '', konsentrasi: '' }">
+        <div class="card-static overflow-hidden" x-data="{ status: '{{ in_array($submission->current_status, ['Menunggu Verifikasi', 'Sedang Diproses', 'Menentukan Jadwal Wawancara', 'Pembuatan Surat Keterangan Riset']) ? '' : $submission->current_status }}', recipient_position: '', konsentrasi: '', loading: false }">
             <div class="px-6 py-5 border-b border-border-default bg-neutral-primary-soft">
                 <h3 class="text-sm font-bold text-fg-heading flex items-center gap-2 m-0">
                     <i data-lucide="settings" class="w-4 h-4 text-brand-alt"></i> Proses Permohonan
@@ -310,7 +310,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('admin.submissions.status', $submission->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                <form action="{{ route('admin.submissions.status', $submission->id) }}" method="POST" enctype="multipart/form-data" @submit="loading = true" class="space-y-5">
                     @csrf
                     
                     <div>
@@ -497,9 +497,22 @@
                             <i data-lucide="lock" class="w-4 h-4"></i>
                         </button>
                     @else
-                        <button type="submit" class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3.5 rounded-default shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-xs">
-                            Simpan Perubahan
-                            <i data-lucide="save" class="w-4 h-4"></i>
+                        <button type="submit" :disabled="loading" class="w-full bg-brand hover:bg-brand-medium text-white font-bold py-3.5 rounded-default shadow-md hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 text-xs">
+                            <template x-if="loading">
+                                <div class="flex items-center gap-2">
+                                    <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    <span>Menyimpan...</span>
+                                </div>
+                            </template>
+                            <template x-if="!loading">
+                                <div class="flex items-center gap-2">
+                                    <span>Simpan Perubahan</span>
+                                    <i data-lucide="save" class="w-4 h-4"></i>
+                                </div>
+                            </template>
                         </button>
                     @endif
                 </form>
