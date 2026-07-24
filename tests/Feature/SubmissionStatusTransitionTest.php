@@ -23,7 +23,7 @@ class SubmissionStatusTransitionTest extends TestCase
             'name' => 'Test Admin',
             'username' => 'testadmin',
             'email' => 'admin@test.com',
-            'role' => 'hukum',
+            'role' => 'admin',
             'password' => bcrypt('password'),
         ]);
 

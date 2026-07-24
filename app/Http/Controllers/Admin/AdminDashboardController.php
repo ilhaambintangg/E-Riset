@@ -32,10 +32,6 @@ class AdminDashboardController extends Controller
             'rejected' => $this->submissionRepository->countByStatus('Ditolak'),
         ];
 
-        if (auth()->check() && auth()->user()->role === 'admin') {
-            return view('admin.dashboard', compact('stats'));
-        }
-
         $recentSubmissions = $this->submissionRepository->recent(5);
 
         return view('admin.dashboard', compact('stats', 'recentSubmissions'));

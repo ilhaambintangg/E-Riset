@@ -110,14 +110,14 @@ class PublicChatController extends Controller
      */
     public function status()
     {
-        $isHukumOnline = Admin::where('role', 'hukum')
+        $isAdminOnline = Admin::where('role', 'admin')
             ->whereNotNull('last_seen_at')
             ->where('last_seen_at', '>=', now()->subMinutes(5))
             ->exists();
 
         return response()->json([
             'status' => 'success',
-            'admin_online' => $isHukumOnline
+            'admin_online' => $isAdminOnline
         ]);
     }
 }

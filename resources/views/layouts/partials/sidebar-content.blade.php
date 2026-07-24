@@ -16,7 +16,7 @@
     </div>
     <div>
         <p class="font-bold text-sm text-[#0a2240] tracking-tight leading-none">
-            {{ $activeSystem === 'edvokat' ? 'EDVOKAT Admin' : ($userRole === 'hukum' ? 'E-Riset Hukum' : 'E-Riset Admin') }}
+            {{ $activeSystem === 'edvokat' ? 'EDVOKAT Admin' : 'E-Riset Admin' }}
         </p>
         <p class="text-[9px] text-slate-500 font-semibold uppercase tracking-wider mt-1">
             {{ $activeSystem === 'edvokat' ? 'Admin Panel EDVOKAT' : 'Management Portal' }}
@@ -44,7 +44,7 @@
             <span class="flex-1">Dashboard</span>
         </a>
 
-        @if($userRole === 'hukum')
+        @if($userRole === 'admin')
             <!-- HUKUM Role Menus: Manajemen Permohonan Section -->
             <div class="pt-4 pb-1">
                 <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manajemen Permohonan</p>
@@ -211,7 +211,7 @@
         <!-- Profile info -->
         <div class="flex-1 min-w-0">
             <p class="text-xs font-bold text-slate-800 truncate leading-tight">{{ auth()->user()->name ?? 'Pengguna' }}</p>
-            <p class="text-[10px] text-slate-500 truncate mt-0.5">{{ $userRole === 'admin' ? 'Super Administrator' : 'Hukum E-Riset' }}</p>
+            <p class="text-[10px] text-slate-500 truncate mt-0.5">Super Administrator</p>
         </div>
         <!-- Logout Form -->
         <form method="POST" action="{{ route('logout') }}" class="m-0 flex items-center">

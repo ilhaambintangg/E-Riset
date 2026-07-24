@@ -25,14 +25,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('@Admin123'),
         ]);
 
-        // Hukum Seeder
-        Admin::create([
-            'name' => 'Hukum E-Riset',
-            'username' => 'hukum',
-            'email' => 'hukum@pt-tanjungkarang.go.id',
-            'role' => 'hukum',
-            'password' => Hash::make('@Hukum123'),
-        ]);
 
         // Requirements Seeder
         $requirements = [

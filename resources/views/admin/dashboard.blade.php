@@ -72,8 +72,7 @@
     </div>
 </div>
 
-@if(auth()->user()->role !== 'admin')
-<!-- Table Section Card (Hukum role only) -->
+<!-- Table Section Card -->
 <div class="card-static overflow-hidden animate-fade-up bg-white" style="animation-delay: 0.1s;">
     <div class="px-6 py-5 border-b border-border-default flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white">
         <div class="flex items-center gap-3">
@@ -195,6 +194,5 @@
         </div>
     </div>
 </div>
-@endif
 
 @endsection

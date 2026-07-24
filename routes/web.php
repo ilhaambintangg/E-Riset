@@ -31,7 +31,7 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLast
     Route::get('/edvokat', [\App\Http\Controllers\Admin\Edvokat\EdvokatDashboardController::class, 'index'])->name('admin.edvokat');
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
 
-    // ADMIN Role Only: Master Data Management
+    // ADMIN Role Only: Master Data Management, Submissions, Reports, and Live Chat
     Route::middleware('role:admin')->group(function () {
         Route::resource('requirements', RequirementController::class);
         Route::resource('faqs', FaqController::class);
@@ -51,10 +51,8 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLast
         // Settings
         Route::get('settings', [WebSettingController::class, 'index'])->name('admin.settings.index');
         Route::post('settings', [WebSettingController::class, 'update'])->name('admin.settings.update');
-    });
 
-    // HUKUM Role Only: Submissions Processing, Reports, and Live Chat
-    Route::middleware('role:hukum')->group(function () {
+        // Submissions Processing
         Route::get('/submissions', [AdminDashboardController::class, 'submissions'])->name('admin.submissions.index');
         Route::get('/submissions/{id}', [AdminDashboardController::class, 'submissionDetail'])->name('admin.submissions.show');
         Route::post('/submissions/{id}/status', [AdminDashboardController::class, 'updateStatus'])->name('admin.submissions.status');
