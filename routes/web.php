@@ -27,8 +27,7 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\UpdateAdminLastSeen::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Portal, Edvokat & Dashboard (Accessible by both Admin and Hukum roles)
-    Route::get('/portal', [\App\Http\Controllers\Admin\Portal\PortalController::class, 'index'])->name('admin.portal');
+    // Edvokat & Dashboard (Accessible by both Admin and Hukum roles)
     Route::get('/edvokat', [\App\Http\Controllers\Admin\Edvokat\EdvokatDashboardController::class, 'index'])->name('admin.edvokat');
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
 

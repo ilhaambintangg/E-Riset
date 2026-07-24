@@ -35,21 +35,6 @@ class HukumPortalBypassTest extends TestCase
         ]);
     }
 
-    public function test_hukum_user_cannot_access_portal_and_is_redirected_to_dashboard(): void
-    {
-        $response = $this->actingAs($this->hukumUser)->get('/admin/portal');
-
-        $response->assertRedirect(route('admin.dashboard'));
-    }
-
-    public function test_admin_user_can_access_portal(): void
-    {
-        $response = $this->actingAs($this->adminUser)->get('/admin/portal');
-
-        $response->assertStatus(200);
-        $response->assertViewIs('admin.portal.index');
-    }
-
     public function test_hukum_user_login_redirects_to_dashboard(): void
     {
         $response = $this->post('/admin/login', [
@@ -61,14 +46,14 @@ class HukumPortalBypassTest extends TestCase
         $this->assertAuthenticatedAs($this->hukumUser);
     }
 
-    public function test_admin_user_login_redirects_to_portal(): void
+    public function test_admin_user_login_redirects_to_dashboard(): void
     {
         $response = $this->post('/admin/login', [
             'username' => 'admin',
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect('/admin/portal');
+        $response->assertRedirect('/admin/dashboard');
         $this->assertAuthenticatedAs($this->adminUser);
     }
 
@@ -79,11 +64,11 @@ class HukumPortalBypassTest extends TestCase
         $response->assertRedirect(route('admin.dashboard'));
     }
 
-    public function test_authenticated_admin_user_accessing_login_page_redirects_to_portal(): void
+    public function test_authenticated_admin_user_accessing_login_page_redirects_to_dashboard(): void
     {
         $response = $this->actingAs($this->adminUser)->get('/admin/login');
 
-        $response->assertRedirect(route('admin.portal'));
+        $response->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_admin_dashboard_shows_stats_but_no_recent_submissions_table(): void
